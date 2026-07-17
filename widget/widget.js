@@ -366,107 +366,286 @@
     }
   }
 
-  // Translate page using Google Translate
-  let translateElementCreated = false;
-  let allowedLanguages = [];
+  // Translation engine - direct text node translation via Google Translate API
+  const processedNodes = new WeakSet();
+  const translationCache = new Map();
+  let currentTargetLanguage = null;
 
-  function translatePage(targetLang) {
+  const EXCLUDED_TAGS = new Set([
+    'SCRIPT', 'STYLE', 'CODE', 'TEXTAREA', 'INPUT', 'NOSCRIPT',
+    'SVG', 'PATH', 'IFRAME', 'PRE', 'HEAD', 'TITLE', 'OPTION'
+  ]);
+
+  const COMMON_WORDS = {
+    en: new Set(['the', 'be', 'to', 'of', 'and', 'a', 'in', 'that', 'have', 'i',
+      'it', 'for', 'not', 'on', 'with', 'he', 'as', 'you', 'do', 'at',
+      'this', 'but', 'his', 'by', 'from', 'they', 'we', 'say', 'her', 'she',
+      'or', 'an', 'will', 'my', 'one', 'all', 'would', 'there', 'their', 'what',
+      'so', 'up', 'out', 'if', 'about', 'who', 'get', 'which', 'go', 'me']),
+    ja: new Set(['の', 'に', 'は', 'を', 'た', 'が', 'で', 'て', 'と', 'し',
+      'れ', 'さ', 'ある', 'いる', 'する', 'から', 'こと', 'これ', 'それ', 'もの',
+      'です', 'ます', 'ない', 'よう', 'ため', 'その', 'まで', 'なる', 'として', 'いえる']),
+    es: new Set(['el', 'la', 'de', 'que', 'y', 'en', 'un', 'ser', 'se', 'no',
+      'haber', 'por', 'con', 'para', 'como', 'estar', 'tener', 'leer', 'todo', 'mas',
+      'este', 'hacer', 'o', 'poder', 'decir', 'otro', 'ir', 'ver', 'dar', 'saber']),
+    fr: new Set(['le', 'la', 'de', 'et', 'les', 'des', 'un', 'une', 'est', 'en',
+      'que', 'qui', 'dans', 'du', 'ce', 'il', 'pas', 'pour', 'sur', 'sont',
+      'avec', 'tout', 'mais', 'comme', 'ou', 'son', 'elle', 'nous', 'avoir', 'fait']),
+    de: new Set(['der', 'die', 'und', 'in', 'den', 'von', 'zu', 'das', 'mit', 'sich',
+      'des', 'auf', 'ist', 'ein', 'eine', 'es', 'an', 'auch', 'als', 'werden',
+      'dass', 'sie', 'nach', 'noch', 'wie', 'einem', 'uber', 'nur', 'oder', 'aber']),
+    pt: new Set(['de', 'que', 'do', 'da', 'em', 'um', 'para', 'e', 'com', 'nao',
+      'uma', 'os', 'no', 'se', 'na', 'por', 'mais', 'dos', 'como', 'mas',
+      'foi', 'ao', 'ele', 'das', 'tem', 'seu', 'sua', 'ou', 'ser', 'quando']),
+    ko: new Set(['이', '가', '은', '는', '을', '를', '에', '의', '도', '로',
+      '으로', '와', '과', '한', '할', '하다', '것', '그', '저', '수',
+      '있', '없', '되', '같', '때문', '위해', '대한', '보다', '또는', '그리고']),
+    zh: new Set(['的', '了', '在', '是', '我', '有', '和', '就', '不', '人',
+      '都', '一', '上', '也', '很', '到', '说', '要', '去',
+      '你', '会', '着', '没有', '看', '好', '自己', '这']),
+    ar: new Set(['في', 'من', 'على', 'إلى', 'أن', 'هذا', 'التي', 'الذي', 'هو', 'هي',
+      'لا', 'ما', 'كان', 'بل', 'أو', 'بعد', 'قبل', 'حتى', 'منذ', 'عند']),
+    hi: new Set(['के', 'में', 'है', 'की', 'को', 'पर', 'से', 'एक', 'था', 'कि',
+      'यह', 'और', 'ने', 'हैं', 'भी', 'तो', 'या', 'अपने', 'इस', 'कर']),
+    ru: new Set(['и', 'в', 'на', 'не', 'что', 'с', 'он', 'по', 'это', 'из',
+      'за', 'но', 'все', 'как', 'его', 'она', 'был', 'от', 'для', 'ты']),
+    it: new Set(['di', 'che', 'il', 'la', 'in', 'un', 'del', 'per', 'con', 'non',
+      'una', 'sono', 'al', 'da', 'ha', 'anche', 'piu', 'come', 'si', 'nel']),
+    nl: new Set(['de', 'het', 'een', 'van', 'en', 'in', 'is', 'dat', 'op', 'te',
+      'zijn', 'voor', 'met', 'niet', 'aan', 'er', 'maar', 'om', 'ook', 'als']),
+    th: new Set(['ของ', 'ที่', 'และ', 'ใน', 'เป็น', 'การ', 'ได้', 'ไม่', 'มี', 'จะ',
+      'ให้', 'ไป', 'มา', 'ทำ', 'ถ้า', 'แต่', 'กับ', 'ว่า', 'แล้ว', 'อยู่']),
+    vi: new Set(['cua', 'la', 'va', 'nhung', 'khong', 'co', 'nguoi', 'nay', 'cac', 'toi',
+      'mot', 'ban', 'noi', 'lam', 'nhu', 'day', 'viec', 'nam', 'ngay']),
+    pl: new Set(['i', 'w', 'nie', 'na', 'do', 'to', 'jak', 'co', 'za', 'od',
+      'tak', 'ale', 'o', 'czy', 'tego', 'ten', 'jest', 'byl', 'po', 'przy']),
+    tr: new Set(['bir', 've', 'bu', 'da', 'de', 'ne', 'ben', 'sen', 'o', 'biz',
+      'siz', 'onlar', 'icin', 'ile', 'ama', 'daha', 'var', 'yok', 'gibi', 'sonra']),
+    sv: new Set(['och', 'att', 'det', 'i', 'en', 'som', 'ar', 'av', 'for', 'med',
+      'den', 'till', 'pa', 'har', 'de', 'inte', 'om', 'ett', 'var', 'men']),
+  };
+
+  function lswIsInTargetLanguage(text) {
+    const trimmed = text.trim();
+    if (trimmed.length < 2) return true;
+    if (/^\d+$/.test(trimmed)) return true;
+    if (/^[0-9\s.,!?'"()\[\]:;\-\/\+\=\*\&\%\$\#\@\<\>\?]+$/.test(trimmed)) return true;
+
+    if (currentTargetLanguage === 'ja') {
+      return /[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF\u3400-\u4DBF]/.test(trimmed);
+    }
+    if (currentTargetLanguage === 'zh') {
+      const hasChinese = /[\u4E00-\u9FFF\u3400-\u4DBF]/.test(trimmed);
+      const hasJapaneseOnly = /[\u3040-\u309F\u30A0-\u30FF]/.test(trimmed);
+      return hasChinese && !hasJapaneseOnly;
+    }
+    if (currentTargetLanguage === 'ko') {
+      return /[\uAC00-\uD7AF\u1100-\u11FF]/.test(trimmed);
+    }
+    if (currentTargetLanguage === 'ar') {
+      return /[\u0600-\u06FF\u0750-\u077F]/.test(trimmed);
+    }
+    if (currentTargetLanguage === 'hi') {
+      return /[\u0900-\u097F]/.test(trimmed);
+    }
+    if (currentTargetLanguage === 'th') {
+      return /[\u0E00-\u0E7F]/.test(trimmed);
+    }
+
+    const words = COMMON_WORDS[currentTargetLanguage];
+    if (words) {
+      const lowerWords = trimmed.toLowerCase().split(/\s+/).filter(function (w) { return w.length > 1; });
+      if (lowerWords.length >= 3) {
+        const matchCount = lowerWords.filter(function (w) { return words.has(w); }).length;
+        if (matchCount >= Math.ceil(lowerWords.length * 0.3)) return true;
+      }
+    }
+
+    return false;
+  }
+
+  function lswShouldTranslate(text) {
+    const trimmed = text.trim();
+    if (trimmed.length < 2) return false;
+    if (/^\d+$/.test(trimmed)) return false;
+    if (/^[0-9\s.,!?'"()\[\]:;\-\/\+\=\*\&\%\$\#\@\<\>\?]+$/.test(trimmed)) return false;
+    return !lswIsInTargetLanguage(trimmed);
+  }
+
+  function lswWalkTextNodes(element, callback) {
+    const walker = document.createTreeWalker(
+      element,
+      NodeFilter.SHOW_TEXT,
+      {
+        acceptNode: function (node) {
+          const parent = node.parentNode;
+          if (!parent) return NodeFilter.FILTER_REJECT;
+          if (EXCLUDED_TAGS.has(parent.tagName)) return NodeFilter.FILTER_REJECT;
+          if (parent.isContentEditable) return NodeFilter.FILTER_REJECT;
+          if (parent.closest && parent.closest('#lsw-widget')) return NodeFilter.FILTER_REJECT;
+          if (processedNodes.has(node)) return NodeFilter.FILTER_REJECT;
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      }
+    );
+
+    let node;
+    while ((node = walker.nextNode())) {
+      callback(node);
+    }
+  }
+
+  function lswCacheTranslation(text, translation) {
+    if (translationCache.size >= 5000) {
+      const firstKey = translationCache.keys().next().value;
+      translationCache.delete(firstKey);
+    }
+    translationCache.set(text, translation);
+  }
+
+  async function lswTranslateBatchDirect(texts) {
+    const allCached = texts.every(function (t) { return translationCache.has(t); });
+    if (allCached) {
+      return texts.map(function (t) { return translationCache.get(t); });
+    }
+
+    const delimiter = '\n---\n';
+    const joinedText = texts.join(delimiter);
+    const url = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=' + currentTargetLanguage + '&dt=t&q=' + encodeURIComponent(joinedText);
+
+    const response = await fetch(url);
+    if (!response.ok) throw new Error('HTTP ' + response.status);
+    const data = await response.json();
+
+    if (data && data[0]) {
+      const fullTranslation = data[0].map(function (s) { return s[0] || ''; }).join('');
+      const isSameLanguage = data[2] === currentTargetLanguage || fullTranslation.trim().toLowerCase() === joinedText.trim().toLowerCase();
+
+      if (isSameLanguage) {
+        texts.forEach(function (t) { lswCacheTranslation(t, t); });
+        return texts;
+      }
+
+      const parts = fullTranslation.split(/[\r\n]+---[\r\n]+/);
+      if (parts.length === texts.length) {
+        return parts.map(function (p, i) {
+          const val = p.trim();
+          lswCacheTranslation(texts[i], val);
+          return val;
+        });
+      }
+    }
+
+    return texts;
+  }
+
+  async function lswBatchTranslateNodes(nodes) {
+    const batchSize = 50;
+    const batches = [];
+    for (let i = 0; i < nodes.length; i += batchSize) {
+      batches.push(nodes.slice(i, i + batchSize));
+    }
+
+    const concurrencyLimit = 6;
+
+    for (let i = 0; i < batches.length; i += concurrencyLimit) {
+      const slice = batches.slice(i, i + concurrencyLimit);
+      const results = await Promise.allSettled(
+        slice.map(async function (batch) {
+          const texts = batch.map(function (n) { return n.nodeValue.trim(); });
+          const translations = await lswTranslateBatchDirect(texts);
+          return { batch: batch, translations: translations };
+        })
+      );
+
+      for (const result of results) {
+        if (result.status === 'rejected') {
+          console.error('[LanguageSwitcher] Batch translation failed:', result.reason);
+          continue;
+        }
+
+        const { batch, translations } = result.value;
+        if (!translations || translations.length !== batch.length) continue;
+
+        batch.forEach(function (node, idx) {
+          const originalVal = node.nodeValue;
+          const newVal = translations[idx];
+          if (newVal && newVal.toLowerCase() !== originalVal.trim().toLowerCase()) {
+            node.nodeValue = newVal;
+          }
+        });
+      }
+    }
+  }
+
+  async function translatePage(targetLang) {
     const widget = document.getElementById("lsw-widget");
     if (!widget) return;
 
     widget.classList.add("lsw-translating");
+    currentTargetLanguage = targetLang;
 
-    let container = document.getElementById("lsw-translate-container");
-    if (!container) {
-      container = document.createElement("div");
-      container.id = "lsw-translate-container";
-      container.style.height = "0";
-      container.style.overflow = "hidden";
-      container.style.position = "absolute";
-      container.style.left = "-9999px";
-      document.body.appendChild(container);
+    // Reset state for new language
+    processedNodes.clear();
+    translationCache.clear();
+
+    const nodesToTranslate = [];
+    lswWalkTextNodes(document.body, function (node) {
+      processedNodes.add(node);
+      if (lswShouldTranslate(node.nodeValue)) {
+        nodesToTranslate.push(node);
+      }
+    });
+
+    if (nodesToTranslate.length > 0) {
+      await lswBatchTranslateNodes(nodesToTranslate);
     }
 
-    function applyTranslation() {
-      const select =
-        document.querySelector("#lsw-translate-container .goog-te-combo-simple") ||
-        document.querySelector(".goog-te-combo-simple");
-      if (select) {
-        for (let i = 0; i < select.options.length; i++) {
-          if (select.options[i].value === targetLang) {
-            select.value = targetLang;
-            select.dispatchEvent(new Event("change", { bubbles: true }));
-            break;
+    widget.classList.remove("lsw-translating");
+
+    // Watch for dynamically added content
+    lswSetupMutationObserver();
+  }
+
+  function lswSetupMutationObserver() {
+    let debounceTimeout;
+    const observer = new MutationObserver(function (mutations) {
+      if (!currentTargetLanguage) return;
+
+      let hasAddedNodes = false;
+      for (const mutation of mutations) {
+        if (mutation.addedNodes.length > 0) {
+          for (const node of mutation.addedNodes) {
+            if (node.nodeType === Node.ELEMENT_NODE && !EXCLUDED_TAGS.has(node.tagName) && !node.closest('#lsw-widget')) {
+              hasAddedNodes = true;
+              break;
+            }
           }
         }
+        if (hasAddedNodes) break;
       }
-      setTimeout(() => {
-        widget.classList.remove("lsw-translating");
-      }, 1500);
-    }
 
-    function pollForCombo(callback, maxWait) {
-      const start = Date.now();
-      (function check() {
-        const select =
-          document.querySelector("#lsw-translate-container .goog-te-combo-simple") ||
-          document.querySelector(".goog-te-combo-simple");
-        if (select && select.options.length > 1) {
-          callback();
-        } else if (Date.now() - start < maxWait) {
-          setTimeout(check, 150);
-        } else {
-          translateElementCreated = false;
-          widget.classList.remove("lsw-translating");
-        }
-      })();
-    }
+      if (hasAddedNodes) {
+        clearTimeout(debounceTimeout);
+        debounceTimeout = setTimeout(function () {
+          const nodesToTranslate = [];
+          lswWalkTextNodes(document.body, function (node) {
+            processedNodes.add(node);
+            if (lswShouldTranslate(node.nodeValue)) {
+              nodesToTranslate.push(node);
+            }
+          });
+          if (nodesToTranslate.length > 0) {
+            lswBatchTranslateNodes(nodesToTranslate);
+          }
+        }, 500);
+      }
+    });
 
-    function doInit() {
-      container.innerHTML = "";
-      const langs = allowedLanguages.length > 0 ? allowedLanguages.join(",") : "";
-      new window.google.translate.TranslateElement(
-        {
-          pageLanguage: detectPageLanguage(),
-          includedLanguages: langs || undefined,
-          layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
-          autoDisplay: false,
-        },
-        "lsw-translate-container"
-      );
-      translateElementCreated = true;
-      pollForCombo(applyTranslation, 5000);
-    }
-
-    if (translateElementCreated) {
-      container.innerHTML = "";
-      const langs = allowedLanguages.length > 0 ? allowedLanguages.join(",") : "";
-      new window.google.translate.TranslateElement(
-        {
-          pageLanguage: detectPageLanguage(),
-          includedLanguages: langs || undefined,
-          layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
-          autoDisplay: false,
-        },
-        "lsw-translate-container"
-      );
-      pollForCombo(applyTranslation, 5000);
-      return;
-    }
-
-    // Use Google Translate element
-    if (!window.google || !window.google.translate) {
-      // Load Google Translate script
-      const script = document.createElement("script");
-      script.src =
-        "//translate.google.com/translate_a/element.js?cb=lswGoogleTranslateInit";
-      window.lswGoogleTranslateInit = function () {
-        doInit();
-      };
-      document.head.appendChild(script);
-    } else {
-      doInit();
-    }
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
   }
 
   // Initialize widget
@@ -485,17 +664,6 @@
 
       const config = await response.json();
       const sourceLanguage = detectPageLanguage();
-
-      allowedLanguages = config.allowed_languages || [];
-
-      // Create container for Google Translate
-      const translateContainer = document.createElement("div");
-      translateContainer.id = "lsw-translate-container";
-      translateContainer.style.height = "0";
-      translateContainer.style.overflow = "hidden";
-      translateContainer.style.position = "absolute";
-      translateContainer.style.left = "-9999px";
-      document.body.appendChild(translateContainer);
 
       // Add styles
       document.head.appendChild(createWidgetStyles());

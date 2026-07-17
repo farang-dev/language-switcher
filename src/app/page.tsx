@@ -1,10 +1,15 @@
 import Link from "next/link";
+import Script from "next/script";
 import { Button } from "@/components/ui/button";
 import { Globe, Code, BarChart3, Settings } from "lucide-react";
 
 export default function LandingPage() {
   return (
     <div className="flex flex-col min-h-screen">
+      <Script
+        src="https://language-switcher-two.vercel.app/api/widget/6653cbc4e8c95f700927e879fd008da1.js"
+        strategy="afterInteractive"
+      />
       {/* Header */}
       <header className="border-b">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
@@ -14,10 +19,10 @@ export default function LandingPage() {
           </div>
           <div className="flex items-center gap-4">
             <Link href="/login">
-              <Button variant="ghost">ログイン</Button>
+              <Button variant="ghost">Log In</Button>
             </Link>
             <Link href="/signup">
-              <Button>無料で始める</Button>
+              <Button>Get Started Free</Button>
             </Link>
           </div>
         </div>
@@ -27,16 +32,16 @@ export default function LandingPage() {
       <section className="flex-1 flex items-center justify-center py-20 px-4">
         <div className="max-w-3xl text-center space-y-8">
           <h1 className="text-5xl font-bold tracking-tight">
-            言語切り替えくん
+            Language Switcher
           </h1>
           <p className="text-xl text-muted-foreground">
-            あなたのウェブサイトに、たった1行のコードで多言語切り替え機能を追加。
-            訪問者が自分の母語でサイトを閲覧できるようになります。
+            Add multi-language support to your website with a single line of code.
+            Let your visitors browse in their native language.
           </p>
           <div className="flex items-center justify-center gap-4">
             <Link href="/signup">
               <Button size="lg" className="text-lg px-8">
-                無料で始める
+                Get Started Free
               </Button>
             </Link>
           </div>
@@ -46,37 +51,37 @@ export default function LandingPage() {
       {/* Features */}
       <section className="border-t bg-muted/50 py-20 px-4">
         <div className="container mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12">主な機能</h2>
+          <h2 className="text-3xl font-bold text-center mb-12">Features</h2>
           <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             <FeatureCard
               icon={<Code className="h-8 w-8" />}
-              title="簡単導入"
-              description="scriptタグを貼るだけでOK。プログラミングの知識は不要です。"
+              title="Easy Setup"
+              description="Just paste a script tag. No programming knowledge required."
             />
             <FeatureCard
               icon={<Globe className="h-8 w-8" />}
-              title="多言語対応"
-              description="100以上の言語に対応。Google翻訳を活用した高品質な翻訳。"
+              title="Multi-Language"
+              description="Supports 100+ languages with high-quality Google Translate."
             />
             <FeatureCard
               icon={<BarChart3 className="h-8 w-8" />}
-              title="インサイト"
-              description="どの言語にどれだけ翻訳されたか、リアルタイムで確認できます。"
+              title="Analytics"
+              description="Track translations by language in real time."
             />
             <FeatureCard
               icon={<Settings className="h-8 w-8" />}
-              title="カスタマイズ"
-              description="ウィジェットの位置、テーマ、サイズを自由に設定できます。"
+              title="Customizable"
+              description="Configure widget position, theme, and size to match your site."
             />
             <FeatureCard
               icon={<Globe className="h-8 w-8" />}
-              title="クライアントサイド翻訳"
-              description="翻訳は訪問者のブラウザで実行。サーバー費用は一切かかりません。"
+              title="Client-Side Translation"
+              description="Translation runs in the visitor's browser. Zero server costs."
             />
             <FeatureCard
               icon={<BarChart3 className="h-8 w-8" />}
-              title="無料で使用可能"
-              description="基本機能は完全無料。コストをかけずに多言語化を実現します。"
+              title="Free to Use"
+              description="Core features are completely free. Go multilingual at no cost."
             />
           </div>
         </div>
@@ -86,14 +91,14 @@ export default function LandingPage() {
       <section className="py-20 px-4">
         <div className="container mx-auto max-w-3xl">
           <h2 className="text-3xl font-bold text-center mb-8">
-            導入はとても簡単
+            Getting Started is Easy
           </h2>
           <div className="bg-muted rounded-lg p-6 font-mono text-sm">
             <p className="text-muted-foreground mb-2">
-              {"<!-- あなたのサイトにこの1行を追加 -->"}
+              {"<!-- Add this one line to your site -->"}
             </p>
             <p className="text-foreground">
-              &lt;script src=&quot;https://widget.lswitcher.com/your-api-key.js&quot;&gt;&lt;/script&gt;
+              &lt;script src=&quot;https://your-domain.com/api/widget/your-api-key.js&quot; async&gt;&lt;/script&gt;
             </p>
           </div>
         </div>
@@ -102,7 +107,7 @@ export default function LandingPage() {
       {/* Footer */}
       <footer className="border-t py-8 px-4">
         <div className="container mx-auto text-center text-muted-foreground">
-          <p>&copy; 2024 Language Switcher Web / 言語切り替えくん</p>
+          <p>&copy; 2024 Language Switcher</p>
         </div>
       </footer>
     </div>

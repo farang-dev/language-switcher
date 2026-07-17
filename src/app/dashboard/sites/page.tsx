@@ -144,7 +144,7 @@ export default function SitesPage() {
   const copyApiKey = (apiKey: string) => {
     const widgetUrl = `${window.location.origin}/api/widget/${apiKey}.js`;
     navigator.clipboard.writeText(
-      `<script>\n!function(){var e=document.createElement("script");e.src="${widgetUrl}",e.async=!0,document.head.appendChild(e)}();\n</script>`
+      `<script src="${widgetUrl}" async></script>`
     );
     setCopiedKeyId(apiKey);
     setTimeout(() => setCopiedKeyId(null), 2000);
@@ -302,9 +302,7 @@ export default function SitesPage() {
                 <div className="bg-muted rounded-lg p-4 font-mono text-sm">
                   <p className="text-muted-foreground mb-1">{"<!-- Widgetコード -->"}</p>
                   <p className="break-all whitespace-pre-wrap">
-{`<script>
-!function(){var e=document.createElement("script");e.src="${typeof window !== "undefined" ? window.location.origin : ""}/api/widget/${site.api_key}.js",e.async=!0,document.head.appendChild(e)}();
-</script>`}
+{`<script src="${typeof window !== "undefined" ? window.location.origin : ""}/api/widget/${site.api_key}.js" async></script>`}
                   </p>
                 </div>
                 <div className="mt-4">

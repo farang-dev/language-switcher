@@ -15,7 +15,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Language Switcher Web | 言語切り替えくん",
+  title: "Language Switcher",
   description:
     "Add a language switcher to your website with just one line of code. Your visitors can translate your site into their native language instantly.",
 };
@@ -27,7 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="ja"
+      lang="en"
       className={`${notoSansJP.variable} ${inter.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-sans">{children}</body>
