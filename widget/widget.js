@@ -230,9 +230,9 @@
       .lsw-lang-option {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 12px;
         width: 100%;
-        padding: 9px 12px;
+        padding: 10px 14px;
         border: none;
         background: transparent;
         cursor: pointer;

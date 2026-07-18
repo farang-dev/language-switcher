@@ -14,5 +14,14 @@ export default async function LocaleLayout({
     notFound();
   }
 
-  return <>{children}</>;
+  return (
+    <>
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `document.documentElement.lang="${lang}"`,
+        }}
+      />
+      {children}
+    </>
+  );
 }
