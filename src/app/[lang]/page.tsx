@@ -122,7 +122,18 @@ function Hero({ dict, lang }: { dict: any; lang: string }) {
           <p className="mt-6 text-lg md:text-xl text-gray-500 max-w-2xl mx-auto leading-relaxed">
             {dict.hero.description}
           </p>
-          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div className="mt-8 bg-amber-50/70 border border-amber-200 rounded-xl px-5 py-4 text-left max-w-xl mx-auto">
+            <p className="text-sm text-amber-800 leading-relaxed">
+              <span className="font-semibold">{dict.hero.painPoint}</span>
+            </p>
+            <p className="mt-2 text-sm text-amber-700 leading-relaxed">
+              {dict.hero.painPointSolution}
+            </p>
+            <p className="mt-1.5 text-xs text-amber-500">
+              {dict.hero.imagesNote}
+            </p>
+          </div>
+          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               href={`/${lang}/signup`}
               className="inline-flex items-center justify-center text-base font-semibold text-white bg-[#00a67e] hover:bg-[#008f6d] transition-all px-8 py-3.5 rounded-full shadow-lg shadow-[#00a67e]/25 hover:shadow-xl hover:shadow-[#00a67e]/30 hover:-translate-y-0.5"

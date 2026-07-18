@@ -14,6 +14,9 @@
     "title": "Go multilingual",
     "titleAccent": "with one line",
     "description": "Add a language switcher to your website instantly. Your visitors translate your content into their native language — right in the browser.",
+    "painPoint": "Building a multilingual website is tedious and expensive. Translation services, separate domains, engineering overhead — we fix that.",
+    "painPointSolution": "Just add one script tag to your site. A language switcher widget appears. Visitors click and the entire page translates on the spot. Images and logos stay untouched — your design remains intact.",
+    "imagesNote": "* Images and logos are excluded from translation. Your design stays exactly as intended.",
     "ctaStart": "Start for Free",
     "ctaHow": "See How It Works"
   },
