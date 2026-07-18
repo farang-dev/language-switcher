@@ -105,77 +105,61 @@ function Hero({ dict, lang }: { dict: any; lang: string }) {
   return (
     <section className="relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-[#e6f7f1] via-white to-[#f0faf6]" />
-      <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-[#00a67e]/5 rounded-full blur-3xl" />
-      <div className="relative max-w-7xl mx-auto px-6 py-24 md:py-32">
-        <div className="max-w-3xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 bg-white/70 backdrop-blur-sm border border-gray-200 rounded-full px-4 py-1.5 mb-8">
-            <span className="w-2 h-2 rounded-full bg-[#00a67e] animate-pulse" />
-            <span className="text-sm font-medium text-gray-600">
-              {dict.hero.badge}
-            </span>
-          </div>
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-gray-900 leading-[1.1]">
-            {dict.hero.title}
-            <br />
-            <span className="text-[#00a67e]">{dict.hero.titleAccent}</span>
-          </h1>
-          <p className="mt-6 text-lg md:text-xl text-gray-500 max-w-2xl mx-auto leading-relaxed">
-            {dict.hero.description}
-          </p>
-          <div className="mt-8 bg-amber-50/70 border border-amber-200 rounded-xl px-5 py-4 text-left max-w-xl mx-auto">
-            <p className="text-sm text-amber-800 leading-relaxed">
-              <span className="font-semibold">{dict.hero.painPoint}</span>
-            </p>
-            <p className="mt-2 text-sm text-amber-700 leading-relaxed">
-              {dict.hero.painPointSolution}
-            </p>
-            <p className="mt-1.5 text-xs text-amber-500">
-              {dict.hero.imagesNote}
-            </p>
-          </div>
-          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
-              href={`/${lang}/signup`}
-              className="inline-flex items-center justify-center text-base font-semibold text-white bg-[#00a67e] hover:bg-[#008f6d] transition-all px-8 py-3.5 rounded-full shadow-lg shadow-[#00a67e]/25 hover:shadow-xl hover:shadow-[#00a67e]/30 hover:-translate-y-0.5"
-            >
-              {dict.hero.ctaStart}
-            </Link>
-            <a
-              href="#how-it-works"
-              className="inline-flex items-center justify-center text-base font-medium text-gray-600 hover:text-gray-900 bg-white border border-gray-200 hover:border-gray-300 transition-all px-8 py-3.5 rounded-full"
-            >
-              {dict.hero.ctaHow}
-            </a>
-          </div>
-        </div>
-
-        <div className="mt-16 max-w-4xl mx-auto">
-          <div className="bg-white rounded-2xl shadow-2xl shadow-gray-200/60 border border-gray-200 overflow-hidden">
-            <div className="flex items-center gap-2 px-4 py-3 bg-gray-50 border-b border-gray-100">
-              <div className="flex gap-1.5">
-                <div className="w-3 h-3 rounded-full bg-red-400" />
-                <div className="w-3 h-3 rounded-full bg-amber-400" />
-                <div className="w-3 h-3 rounded-full bg-green-400" />
-              </div>
-              <div className="flex-1 mx-4">
-                <div className="bg-white border border-gray-200 rounded-lg px-3 py-1 text-xs text-gray-400 max-w-md mx-auto">
-                  {dict.browserMockup.url}
-                </div>
-              </div>
+      <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-[#00a67e]/5 rounded-full blur-3xl" />
+      <div className="relative max-w-6xl mx-auto px-6 py-20 md:py-28">
+        <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="text-center md:text-left">
+            <div className="inline-flex items-center gap-2 bg-white border border-gray-200 rounded-full px-4 py-1.5 mb-6 shadow-sm">
+              <span className="w-2 h-2 rounded-full bg-[#00a67e]" />
+              <span className="text-sm font-medium text-gray-600">
+                {dict.hero.badge}
+              </span>
             </div>
-            <div className="p-8 md:p-12">
-              <div className="flex items-start justify-between">
-                <div className="space-y-4 max-w-lg">
-                  <div className="h-8 bg-gray-100 rounded-lg w-3/4" />
-                  <div className="h-4 bg-gray-50 rounded w-full" />
-                  <div className="h-4 bg-gray-50 rounded w-5/6" />
-                  <div className="h-4 bg-gray-50 rounded w-2/3" />
-                  <div className="h-10 bg-gray-100 rounded-full w-32 mt-4" />
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 leading-[1.15]">
+              <span className="text-[#00a67e]">{dict.hero.titleAccent}</span>
+              <br />
+              {dict.hero.title}
+            </h1>
+            <p className="mt-5 text-base md:text-lg text-gray-500 leading-relaxed max-w-lg">
+              {dict.hero.description}
+            </p>
+            <p className="mt-3 text-sm text-gray-400 leading-relaxed max-w-lg">
+              {dict.hero.painPoint}
+            </p>
+            <div className="mt-6 flex flex-col sm:flex-row items-center md:items-start gap-3">
+              <Link
+                href={`/${lang}/signup`}
+                className="inline-flex items-center justify-center text-sm font-semibold text-white bg-[#00a67e] hover:bg-[#008f6d] transition-all px-7 py-3 rounded-full shadow-lg shadow-[#00a67e]/25 hover:shadow-xl hover:shadow-[#00a67e]/30 hover:-translate-y-0.5"
+              >
+                {dict.hero.ctaStart}
+              </Link>
+              <a
+                href="#how-it-works"
+                className="inline-flex items-center justify-center text-sm font-medium text-gray-600 hover:text-gray-900 bg-white border border-gray-200 hover:border-gray-300 transition-all px-7 py-3 rounded-full"
+              >
+                {dict.hero.ctaHow}
+              </a>
+            </div>
+          </div>
+          <div className="hidden md:flex justify-center">
+            <div className="bg-white rounded-2xl shadow-2xl shadow-gray-200/60 border border-gray-200 overflow-hidden w-full max-w-sm">
+              <div className="flex items-center gap-1.5 px-4 py-3 bg-gray-50 border-b border-gray-100">
+                <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
+                <div className="w-2.5 h-2.5 rounded-full bg-amber-400" />
+                <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
+              </div>
+              <div className="p-6">
+                <div className="space-y-3">
+                  <div className="h-5 bg-gray-100 rounded-md w-3/4" />
+                  <div className="h-3 bg-gray-50 rounded w-full" />
+                  <div className="h-3 bg-gray-50 rounded w-5/6" />
+                  <div className="h-3 bg-gray-50 rounded w-2/3" />
                 </div>
-                <div className="hidden md:flex flex-col items-center gap-1 bg-white rounded-full shadow-lg border border-gray-100 px-2 py-2">
-                  <div className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-sm">🇺🇸</div>
-                  <div className="text-xs font-bold text-[#00a67e]">→</div>
-                  <div className="w-9 h-9 rounded-full bg-[#00a67e] flex items-center justify-center text-sm">🇯🇵</div>
+                <div className="mt-5 flex items-center justify-center gap-3 bg-gray-50 rounded-full py-2.5 px-4 border border-gray-100">
+                  <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-sm">🇺🇸</div>
+                  <span className="text-xs font-bold text-[#00a67e]">→</span>
+                  <div className="w-8 h-8 rounded-full bg-[#00a67e] flex items-center justify-center shadow-sm">🇯🇵</div>
+                  <span className="text-[10px] text-gray-400 ml-1">{dict.hero.imagesNote}</span>
                 </div>
               </div>
             </div>
