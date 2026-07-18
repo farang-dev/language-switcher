@@ -24,6 +24,12 @@ function minifyJS(code: string): string {
     } else if (ch === " " || ch === "\t" || ch === "\n" || ch === "\r") {
       i++;
       while (i < code.length && (code[i] === " " || code[i] === "\t" || code[i] === "\n" || code[i] === "\r")) i++;
+      if (out.length > 0 && i < code.length) {
+        const prev = out[out.length - 1];
+        const next = code[i];
+        const isWord = (c: string) => /[a-zA-Z0-9_$]/.test(c);
+        if (isWord(prev) && isWord(next)) out += " ";
+      }
     } else {
       out += ch; i++;
     }
@@ -79,7 +85,7 @@ export async function GET(
   return new NextResponse(widgetJS, {
     headers: {
       "Content-Type": "application/javascript",
-      "Cache-Control": "public, max-age=3600",
+      "Cache-Control": "public, max-age=300",
       "Access-Control-Allow-Origin": "*",
     },
   });
