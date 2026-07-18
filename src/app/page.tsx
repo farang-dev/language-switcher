@@ -206,7 +206,7 @@ export default function LandingPage() {
                 {"<!-- Add this one line to your site -->"}
               </p>
               <code className="block bg-gray-900 text-gray-100 rounded-xl px-6 py-4 text-sm font-mono break-all leading-relaxed">
-                &lt;script src=&quot;https://your-domain.com/api/widget/YOUR-KEY.js&quot;
+                &lt;script src=&quot;https://language-switcher-two.vercel.app/api/widget/e641938bd218dac8178bc938e7bcfddf.js&quot;
                 async&gt;&lt;/script&gt;
               </code>
             </div>
