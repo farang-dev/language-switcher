@@ -2,17 +2,6 @@
 
 import { useState, useEffect, useMemo } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import { Save, User } from "lucide-react";
 import { LANGUAGES } from "@/lib/languages";
 import type { User as SupabaseUser } from "@supabase/supabase-js";
@@ -28,22 +17,22 @@ interface UserProfile {
 }
 
 const WIDGET_POSITIONS = [
-  { value: "bottom-right", label: "右下" },
-  { value: "bottom-left", label: "左下" },
-  { value: "top-right", label: "右上" },
-  { value: "top-left", label: "左上" },
+  { value: "bottom-right", label: "Bottom Right" },
+  { value: "bottom-left", label: "Bottom Left" },
+  { value: "top-right", label: "Top Right" },
+  { value: "top-left", label: "Top Left" },
 ];
 
 const WIDGET_THEMES = [
-  { value: "light", label: "ライト" },
-  { value: "dark", label: "ダーク" },
-  { value: "auto", label: "自動" },
+  { value: "light", label: "Light" },
+  { value: "dark", label: "Dark" },
+  { value: "auto", label: "Auto" },
 ];
 
 const WIDGET_SIZES = [
-  { value: "small", label: "小" },
-  { value: "medium", label: "中" },
-  { value: "large", label: "大" },
+  { value: "small", label: "Small" },
+  { value: "medium", label: "Medium" },
+  { value: "large", label: "Large" },
 ];
 
 export default function SettingsPage() {
@@ -101,13 +90,15 @@ export default function SettingsPage() {
   };
 
   if (loading) {
-    return <div className="text-center py-8">読み込み中...</div>;
+    return (
+      <div className="text-center py-12 text-sm text-gray-400">Loading...</div>
+    );
   }
 
   if (!profile) {
     return (
-      <div className="text-center py-8 text-muted-foreground">
-        プロファイルが見つかりません
+      <div className="text-center py-12 text-sm text-gray-400">
+        Profile not found
       </div>
     );
   }
@@ -115,45 +106,56 @@ export default function SettingsPage() {
   return (
     <div className="space-y-8 max-w-2xl">
       <div>
-        <h1 className="text-3xl font-bold">設定</h1>
-        <p className="text-muted-foreground mt-1">
-          アカウントとWidgetの設定
+        <h1 className="text-2xl font-bold text-gray-900">Settings</h1>
+        <p className="text-sm text-gray-500 mt-1">
+          Manage your account and widget preferences.
         </p>
       </div>
 
-      {/* プロファイル設定 */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <User className="h-5 w-5" />
-            プロファイル
-          </CardTitle>
-          <CardDescription>アカウント情報の設定</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="email">メールアドレス</Label>
-            <Input id="email" value={user?.email || ""} disabled />
+      {/* Profile */}
+      <div className="bg-white rounded-2xl border border-gray-100 p-6">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-9 h-9 rounded-xl bg-[#e6f7f1] flex items-center justify-center">
+            <User className="h-4 w-4 text-[#00a67e]" />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="displayName">表示名</Label>
-            <Input
-              id="displayName"
+          <div>
+            <h2 className="text-base font-bold text-gray-900">Profile</h2>
+            <p className="text-xs text-gray-400">Your account information</p>
+          </div>
+        </div>
+        <div className="space-y-4">
+          <div className="space-y-1.5">
+            <label className="block text-sm font-medium text-gray-700">
+              Email
+            </label>
+            <input
+              value={user?.email || ""}
+              disabled
+              className="w-full h-10 px-4 rounded-xl border border-gray-100 bg-gray-50 text-sm text-gray-400 cursor-not-allowed"
+            />
+          </div>
+          <div className="space-y-1.5">
+            <label className="block text-sm font-medium text-gray-700">
+              Display Name
+            </label>
+            <input
               value={profile.display_name || ""}
               onChange={(e) =>
                 setProfile({ ...profile, display_name: e.target.value })
               }
+              className="w-full h-10 px-4 rounded-xl border border-gray-200 bg-white text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#00a67e]/20 focus:border-[#00a67e]"
             />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="nativeLanguage">母語</Label>
+          <div className="space-y-1.5">
+            <label className="block text-sm font-medium text-gray-700">
+              Native Language
+            </label>
             <select
-              id="nativeLanguage"
               value={profile.native_language}
               onChange={(e) =>
                 setProfile({ ...profile, native_language: e.target.value })
               }
-              className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+              className="w-full h-10 px-3 rounded-xl border border-gray-200 bg-white text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#00a67e]/20 focus:border-[#00a67e]"
             >
               {LANGUAGES.map((lang) => (
                 <option key={lang.code} value={lang.code}>
@@ -162,27 +164,28 @@ export default function SettingsPage() {
               ))}
             </select>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
-      <Separator />
-
-      {/* Widget設定 */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Widget設定</CardTitle>
-          <CardDescription>ウィジェットの見た目の設定</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="widgetPosition">表示位置</Label>
+      {/* Widget Settings */}
+      <div className="bg-white rounded-2xl border border-gray-100 p-6">
+        <div className="mb-6">
+          <h2 className="text-base font-bold text-gray-900">Widget Settings</h2>
+          <p className="text-xs text-gray-400 mt-0.5">
+            Customize the appearance of your widget.
+          </p>
+        </div>
+        <div className="space-y-4">
+          <div className="space-y-1.5">
+            <label className="block text-sm font-medium text-gray-700">
+              Position
+            </label>
             <select
-              id="widgetPosition"
               value={profile.widget_position}
               onChange={(e) =>
                 setProfile({ ...profile, widget_position: e.target.value })
               }
-              className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+              className="w-full h-10 px-3 rounded-xl border border-gray-200 bg-white text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#00a67e]/20 focus:border-[#00a67e]"
             >
               {WIDGET_POSITIONS.map((pos) => (
                 <option key={pos.value} value={pos.value}>
@@ -191,15 +194,16 @@ export default function SettingsPage() {
               ))}
             </select>
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="widgetTheme">テーマ</Label>
+          <div className="space-y-1.5">
+            <label className="block text-sm font-medium text-gray-700">
+              Theme
+            </label>
             <select
-              id="widgetTheme"
               value={profile.widget_theme}
               onChange={(e) =>
                 setProfile({ ...profile, widget_theme: e.target.value })
               }
-              className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+              className="w-full h-10 px-3 rounded-xl border border-gray-200 bg-white text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#00a67e]/20 focus:border-[#00a67e]"
             >
               {WIDGET_THEMES.map((theme) => (
                 <option key={theme.value} value={theme.value}>
@@ -208,15 +212,16 @@ export default function SettingsPage() {
               ))}
             </select>
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="widgetSize">サイズ</Label>
+          <div className="space-y-1.5">
+            <label className="block text-sm font-medium text-gray-700">
+              Size
+            </label>
             <select
-              id="widgetSize"
               value={profile.widget_size}
               onChange={(e) =>
                 setProfile({ ...profile, widget_size: e.target.value })
               }
-              className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+              className="w-full h-10 px-3 rounded-xl border border-gray-200 bg-white text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#00a67e]/20 focus:border-[#00a67e]"
             >
               {WIDGET_SIZES.map((size) => (
                 <option key={size.value} value={size.value}>
@@ -225,17 +230,23 @@ export default function SettingsPage() {
               ))}
             </select>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
-      {/* 保存ボタン */}
+      {/* Save Button */}
       <div className="flex items-center gap-4">
-        <Button onClick={handleSave} disabled={saving}>
-          <Save className="h-4 w-4 mr-2" />
-          {saving ? "保存中..." : "保存"}
-        </Button>
+        <button
+          onClick={handleSave}
+          disabled={saving}
+          className="inline-flex items-center gap-2 text-sm font-semibold text-white bg-[#00a67e] hover:bg-[#008f6d] transition-all px-6 py-2.5 rounded-full disabled:opacity-50"
+        >
+          <Save className="h-4 w-4" />
+          {saving ? "Saving..." : "Save Changes"}
+        </button>
         {saved && (
-          <span className="text-sm text-green-600">保存しました!</span>
+          <span className="text-sm font-medium text-[#00a67e]">
+            Changes saved!
+          </span>
         )}
       </div>
     </div>

@@ -26,9 +26,11 @@ export function UserNav({ user }: { user: User }) {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="relative h-8 w-8 rounded-full">
+      <DropdownMenuTrigger className="relative h-8 w-8 rounded-full outline-none">
         <Avatar className="h-8 w-8">
-          <AvatarFallback>{initials}</AvatarFallback>
+          <AvatarFallback className="bg-[#e6f7f1] text-[#00a67e] text-xs font-semibold">
+            {initials}
+          </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end">
@@ -36,17 +38,17 @@ export function UserNav({ user }: { user: User }) {
           <p className="text-sm font-medium leading-none">
             {user.user_metadata?.display_name || user.email}
           </p>
-          <p className="text-xs leading-none text-muted-foreground">
-            {user.email}
-          </p>
+          <p className="text-xs leading-none text-gray-400">{user.email}</p>
         </div>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
-          <a href="/dashboard/settings">設定</a>
+          <a href="/dashboard/settings" className="w-full">
+            Settings
+          </a>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleSignOut} variant="destructive">
-          ログアウト
+          Log Out
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

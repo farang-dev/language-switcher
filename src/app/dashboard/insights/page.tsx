@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useMemo } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -11,7 +10,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
 import { BarChart3, Globe, Users } from "lucide-react";
 import { LANGUAGES_MAP } from "@/lib/languages";
 import {
@@ -23,7 +21,6 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-
 
 interface Site {
   id: string;
@@ -88,11 +85,9 @@ export default function InsightsPage() {
     fetchLogs();
   }, [selectedSiteId, supabase]);
 
-  // 統計を計算
   const totalTranslations = logs.length;
   const uniqueVisitors = new Set(logs.map((l) => l.visitor_id)).size;
 
-  // 言語別の集計
   const languageStats = logs.reduce(
     (acc, log) => {
       acc[log.target_language] = (acc[log.target_language] || 0) + 1;
@@ -108,10 +103,9 @@ export default function InsightsPage() {
     }))
     .sort((a, b) => b.value - a.value);
 
-  // 日別の集計
   const dailyStats = logs.reduce(
     (acc, log) => {
-      const date = new Date(log.translated_at).toLocaleDateString("ja-JP");
+      const date = new Date(log.translated_at).toLocaleDateString("en-US");
       acc[date] = (acc[date] || 0) + 1;
       return acc;
     },
@@ -119,45 +113,44 @@ export default function InsightsPage() {
   );
 
   const dailyChartData = Object.entries(dailyStats)
-    .map(([date, count]) => ({
-      date,
-      count,
-    }))
+    .map(([date, count]) => ({ date, count }))
     .reverse();
 
   if (loading) {
-    return <div className="text-center py-8">読み込み中...</div>;
+    return (
+      <div className="text-center py-12 text-sm text-gray-400">Loading...</div>
+    );
   }
 
   if (sites.length === 0) {
     return (
       <div className="space-y-4">
-        <h1 className="text-3xl font-bold">インサイト</h1>
-        <Card>
-          <CardContent className="py-12 text-center">
-            <p className="text-muted-foreground">
-              まだサイトが登録されていません。先にサイトを登録してください。
-            </p>
-          </CardContent>
-        </Card>
+        <h1 className="text-2xl font-bold text-gray-900">Insights</h1>
+        <div className="bg-white rounded-2xl border border-gray-100 py-16 text-center">
+          <p className="text-gray-400">
+            No sites registered yet. Add a site first to see insights.
+          </p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold">インサイト</h1>
-        <p className="text-muted-foreground mt-1">翻訳使用量の分析</p>
+        <h1 className="text-2xl font-bold text-gray-900">Insights</h1>
+        <p className="text-sm text-gray-500 mt-1">
+          Translation usage analytics for your sites.
+        </p>
       </div>
 
-      {/* サイト選択 */}
-      <div className="flex items-center gap-4">
-        <label className="text-sm font-medium">サイト:</label>
+      {/* Site selector */}
+      <div className="flex items-center gap-3">
+        <label className="text-sm font-medium text-gray-700">Site:</label>
         <select
           value={selectedSiteId}
           onChange={(e) => setSelectedSiteId(e.target.value)}
-          className="rounded-md border border-input bg-background px-3 py-2 text-sm"
+          className="h-9 px-3 rounded-xl border border-gray-200 bg-white text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#00a67e]/20 focus:border-[#00a67e]"
         >
           {sites.map((site) => (
             <option key={site.id} value={site.id}>
@@ -167,142 +160,140 @@ export default function InsightsPage() {
         </select>
       </div>
 
-      {/* 統計カード */}
+      {/* Stats */}
       <div className="grid gap-4 md:grid-cols-3">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">総翻訳数</CardTitle>
-            <BarChart3 className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {totalTranslations.toLocaleString()}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">ユニークビジター</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {uniqueVisitors.toLocaleString()}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">対応言語数</CardTitle>
-            <Globe className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {Object.keys(languageStats).length}
-            </div>
-          </CardContent>
-        </Card>
+        <StatCard
+          icon={<BarChart3 className="h-4 w-4 text-[#00a67e]" />}
+          label="Total Translations"
+          value={totalTranslations.toLocaleString()}
+        />
+        <StatCard
+          icon={<Users className="h-4 w-4 text-[#00a67e]" />}
+          label="Unique Visitors"
+          value={uniqueVisitors.toLocaleString()}
+        />
+        <StatCard
+          icon={<Globe className="h-4 w-4 text-[#00a67e]" />}
+          label="Languages Used"
+          value={String(Object.keys(languageStats).length)}
+        />
       </div>
 
-      {/* チャート */}
+      {/* Charts */}
       <div className="grid gap-4 md:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle>人気言語ランキング</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {languageChartData.length > 0 ? (
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={languageChartData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <Tooltip />
-                  <Bar dataKey="value" fill="#8884d8" />
-                </BarChart>
-              </ResponsiveContainer>
-            ) : (
-              <div className="h-[300px] flex items-center justify-center text-muted-foreground">
-                データがありません
-              </div>
-            )}
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>日別翻訳数</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {dailyChartData.length > 0 ? (
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={dailyChartData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="date" />
-                  <YAxis />
-                  <Tooltip />
-                  <Bar dataKey="count" fill="#82ca9d" />
-                </BarChart>
-              </ResponsiveContainer>
-            ) : (
-              <div className="h-[300px] flex items-center justify-center text-muted-foreground">
-                データがありません
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* 最近の翻訳ログ */}
-      <Card>
-        <CardHeader>
-          <CardTitle>最近の翻訳ログ</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {logs.length > 0 ? (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>日時</TableHead>
-                  <TableHead>元言語</TableHead>
-                  <TableHead>翻訳先</TableHead>
-                  <TableHead>ページ</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {logs.slice(0, 10).map((log) => (
-                  <TableRow key={log.id}>
-                    <TableCell>
-                      {new Date(log.translated_at).toLocaleString("ja-JP")}
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant="outline">
-                        {LANGUAGES_MAP[log.source_language]?.flag}{" "}
-                        {LANGUAGES_MAP[log.source_language]?.name || log.source_language}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <Badge>
-                        {LANGUAGES_MAP[log.target_language]?.flag}{" "}
-                        {LANGUAGES_MAP[log.target_language]?.name || log.target_language}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="max-w-[200px] truncate text-muted-foreground">
-                      {log.page_url || "-"}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+        <div className="bg-white rounded-2xl border border-gray-100 p-5">
+          <h3 className="text-sm font-bold text-gray-900 mb-4">
+            Top Languages
+          </h3>
+          {languageChartData.length > 0 ? (
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={languageChartData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                <XAxis dataKey="name" tick={{ fontSize: 12 }} />
+                <YAxis tick={{ fontSize: 12 }} />
+                <Tooltip />
+                <Bar dataKey="value" fill="#00a67e" radius={[6, 6, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
           ) : (
-            <div className="py-8 text-center text-muted-foreground">
-              まだ翻訳ログがありません
+            <div className="h-[300px] flex items-center justify-center text-sm text-gray-400">
+              No data yet
             </div>
           )}
-        </CardContent>
-      </Card>
+        </div>
+
+        <div className="bg-white rounded-2xl border border-gray-100 p-5">
+          <h3 className="text-sm font-bold text-gray-900 mb-4">
+            Daily Translations
+          </h3>
+          {dailyChartData.length > 0 ? (
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={dailyChartData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                <XAxis dataKey="date" tick={{ fontSize: 12 }} />
+                <YAxis tick={{ fontSize: 12 }} />
+                <Tooltip />
+                <Bar dataKey="count" fill="#06b6d4" radius={[6, 6, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          ) : (
+            <div className="h-[300px] flex items-center justify-center text-sm text-gray-400">
+              No data yet
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Recent logs */}
+      <div className="bg-white rounded-2xl border border-gray-100 p-5">
+        <h3 className="text-sm font-bold text-gray-900 mb-4">
+          Recent Translations
+        </h3>
+        {logs.length > 0 ? (
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Date</TableHead>
+                <TableHead>Source</TableHead>
+                <TableHead>Target</TableHead>
+                <TableHead>Page</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {logs.slice(0, 10).map((log) => (
+                <TableRow key={log.id}>
+                  <TableCell className="text-sm">
+                    {new Date(log.translated_at).toLocaleString("en-US")}
+                  </TableCell>
+                  <TableCell>
+                    <span className="inline-flex items-center text-xs font-medium text-gray-600 bg-gray-50 border border-gray-100 rounded-full px-2.5 py-1">
+                      {LANGUAGES_MAP[log.source_language]?.flag}{" "}
+                      {LANGUAGES_MAP[log.source_language]?.name ||
+                        log.source_language}
+                    </span>
+                  </TableCell>
+                  <TableCell>
+                    <span className="inline-flex items-center text-xs font-medium text-[#00a67e] bg-[#e6f7f1] rounded-full px-2.5 py-1">
+                      {LANGUAGES_MAP[log.target_language]?.flag}{" "}
+                      {LANGUAGES_MAP[log.target_language]?.name ||
+                        log.target_language}
+                    </span>
+                  </TableCell>
+                  <TableCell className="max-w-[200px] truncate text-sm text-gray-400">
+                    {log.page_url || "-"}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        ) : (
+          <div className="py-8 text-center text-sm text-gray-400">
+            No translation logs yet
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function StatCard({
+  icon,
+  label,
+  value,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+}) {
+  return (
+    <div className="bg-white rounded-2xl border border-gray-100 p-5">
+      <div className="flex items-center justify-between mb-3">
+        <span className="text-xs font-medium text-gray-400 uppercase tracking-wide">
+          {label}
+        </span>
+        {icon}
+      </div>
+      <div className="text-2xl font-bold text-gray-900">{value}</div>
     </div>
   );
 }

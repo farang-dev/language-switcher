@@ -13,7 +13,7 @@ export default function TestPage() {
   return (
     <div style={{ padding: 40 }}>
       <h1>Widget Test</h1>
-      <p>右下にウィジェットが表示されるはず</p>
+      <p>The widget should appear in the bottom-right corner.</p>
     </div>
   );
 }
