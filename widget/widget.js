@@ -102,21 +102,20 @@
       .join("");
 
     return `
-      <div id="lsw-widget" class="lsw-widget lsw-theme-${theme} lsw-size-${size}" style="${positionStyles[position]}">
-        <button class="lsw-pill" title="${targetLangInfo.name}">
-          <span class="lsw-current-flag">${targetLangInfo.flag}</span>
-          <svg class="lsw-chevron" viewBox="0 0 20 20" fill="currentColor" width="14" height="14">
-            <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
-          </svg>
-        </button>
-        <div class="lsw-dropdown" style="display: none;">
-          <div class="lsw-dropdown-inner">
-            <div class="lsw-search-wrap" style="display: none;">
-              <input class="lsw-search" type="text" placeholder="Search language..." />
-            </div>
-            <div class="lsw-lang-list">
-              ${languageOptions}
-            </div>
+      <div id="lsw-widget" class="lsw-theme-${theme} lsw-size-${size}" style="${positionStyles[position]}">
+        <div class="lsw-container" role="button" tabindex="0" aria-label="Translate">
+          <button class="lsw-source-lang" title="Source: ${sourceLangInfo.name}">
+            <span class="lsw-flag">${sourceLangInfo.flag}</span>
+          </button>
+          <span class="lsw-arrow">→</span>
+          <button class="lsw-target-lang" title="Translate to: ${targetLangInfo.name}">
+            <span class="lsw-flag">${targetLangInfo.flag}</span>
+          </button>
+        </div>
+        <div class="lsw-dropdown">
+          <div class="lsw-dropdown-header">Select target language</div>
+          <div class="lsw-lang-list">
+            ${languageOptions}
           </div>
         </div>
       </div>
@@ -134,69 +133,87 @@
         z-index: 999999;
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
         font-size: 14px;
-        line-height: 1.5;
         -webkit-font-smoothing: antialiased;
       }
       #lsw-widget * { box-sizing: border-box; margin: 0; padding: 0; }
 
-      .lsw-pill {
+      .lsw-container {
         display: flex;
         align-items: center;
         gap: 6px;
-        padding: 10px 16px 10px 14px;
-        border: none;
-        border-radius: 100px;
         background: ${brandColor};
-        color: white;
+        border-radius: 100px;
+        padding: 7px 14px 7px 10px;
+        box-shadow: 0 4px 16px rgba(0,166,126,0.3);
         cursor: pointer;
-        box-shadow: 0 4px 16px rgba(0,0,0,0.12), 0 2px 4px rgba(0,0,0,0.06);
-        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: all 0.25s ease;
         position: relative;
       }
-      .lsw-pill:hover {
-        box-shadow: 0 8px 28px rgba(0,0,0,0.18);
-        transform: translateY(-1px) scale(1.03);
+      .lsw-container:hover {
+        box-shadow: 0 8px 28px rgba(0,166,126,0.45);
+        transform: translateY(-1px);
       }
-      .lsw-pill:active {
+      .lsw-container:active {
         transform: scale(0.97);
       }
 
-      .lsw-current-flag { font-size: 20px; line-height: 1; }
-      .lsw-chevron {
-        transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-        opacity: 0.8;
+      .lsw-source-lang, .lsw-target-lang {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        border: none;
+        background: rgba(255,255,255,0.2);
+        cursor: pointer;
+        transition: all 0.2s;
+        position: relative;
+        flex-shrink: 0;
       }
-      .lsw-widget.lsw-open .lsw-chevron {
-        transform: rotate(180deg);
+      .lsw-source-lang:hover, .lsw-target-lang:hover {
+        background: rgba(255,255,255,0.3);
       }
-      .lsw-pill .lsw-current-flag + .lsw-chevron {
-        margin-left: 2px;
-      }
+      .lsw-target-lang { background: rgba(255,255,255,0.25); }
+      .lsw-target-lang:hover { background: rgba(255,255,255,0.35); }
+
+      .lsw-flag { font-size: 17px; line-height: 1; }
+      .lsw-arrow { color: rgba(255,255,255,0.7); font-size: 14px; flex-shrink: 0; }
 
       .lsw-dropdown {
         position: absolute;
-        bottom: calc(100% + 10px);
+        bottom: calc(100% + 12px);
         left: 50%;
-        transform: translateX(-50%) translateY(4px);
-        opacity: 0;
-        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        pointer-events: none;
+        transform: translateX(-50%) translateY(6px);
         min-width: 220px;
+        max-height: 360px;
+        background: rgba(255,255,255,0.88);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255,255,255,0.25);
+        border-radius: 16px;
+        box-shadow: 0 16px 48px rgba(0,0,0,0.18);
+        overflow: hidden;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.25s ease;
+        pointer-events: none;
       }
-      .lsw-widget.lsw-open .lsw-dropdown {
+      #lsw-widget.lsw-open .lsw-dropdown {
         opacity: 1;
+        visibility: visible;
         transform: translateX(-50%) translateY(0);
         pointer-events: auto;
       }
 
-      .lsw-dropdown-inner {
-        background: white;
-        border-radius: 16px;
-        box-shadow: 0 12px 40px rgba(0,0,0,0.15), 0 2px 8px rgba(0,0,0,0.06);
-        overflow: hidden;
-        max-height: 320px;
-        display: flex;
-        flex-direction: column;
+      .lsw-dropdown-header {
+        padding: 14px 16px 10px;
+        font-weight: 700;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        color: #6b7280;
+        border-bottom: 1px solid rgba(0,0,0,0.06);
       }
 
       .lsw-lang-list {
@@ -208,7 +225,7 @@
       }
       .lsw-lang-list::-webkit-scrollbar { width: 4px; }
       .lsw-lang-list::-webkit-scrollbar-track { background: transparent; }
-      .lsw-lang-list::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 99px; }
+      .lsw-lang-list::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius: 10px; }
 
       .lsw-lang-option {
         display: flex;
@@ -222,25 +239,24 @@
         border-radius: 10px;
         transition: all 0.15s ease;
         text-align: left;
+        color: #1f2937;
       }
       .lsw-lang-option:hover {
-        background: #f5f5f5;
+        background: rgba(0,166,126,0.1);
       }
       .lsw-lang-option:active {
-        background: #eee;
-        transform: scale(0.98);
+        background: rgba(0,166,126,0.18);
       }
 
       .lsw-lang-option .lsw-flag { font-size: 22px; line-height: 1; }
       .lsw-lang-option .lsw-lang-name {
         font-size: 14px;
-        color: #1f2937;
         font-weight: 500;
+        color: #1f2937;
       }
 
       .lsw-lang-selected {
         background: ${brandLight} !important;
-        position: relative;
       }
       .lsw-lang-selected .lsw-lang-name {
         color: ${brandColor};
@@ -248,65 +264,68 @@
       }
 
       /* Size variants */
-      .lsw-size-small .lsw-pill { padding: 7px 12px 7px 10px; }
-      .lsw-size-small .lsw-current-flag { font-size: 16px; }
-      .lsw-size-small .lsw-chevron { width: 12px; height: 12px; }
-      .lsw-size-small .lsw-dropdown { min-width: 180px; }
+      .lsw-size-small .lsw-container { padding: 5px 10px 5px 8px; gap: 4px; }
+      .lsw-size-small .lsw-source-lang, .lsw-size-small .lsw-target-lang { width: 24px; height: 24px; }
+      .lsw-size-small .lsw-flag { font-size: 14px; }
+      .lsw-size-small .lsw-arrow { font-size: 11px; }
+      .lsw-size-small .lsw-dropdown { min-width: 190px; max-height: 300px; }
 
-      .lsw-size-large .lsw-pill { padding: 13px 20px 13px 18px; }
-      .lsw-size-large .lsw-current-flag { font-size: 24px; }
-      .lsw-size-large .lsw-chevron { width: 16px; height: 16px; }
+      .lsw-size-large .lsw-container { padding: 10px 18px 10px 14px; gap: 8px; }
+      .lsw-size-large .lsw-source-lang, .lsw-size-large .lsw-target-lang { width: 36px; height: 36px; }
+      .lsw-size-large .lsw-flag { font-size: 22px; }
+      .lsw-size-large .lsw-arrow { font-size: 17px; }
+      .lsw-size-large .lsw-dropdown { min-width: 260px; max-height: 420px; }
 
       /* Dark theme */
-      .lsw-theme-dark .lsw-pill {
+      .lsw-theme-dark .lsw-container {
         background: #1f2937;
         box-shadow: 0 4px 16px rgba(0,0,0,0.3);
       }
-      .lsw-theme-dark .lsw-dropdown-inner {
-        background: #1f2937;
-        box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+      .lsw-theme-dark .lsw-container:hover {
+        box-shadow: 0 8px 28px rgba(0,0,0,0.4);
       }
-      .lsw-theme-dark .lsw-lang-option:hover { background: #374151; }
-      .lsw-theme-dark .lsw-lang-option:active { background: #4b5563; }
+      .lsw-theme-dark .lsw-source-lang, .lsw-theme-dark .lsw-target-lang {
+        background: rgba(255,255,255,0.1);
+      }
+      .lsw-theme-dark .lsw-source-lang:hover, .lsw-theme-dark .lsw-target-lang:hover {
+        background: rgba(255,255,255,0.16);
+      }
+      .lsw-theme-dark .lsw-dropdown {
+        background: rgba(31,41,55,0.92);
+        border-color: rgba(255,255,255,0.1);
+      }
+      .lsw-theme-dark .lsw-dropdown-header {
+        color: #9ca3af;
+        border-color: rgba(255,255,255,0.08);
+      }
+      .lsw-theme-dark .lsw-lang-option { color: #f9fafb; }
       .lsw-theme-dark .lsw-lang-option .lsw-lang-name { color: #f9fafb; }
-      .lsw-theme-dark .lsw-lang-selected { background: #374151 !important; }
+      .lsw-theme-dark .lsw-lang-option:hover { background: rgba(255,255,255,0.08); }
 
       /* Translating state */
-      #lsw-widget.lsw-translating .lsw-pill {
+      #lsw-widget.lsw-translating .lsw-container {
         pointer-events: none;
         opacity: 0.8;
       }
-      #lsw-widget.lsw-translating .lsw-current-flag {
-        animation: lsw-pulse 1s ease-in-out infinite;
+      #lsw-widget.lsw-translating .lsw-target-lang::after {
+        content: "";
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        border: 2px solid rgba(255,255,255,0.3);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: lsw-spin 0.7s linear infinite;
       }
-
-      @keyframes lsw-pulse {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.4; }
-      }
+      @keyframes lsw-spin { to { transform: rotate(360deg); } }
 
       /* Entrance animation */
       #lsw-widget {
         animation: lsw-slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       }
       @keyframes lsw-slide-up {
-        from {
-          opacity: 0;
-          transform: translateY(12px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      .lsw-widget.lsw-open .lsw-dropdown {
-        animation: lsw-dropdown-in 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-      }
-      @keyframes lsw-dropdown-in {
-        from {
-          opacity: 0;
-          transform: translateX(-50%) translateY(6px);
-        }
+        from { opacity: 0; transform: translateY(12px); }
+        to { opacity: 1; transform: translateY(0); }
       }
     `;
     return style;
@@ -596,10 +615,11 @@
       document.body.appendChild(widgetWrapper);
 
       const widget = document.getElementById("lsw-widget");
-      const pill = widget.querySelector(".lsw-pill");
+      const container = widget.querySelector(".lsw-container");
       const dropdown = widget.querySelector(".lsw-dropdown");
+      const targetBtn = widget.querySelector(".lsw-target-lang");
 
-      pill.addEventListener("click", (e) => {
+      container.addEventListener("click", (e) => {
         e.stopPropagation();
         widget.classList.toggle("lsw-open");
       });
@@ -617,8 +637,8 @@
           const targetLang = option.dataset.lang;
           const langInfo = LANGUAGES[targetLang];
 
-          pill.querySelector(".lsw-current-flag").textContent = langInfo.flag;
-          pill.title = langInfo.name;
+          targetBtn.querySelector(".lsw-flag").textContent = langInfo.flag;
+          targetBtn.title = "Translate to: " + langInfo.name;
 
           widget.classList.remove("lsw-open");
 
