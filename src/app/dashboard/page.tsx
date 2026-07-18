@@ -1,6 +1,8 @@
 import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
 import { Globe, Code, BarChart3 } from "lucide-react";
+import { getDictionary, hasLocale, defaultLocale } from "@/lib/i18n/dictionaries";
+import { cookies } from "next/headers";
 
 export default async function DashboardPage() {
   const supabase = await createClient();
@@ -16,67 +18,60 @@ export default async function DashboardPage() {
 
   const siteCount = sites?.length ?? 0;
 
+  const cookieStore = await cookies();
+  const localeCookie = cookieStore.get("locale")?.value;
+  const locale = localeCookie && hasLocale(localeCookie) ? localeCookie : defaultLocale;
+  const dict = await getDictionary(locale);
+  const d = dict.dashboard.overview;
+
   return (
     <div className="space-y-8">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">
-          Welcome back{user?.user_metadata?.display_name ? `, ${user.user_metadata.display_name}` : ""}
+          {d.title}{user?.user_metadata?.display_name ? `, ${user.user_metadata.display_name}` : ""}
         </h1>
         <p className="text-sm text-gray-500 mt-1">
-          Here&apos;s an overview of your language switcher setup.
+          {d.subtitle}
         </p>
       </div>
 
       <div className="grid gap-4 md:grid-cols-3">
         <StatCard
           icon={<Globe className="h-4 w-4 text-[#00a67e]" />}
-          label="Registered Sites"
+          label={d.registeredSites}
           value={String(siteCount)}
           href="/dashboard/sites"
-          linkText="Manage sites"
+          linkText={d.manageSites}
         />
         <StatCard
           icon={<Code className="h-4 w-4 text-[#00a67e]" />}
-          label="Widget Status"
-          value={siteCount > 0 ? "Active" : "Not set up"}
+          label={d.widgetStatus}
+          value={siteCount > 0 ? d.active : d.notSetUp}
           href="/dashboard/sites"
-          linkText="Get code"
+          linkText={d.getCode}
         />
         <StatCard
           icon={<BarChart3 className="h-4 w-4 text-[#00a67e]" />}
-          label="Translations"
+          label={d.translations}
           value="--"
           href="/dashboard/insights"
-          linkText="View insights"
+          linkText={d.viewInsights}
         />
       </div>
 
-      {/* Quick Start */}
       <div className="bg-white rounded-2xl border border-gray-100 p-6 md:p-8">
-        <h2 className="text-lg font-bold text-gray-900 mb-6">Quick Start</h2>
+        <h2 className="text-lg font-bold text-gray-900 mb-6">{d.quickStart}</h2>
         <div className="grid md:grid-cols-3 gap-6">
-          <Step
-            number="1"
-            title="Register your site"
-            description="Add your website domain and choose which languages to support."
-          />
-          <Step
-            number="2"
-            title="Copy the code"
-            description="Get a personalized script tag for your website."
-          />
-          <Step
-            number="3"
-            title="Paste it in"
-            description="Add the script tag to your site's &lt;head&gt;. Done!"
-          />
+          <Step number="1" title={d.step1} description={d.step1Desc} />
+          <Step number="2" title={d.step2} description={d.step2Desc} />
+          <Step number="3" title={d.step3} description={d.step3Desc} />
         </div>
         <div className="mt-6">
           <Link
             href="/dashboard/sites"
             className="inline-flex items-center justify-center text-sm font-semibold text-white bg-[#00a67e] hover:bg-[#008f6d] transition-all px-5 py-2.5 rounded-full"
           >
-            Register Your First Site
+            {d.registerFirstSite}
           </Link>
         </div>
       </div>

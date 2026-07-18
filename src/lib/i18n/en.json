@@ -1,0 +1,250 @@
+{
+  "nav": {
+    "logo": "LSwitch",
+    "features": "Features",
+    "pricing": "Pricing",
+    "blog": "Blog",
+    "docs": "Docs",
+    "login": "Log In",
+    "getStarted": "Get Started Free",
+    "dashboard": "Dashboard"
+  },
+  "hero": {
+    "badge": "Free to use — no credit card required",
+    "title": "Go multilingual",
+    "titleAccent": "with one line",
+    "description": "Add a language switcher to your website instantly. Your visitors translate your content into their native language — right in the browser.",
+    "ctaStart": "Start for Free",
+    "ctaHow": "See How It Works"
+  },
+  "browserMockup": {
+    "url": "yourwebsite.com"
+  },
+  "features": {
+    "title": "Everything you need",
+    "description": "Simple, powerful, and completely free. No server setup, no complicated integrations.",
+    "items": {
+      "setup": {
+        "title": "One-Line Setup",
+        "description": "Paste a single script tag into your HTML. That's it — your site is multilingual."
+      },
+      "languages": {
+        "title": "100+ Languages",
+        "description": "Powered by Google Translate. Support for every major language out of the box."
+      },
+      "cost": {
+        "title": "Zero Server Cost",
+        "description": "Translation runs entirely in the visitor's browser. No API keys, no backend."
+      },
+      "analytics": {
+        "title": "Real-Time Analytics",
+        "description": "See which languages your visitors use. Track translations by page and region."
+      },
+      "customizable": {
+        "title": "Fully Customizable",
+        "description": "Match your brand with custom colors, position, size, and theme options."
+      },
+      "speed": {
+        "title": "Instant Load",
+        "description": "Async loading means zero impact on your page speed or Core Web Vitals."
+      }
+    }
+  },
+  "howItWorks": {
+    "title": "Up and running in minutes",
+    "description": "Three steps to a multilingual website.",
+    "steps": {
+      "1": {
+        "title": "Create your account",
+        "description": "Sign up for free. No credit card needed."
+      },
+      "2": {
+        "title": "Register your website",
+        "description": "Add your domain and choose which languages to support."
+      },
+      "3": {
+        "title": "Paste the code",
+        "description": "Copy the generated script tag and add it to your site's &lt;head&gt;."
+      }
+    },
+    "codeLabel": "Add this one line to your site"
+  },
+  "pricing": {
+    "title": "Simple Pricing",
+    "description": "Start free. Upgrade when you need more.",
+    "free": {
+      "name": "Free",
+      "price": "0",
+      "currency": "JPY",
+      "period": "/mo",
+      "description": "Perfect for small sites or trying it out",
+      "features": [
+        "50 translations per month",
+        "100+ supported languages",
+        "Basic analytics",
+        "Widget customization"
+      ],
+      "cta": "Get Started Free"
+    },
+    "pro": {
+      "name": "Pro",
+      "price": "980",
+      "currency": "JPY",
+      "period": "/mo",
+      "description": "Best for production websites",
+      "features": [
+        "Unlimited translations",
+        "100+ supported languages",
+        "Advanced analytics & insights",
+        "Priority support",
+        "Full customization"
+      ],
+      "cta": "Start Pro"
+    }
+  },
+  "cta": {
+    "title": "Make your website global today",
+    "description": "Join thousands of websites using Language Switcher to reach a worldwide audience.",
+    "button": "Get Started for Free"
+  },
+  "footer": {
+    "copyright": "Language Switcher. All rights reserved.",
+    "login": "Log In",
+    "signup": "Sign Up"
+  },
+  "dashboard": {
+    "nav": {
+      "overview": "Overview",
+      "sites": "Sites",
+      "insights": "Insights",
+      "settings": "Settings"
+    },
+    "userNav": {
+      "settings": "Settings",
+      "logout": "Log Out"
+    },
+    "overview": {
+      "title": "Welcome back",
+      "subtitle": "Here's an overview of your language switcher setup.",
+      "registeredSites": "Registered Sites",
+      "widgetStatus": "Widget Status",
+      "active": "Active",
+      "notSetUp": "Not set up",
+      "translations": "Translations",
+      "manageSites": "Manage sites",
+      "getCode": "Get code",
+      "viewInsights": "View insights",
+      "quickStart": "Quick Start",
+      "step1": "Register your site",
+      "step1Desc": "Add your website domain and choose which languages to support.",
+      "step2": "Copy the code",
+      "step2Desc": "Get a personalized script tag for your website.",
+      "step3": "Paste it in",
+      "step3Desc": "Add the script tag to your site's &lt;head&gt;. Done!",
+      "registerFirstSite": "Register Your First Site"
+    },
+    "sites": {
+      "title": "Sites",
+      "subtitle": "Manage your registered websites and widget configurations.",
+      "addSite": "Add Site",
+      "noSites": "No sites registered yet.",
+      "addFirstSite": "Add Your First Site",
+      "active": "Active",
+      "inactive": "Inactive",
+      "copyCode": "Copy Code",
+      "copied": "Copied!",
+      "delete": "Delete",
+      "supportedLanguages": "Supported Languages",
+      "edit": "Edit",
+      "save": "Save",
+      "saving": "Saving...",
+      "cancel": "Cancel",
+      "selectAtLeastOne": "Select at least one language",
+      "dialogTitle": "Add a new site",
+      "dialogDescription": "Enter your website domain and choose your language settings.",
+      "domain": "Domain",
+      "domainPlaceholder": "example.com",
+      "siteName": "Site Name (optional)",
+      "siteNamePlaceholder": "My Website",
+      "defaultLang": "Default Target Language",
+      "supportedLangs": "Supported Languages",
+      "create": "Create",
+      "creating": "Creating...",
+      "confirmDelete": "Delete this site?"
+    },
+    "insights": {
+      "title": "Insights",
+      "subtitle": "Translation usage analytics for your sites.",
+      "noSites": "No sites registered yet. Add a site first to see insights.",
+      "totalTranslations": "Total Translations",
+      "uniqueVisitors": "Unique Visitors",
+      "languagesUsed": "Languages Used",
+      "topLanguages": "Top Languages",
+      "dailyTranslations": "Daily Translations",
+      "recentTranslations": "Recent Translations",
+      "noData": "No data yet",
+      "noLogs": "No translation logs yet",
+      "site": "Site",
+      "date": "Date",
+      "source": "Source",
+      "target": "Target",
+      "page": "Page"
+    },
+    "settings": {
+      "title": "Settings",
+      "subtitle": "Manage your account and widget preferences.",
+      "profile": "Profile",
+      "profileDesc": "Your account information",
+      "email": "Email",
+      "displayName": "Display Name",
+      "nativeLanguage": "Native Language",
+      "widgetSettings": "Widget Settings",
+      "widgetSettingsDesc": "Customize the appearance of your widget.",
+      "position": "Position",
+      "theme": "Theme",
+      "size": "Size",
+      "save": "Save Changes",
+      "saving": "Saving...",
+      "saved": "Changes saved!",
+      "profileNotFound": "Profile not found"
+    },
+    "sitesPage": {
+      "loading": "Loading..."
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Welcome back",
+      "subtitle": "Log in to your account",
+      "email": "Email",
+      "emailPlaceholder": "you@example.com",
+      "password": "Password",
+      "passwordPlaceholder": "••••••••",
+      "button": "Log In",
+      "loggingIn": "Logging in...",
+      "noAccount": "Don't have an account?",
+      "signUp": "Sign Up",
+      "illustrationTitle": "One line to go global",
+      "illustrationDesc": "Add a language switcher to your website and let visitors browse in their native language."
+    },
+    "signup": {
+      "title": "Create your account",
+      "subtitle": "Get started for free",
+      "name": "Name",
+      "namePlaceholder": "Your name",
+      "email": "Email",
+      "emailPlaceholder": "you@example.com",
+      "password": "Password",
+      "passwordPlaceholder": "••••••••",
+      "button": "Create Account",
+      "creating": "Creating account...",
+      "hasAccount": "Already have an account?",
+      "login": "Log In",
+      "illustrationTitle": "Reach a global audience",
+      "illustrationDesc": "Join thousands of websites that use Language Switcher to make their content accessible worldwide."
+    }
+  },
+  "common": {
+    "loading": "Loading..."
+  }
+}

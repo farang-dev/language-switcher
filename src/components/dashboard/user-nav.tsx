@@ -12,9 +12,10 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import type { User } from "@supabase/supabase-js";
 
-export function UserNav({ user }: { user: User }) {
+export function UserNav({ user, dict }: { user: User; dict: any }) {
   const router = useRouter();
   const supabase = createClient();
+  const d = dict.dashboard.userNav;
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
@@ -43,12 +44,12 @@ export function UserNav({ user }: { user: User }) {
         <DropdownMenuSeparator />
         <DropdownMenuItem>
           <a href="/dashboard/settings" className="w-full">
-            Settings
+            {d.settings}
           </a>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleSignOut} variant="destructive">
-          Log Out
+          {d.logout}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

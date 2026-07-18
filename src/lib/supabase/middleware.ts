@@ -1,7 +1,31 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { locales } from "@/lib/i18n/dictionaries";
+
+function isPublicRoute(pathname: string): boolean {
+  const localePattern = locales.length > 0
+    ? `/(${locales.join("|")})`
+    : "";
+  const publicPaths = [
+    "/login",
+    "/signup",
+    "/test",
+    "/api/widget",
+  ];
+  const localizedPublicPaths = locales.flatMap((locale) =>
+    publicPaths.map((p) => `/${locale}${p}`)
+  );
+  const allPublic = [...publicPaths, ...localizedPublicPaths];
+  return allPublic.some((r) => pathname.startsWith(r));
+}
 
 export async function updateSession(request: NextRequest) {
+  const pathname = request.nextUrl.pathname;
+
+  if (isPublicRoute(pathname)) {
+    return NextResponse.next();
+  }
+
   let supabaseResponse = NextResponse.next({
     request,
   });
@@ -33,13 +57,7 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (
-    !user &&
-    !request.nextUrl.pathname.startsWith("/login") &&
-    !request.nextUrl.pathname.startsWith("/signup") &&
-    !request.nextUrl.pathname.startsWith("/test") &&
-    !request.nextUrl.pathname.startsWith("/api/widget")
-  ) {
+  if (!user) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     return NextResponse.redirect(url);
@@ -47,13 +65,3 @@ export async function updateSession(request: NextRequest) {
 
   return supabaseResponse;
 }
-
-export async function middleware(request: NextRequest) {
-  return await updateSession(request);
-}
-
-export const config = {
-  matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
-  ],
-};

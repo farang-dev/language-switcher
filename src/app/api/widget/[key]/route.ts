@@ -1,49 +1,12 @@
 import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
 
-let cachedMinified: string | null = null;
+let cachedWidgetCode: string | null = null;
 
-function minifyJS(code: string): string {
-  let out = "";
-  let inStr = false;
-  let strCh = "";
-  let i = 0;
-  while (i < code.length) {
-    const ch = code[i];
-    if (inStr) {
-      out += ch;
-      if (ch === "\\" && i + 1 < code.length) { out += code[i + 1]; i += 2; continue; }
-      if (ch === strCh) inStr = false;
-      i++;
-    } else if (ch === '"' || ch === "'" || ch === "`") {
-      inStr = true; strCh = ch; out += ch; i++;
-    } else if (ch === "/" && i + 1 < code.length && code[i + 1] === "/") {
-      i++; while (i < code.length && code[i] !== "\n") i++;
-    } else if (ch === "/" && i + 1 < code.length && code[i + 1] === "*") {
-      i += 2; while (i + 1 < code.length && !(code[i] === "*" && code[i + 1] === "/")) i++; i += 2;
-    } else if (ch === " " || ch === "\t" || ch === "\n" || ch === "\r") {
-      i++;
-      while (i < code.length && (code[i] === " " || code[i] === "\t" || code[i] === "\n" || code[i] === "\r")) i++;
-      if (out.length > 0 && i < code.length) {
-        const prev = out[out.length - 1];
-        const next = code[i];
-        const isWord = (c: string) => /[a-zA-Z0-9_$]/.test(c);
-        if (isWord(prev) && isWord(next)) out += " ";
-      }
-    } else {
-      out += ch; i++;
-    }
-  }
-  return out;
-}
-
-async function getMinifiedWidgetCode(): Promise<string> {
-  if (cachedMinified) return cachedMinified;
-
-  const raw = `(function(){var C=__CONF__;${getWidgetCode()})();`;
-
-  cachedMinified = minifyJS(raw);
-  return cachedMinified;
+function getRawWidgetCode(): string {
+  if (cachedWidgetCode) return cachedWidgetCode;
+  cachedWidgetCode = `(function(){var C=__CONF__;${getWidgetCode()}})();`;
+  return cachedWidgetCode;
 }
 
 export async function GET(
@@ -75,9 +38,9 @@ export async function GET(
     .eq("id", site.user_id)
     .single();
 
-  const minified = await getMinifiedWidgetCode();
+  const rawCode = getRawWidgetCode();
 
-  const widgetJS = minified.replace(
+  const widgetJS = rawCode.replace(
     "__CONF__",
     `{site_id:"${site.id}",allowed_languages:${JSON.stringify(site.allowed_languages)},default_target_language:"${site.default_target_language}",widget_position:"${profile?.widget_position || "bottom-right"}",widget_theme:"${profile?.widget_theme || "light"}",widget_size:"${profile?.widget_size || "medium"}",supabaseUrl:"${process.env.NEXT_PUBLIC_SUPABASE_URL}",supabaseAnonKey:"${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}",apiEndpoint:"${process.env.NEXT_PUBLIC_APP_URL}/api/widget"}`
   );
@@ -273,32 +236,41 @@ function getWidgetCode(): string {
   function createWidget() {
     var sl = _d(), si = LANGUAGES[sl] || LANGUAGES["en"], dt = C.default_target_language || "en", ti = LANGUAGES[dt] || LANGUAGES["en"];
     var st = document.createElement("style");
-    st.textContent = "#lsw-widget{position:fixed;z-index:999999;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:14px}#lsw-widget *{box-sizing:border-box;margin:0;padding:0}.lsw-container{display:flex;align-items:center;gap:8px;background:#fff;border-radius:50px;padding:8px 12px;box-shadow:0 4px 20px rgba(0,0,0,.15);cursor:pointer;transition:all .2s}.lsw-container:hover{box-shadow:0 6px 24px rgba(0,0,0,.2);transform:translateY(-2px)}.lsw-source-lang,.lsw-target-lang{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;border:none;background:#f3f4f6;cursor:pointer;transition:all .2s;position:relative}.lsw-source-lang:hover,.lsw-target-lang:hover{background:#e5e7eb}.lsw-target-lang{background:#3b82f6}.lsw-target-lang:hover{background:#2563eb}.lsw-flag{font-size:20px;line-height:1}.lsw-arrow{color:#9ca3af;font-size:16px}.lsw-dropdown{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);margin-bottom:8px;background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.15);min-width:200px;max-height:300px;overflow:hidden;display:none}.lsw-dropdown-header{padding:12px 16px;font-weight:600;color:#374151;border-bottom:1px solid #e5e7eb}.lsw-lang-list{max-height:250px;overflow-y:auto;padding:8px}.lsw-lang-option{display:flex;align-items:center;gap:12px;width:100%;padding:10px 12px;border:none;background:0 0;cursor:pointer;border-radius:8px;transition:all .15s;text-align:left}.lsw-lang-option:hover{background:#f3f4f6}.lsw-lang-option .lsw-flag{font-size:24px}.lsw-lang-option .lsw-lang-name{font-size:14px;color:#374151}#lsw-widget.lsw-translating .lsw-container{opacity:.7;pointer-events:none}#lsw-widget.lsw-translating .lsw-target-lang::after{content:\\"\\";position:absolute;width:16px;height:16px;border:2px solid #fff;border-top-color:transparent;border-radius:50%;animation:lsw-spin .8s linear infinite}@keyframes lsw-spin{to{transform:rotate(360deg)}}" + getThemeCSS() + getSizeCSS();
+    st.textContent = "#lsw-widget{position:fixed;z-index:999999;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:14px;line-height:1.2}#lsw-widget *{box-sizing:border-box;margin:0;padding:0}.lsw-widget-pill{display:flex;align-items:center;gap:8px;background:#00a67e;border:1px solid rgba(255,255,255,.15);border-radius:50px;padding:8px 16px;cursor:pointer;transition:all .25s ease;box-shadow:0 4px 24px rgba(0,166,126,.35);position:relative}.lsw-widget-pill:hover{box-shadow:0 8px 32px rgba(0,166,126,.5);transform:translateY(-2px);background:#00b88a}.lsw-widget-pill:active{transform:translateY(0)}.lsw-pill-icon{display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.2);font-size:16px;flex-shrink:0}.lsw-pill-label{color:#fff;font-weight:600;font-size:13px;letter-spacing:.3px;white-space:nowrap}.lsw-pill-chevron{color:rgba(255,255,255,.7);font-size:12px;margin-left:4px;transition:transform .25s ease}.lsw-widget-pill.lsw-open .lsw-pill-chevron{transform:rotate(180deg)}.lsw-dropdown{position:absolute;bottom:calc(100% + 12px);left:50%;transform:translateX(-50%) translateY(8px);min-width:220px;max-height:360px;background:rgba(255,255,255,.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.25);border-radius:16px;box-shadow:0 16px 48px rgba(0,0,0,.18);overflow:hidden;opacity:0;visibility:hidden;transition:all .25s ease;pointer-events:none}.lsw-dropdown.lsw-visible{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0);pointer-events:auto}.lsw-dropdown-header{padding:14px 16px 10px;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.8px;color:#6b7280;border-bottom:1px solid rgba(0,0,0,.06)}.lsw-lang-list{max-height:280px;overflow-y:auto;padding:6px}.lsw-lang-list::-webkit-scrollbar{width:4px}.lsw-lang-list::-webkit-scrollbar-track{background:0 0}.lsw-lang-list::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:10px}.lsw-lang-option{display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;border:none;background:0 0;cursor:pointer;border-radius:10px;transition:all .15s ease;text-align:left;color:#1f2937}.lsw-lang-option:hover{background:rgba(0,166,126,.1)}.lsw-lang-option:active{background:rgba(0,166,126,.18)}.lsw-lang-option .lsw-flag{font-size:22px;line-height:1}.lsw-lang-option .lsw-lang-name{font-size:14px;font-weight:500;color:#1f2937}#lsw-widget.lsw-translating .lsw-widget-pill{opacity:.75;pointer-events:none}#lsw-widget.lsw-translating .lsw-pill-icon::after{content:\\\"\\\";position:absolute;width:18px;height:18px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:lsw-spin .7s linear infinite}@keyframes lsw-spin{to{transform:rotate(360deg)}}" + getThemeCSS() + getSizeCSS();
     document.head.appendChild(st);
     var lo = C.allowed_languages.map(function(l) { var x = LANGUAGES[l]; if (!x) return ""; return '<button class="lsw-lang-option" data-lang="' + l + '" title="' + x.name + '"><span class="lsw-flag">' + x.flag + '</span><span class="lsw-lang-name">' + x.name + '</span></button>'; }).join("");
-    var wh = '<div id="lsw-widget" class="lsw-widget lsw-theme-' + C.widget_theme + '" style="' + getPositionStyle() + '"><div class="lsw-container"><button class="lsw-source-lang" title="Source: ' + si.name + '"><span class="lsw-flag">' + si.flag + '</span></button><div class="lsw-arrow">\\u2192</div><button class="lsw-target-lang" title="Translate to: ' + ti.name + '"><span class="lsw-flag">' + ti.flag + '</span></button></div><div class="lsw-dropdown"><div class="lsw-dropdown-header">Select target language</div><div class="lsw-lang-list">' + lo + '</div></div></div>';
+    var sz = C.widget_size || "medium";
+    var wh = '<div id="lsw-widget" class="lsw-theme-' + C.widget_theme + ' lsw-' + sz + '" style="' + getPositionStyle() + '"><div class="lsw-widget-pill" role="button" tabindex="0" aria-label="Translate"><div class="lsw-pill-icon">\\ud83c\\udf10</div><span class="lsw-pill-label">' + ti.name + '</span><span class="lsw-pill-chevron">\\u25bc</span></div><div class="lsw-dropdown"><div class="lsw-dropdown-header">Select target language</div><div class="lsw-lang-list">' + lo + '</div></div></div>';
     var wr = document.createElement("div"); wr.innerHTML = wh; document.body.appendChild(wr);
-    var w = document.getElementById("lsw-widget"), co = w.querySelector(".lsw-container"), dr = w.querySelector(".lsw-dropdown"), tb = w.querySelector(".lsw-target-lang");
-    co.addEventListener("click", function(e) { e.stopPropagation(); dr.style.display = dr.style.display === "none" ? "block" : "none"; });
-    document.addEventListener("click", function() { dr.style.display = "none"; });
+    var w = document.getElementById("lsw-widget"), pill = w.querySelector(".lsw-widget-pill"), dr = w.querySelector(".lsw-dropdown");
+    var toggleDrop = function(e) { e.stopPropagation(); var o = dr.classList.contains("lsw-visible"); dr.classList.toggle("lsw-visible"); pill.classList.toggle("lsw-open"); };
+    pill.addEventListener("click", toggleDrop);
+    document.addEventListener("click", function() { dr.classList.remove("lsw-visible"); pill.classList.remove("lsw-open"); });
     dr.addEventListener("click", function(e) { e.stopPropagation(); });
-    w.querySelectorAll(".lsw-lang-option").forEach(function(o) { o.addEventListener("click", function() { var tl = this.dataset.lang, li = LANGUAGES[tl]; tb.querySelector(".lsw-flag").textContent = li.flag; tb.title = "Translate to: " + li.name; dr.style.display = "none"; translatePage(tl); _l(tl); }); });
+    w.querySelectorAll(".lsw-lang-option").forEach(function(o) { o.addEventListener("click", function() { var tl = this.dataset.lang, li = LANGUAGES[tl]; var lb = pill.querySelector(".lsw-pill-label"); lb.textContent = li.name; dr.classList.remove("lsw-visible"); pill.classList.remove("lsw-open"); translatePage(tl); _l(tl); }); });
   }
 
   function getPositionStyle() {
     var p = C.widget_position || "bottom-right";
-    return { "bottom-right": "bottom:20px;right:20px", "bottom-left": "bottom:20px;left:20px", "top-right": "top:20px;right:20px", "top-left": "top:20px;left:20px" }[p] || "bottom:20px;right:20px";
+    return { "bottom-right": "bottom:24px;right:24px", "bottom-left": "bottom:24px;left:24px", "top-right": "top:24px;right:24px", "top-left": "top:24px;left:24px" }[p] || "bottom:24px;right:24px";
   }
 
   function getThemeCSS() {
-    if (C.widget_theme === "dark") return "#lsw-widget.lsw-theme-dark .lsw-container{background:#1f2937}#lsw-widget.lsw-theme-dark .lsw-source-lang{background:#374151}#lsw-widget.lsw-theme-dark .lsw-source-lang:hover{background:#4b5563}#lsw-widget.lsw-theme-dark .lsw-dropdown{background:#1f2937}#lsw-widget.lsw-theme-dark .lsw-dropdown-header{color:#f9fafb;border-color:#374151}#lsw-widget.lsw-theme-dark .lsw-lang-option:hover{background:#374151}#lsw-widget.lsw-theme-dark .lsw-lang-option .lsw-lang-name{color:#f9fafb}";
+    var t = C.widget_theme || "light";
+    if (t === "dark") {
+      return "#lsw-widget.lsw-theme-dark .lsw-dropdown{background:rgba(31,41,55,.92);border-color:rgba(255,255,255,.1)}#lsw-widget.lsw-theme-dark .lsw-dropdown-header{color:#9ca3af;border-color:rgba(255,255,255,.08)}#lsw-widget.lsw-theme-dark .lsw-lang-option{color:#f9fafb}#lsw-widget.lsw-theme-dark .lsw-lang-option .lsw-lang-name{color:#f9fafb}#lsw-widget.lsw-theme-dark .lsw-lang-option:hover{background:rgba(255,255,255,.08)}";
+    }
     return "";
   }
 
   function getSizeCSS() {
     var s = C.widget_size || "medium";
-    if (s === "small") return "#lsw-widget.lsw-small .lsw-container{padding:6px 10px;gap:6px}#lsw-widget.lsw-small .lsw-source-lang,#lsw-widget.lsw-small .lsw-target-lang{width:28px;height:28px}#lsw-widget.lsw-small .lsw-flag{font-size:16px}#lsw-widget.lsw-small .lsw-arrow{font-size:12px}";
-    if (s === "large") return "#lsw-widget.lsw-large .lsw-container{padding:12px 16px;gap:12px}#lsw-widget.lsw-large .lsw-source-lang,#lsw-widget.lsw-large .lsw-target-lang{width:44px;height:44px}#lsw-widget.lsw-large .lsw-flag{font-size:28px}#lsw-widget.lsw-large .lsw-arrow{font-size:20px}";
+    if (s === "small") {
+      return "#lsw-widget.lsw-small .lsw-widget-pill{padding:6px 12px;gap:6px}#lsw-widget.lsw-small .lsw-pill-icon{width:24px;height:24px;font-size:14px}#lsw-widget.lsw-small .lsw-pill-label{font-size:11px}#lsw-widget.lsw-small .lsw-pill-chevron{font-size:10px}#lsw-widget.lsw-small .lsw-dropdown{min-width:190px;max-height:300px}#lsw-widget.lsw-small .lsw-lang-option{padding:8px 10px}#lsw-widget.lsw-small .lsw-lang-option .lsw-flag{font-size:18px}#lsw-widget.lsw-small .lsw-lang-option .lsw-lang-name{font-size:13px}";
+    }
+    if (s === "large") {
+      return "#lsw-widget.lsw-large .lsw-widget-pill{padding:12px 20px;gap:10px}#lsw-widget.lsw-large .lsw-pill-icon{width:34px;height:34px;font-size:20px}#lsw-widget.lsw-large .lsw-pill-label{font-size:15px}#lsw-widget.lsw-large .lsw-pill-chevron{font-size:14px}#lsw-widget.lsw-large .lsw-dropdown{min-width:260px;max-height:420px}#lsw-widget.lsw-large .lsw-lang-option{padding:12px 14px}#lsw-widget.lsw-large .lsw-lang-option .lsw-flag{font-size:26px}#lsw-widget.lsw-large .lsw-lang-option .lsw-lang-name{font-size:15px}";
+    }
     return "";
   }
 

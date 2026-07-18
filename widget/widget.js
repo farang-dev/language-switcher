@@ -6,14 +6,12 @@
 (function () {
   "use strict";
 
-  // Widget configuration
   const CONFIG = {
     supabaseUrl: "__SUPABASE_URL__",
     supabaseAnonKey: "__SUPABASE_ANON_KEY__",
     apiEndpoint: "__API_ENDPOINT__",
   };
 
-  // Language definitions
   const LANGUAGES = {
     en: { name: "English", flag: "🇺🇸" },
     ja: { name: "日本語", flag: "🇯🇵" },
@@ -37,7 +35,6 @@
     sv: { name: "Svenska", flag: "🇸🇪" },
   };
 
-  // Get visitor ID from localStorage or create new one
   function getVisitorId() {
     let visitorId = localStorage.getItem("lswitcher_visitor_id");
     if (!visitorId) {
@@ -51,7 +48,6 @@
     return visitorId;
   }
 
-  // Detect page language
   function detectPageLanguage() {
     const htmlLang = document.documentElement.lang;
     if (htmlLang) {
@@ -64,7 +60,6 @@
     return "en";
   }
 
-  // Get API key from script tag
   function getApiKey() {
     const scripts = document.querySelectorAll("script[src]");
     for (const script of scripts) {
@@ -77,7 +72,6 @@
     return null;
   }
 
-  // Create widget HTML
   function createWidgetHTML(config, sourceLanguage) {
     const allowedLanguages = config.allowed_languages || Object.keys(LANGUAGES);
     const defaultTarget = config.default_target_language || "en";
@@ -85,17 +79,11 @@
     const theme = config.widget_theme || "light";
     const size = config.widget_size || "medium";
 
-    const sizeClasses = {
-      small: "lsw-small",
-      medium: "lsw-medium",
-      large: "lsw-large",
-    };
-
     const positionStyles = {
-      "bottom-right": "bottom: 20px; right: 20px;",
-      "bottom-left": "bottom: 20px; left: 20px;",
-      "top-right": "top: 20px; right: 20px;",
-      "top-left": "top: 20px; left: 20px;",
+      "bottom-right": "bottom: 24px; right: 24px;",
+      "bottom-left": "bottom: 24px; left: 24px;",
+      "top-right": "top: 24px; right: 24px;",
+      "top-left": "top: 24px; left: 24px;",
     };
 
     const sourceLangInfo = LANGUAGES[sourceLanguage] || LANGUAGES["en"];
@@ -105,7 +93,8 @@
       .map((langCode) => {
         const lang = LANGUAGES[langCode];
         if (!lang) return "";
-        return `<button class="lsw-lang-option" data-lang="${langCode}" title="${lang.name}">
+        const selected = langCode === defaultTarget ? ` lsw-lang-selected` : "";
+        return `<button class="lsw-lang-option${selected}" data-lang="${langCode}">
           <span class="lsw-flag">${lang.flag}</span>
           <span class="lsw-lang-name">${lang.name}</span>
         </button>`;
@@ -113,246 +102,221 @@
       .join("");
 
     return `
-      <div id="lsw-widget" class="lsw-widget ${sizeClasses[size]} lsw-theme-${theme}" style="${positionStyles[position]}">
-        <div class="lsw-container">
-          <button class="lsw-source-lang" title="Source: ${sourceLangInfo.name}">
-            <span class="lsw-flag">${sourceLangInfo.flag}</span>
-          </button>
-          <div class="lsw-arrow">→</div>
-          <button class="lsw-target-lang" title="Translate to: ${targetLangInfo.name}">
-            <span class="lsw-flag">${targetLangInfo.flag}</span>
-          </button>
-        </div>
+      <div id="lsw-widget" class="lsw-widget lsw-theme-${theme} lsw-size-${size}" style="${positionStyles[position]}">
+        <button class="lsw-pill" title="${targetLangInfo.name}">
+          <span class="lsw-current-flag">${targetLangInfo.flag}</span>
+          <svg class="lsw-chevron" viewBox="0 0 20 20" fill="currentColor" width="14" height="14">
+            <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+          </svg>
+        </button>
         <div class="lsw-dropdown" style="display: none;">
-          <div class="lsw-dropdown-header">Select target language</div>
-          <div class="lsw-lang-list">
-            ${languageOptions}
+          <div class="lsw-dropdown-inner">
+            <div class="lsw-search-wrap" style="display: none;">
+              <input class="lsw-search" type="text" placeholder="Search language..." />
+            </div>
+            <div class="lsw-lang-list">
+              ${languageOptions}
+            </div>
           </div>
         </div>
       </div>
     `;
   }
 
-  // Create widget styles
   function createWidgetStyles() {
+    const brandColor = "#00a67e";
+    const brandLight = "#e6f7f1";
+
     const style = document.createElement("style");
     style.textContent = `
       #lsw-widget {
         position: fixed;
         z-index: 999999;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
         font-size: 14px;
         line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
       }
+      #lsw-widget * { box-sizing: border-box; margin: 0; padding: 0; }
 
-      #lsw-widget * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-
-      .lsw-container {
+      .lsw-pill {
         display: flex;
         align-items: center;
-        gap: 8px;
-        background: white;
-        border-radius: 50px;
-        padding: 8px 12px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-        cursor: pointer;
-        transition: all 0.2s ease;
-      }
-
-      .lsw-container:hover {
-        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
-        transform: translateY(-2px);
-      }
-
-      .lsw-source-lang,
-      .lsw-target-lang {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
+        gap: 6px;
+        padding: 10px 16px 10px 14px;
         border: none;
-        background: #f3f4f6;
+        border-radius: 100px;
+        background: ${brandColor};
+        color: white;
         cursor: pointer;
-        transition: all 0.2s ease;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.12), 0 2px 4px rgba(0,0,0,0.06);
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+      }
+      .lsw-pill:hover {
+        box-shadow: 0 8px 28px rgba(0,0,0,0.18);
+        transform: translateY(-1px) scale(1.03);
+      }
+      .lsw-pill:active {
+        transform: scale(0.97);
       }
 
-      .lsw-source-lang:hover,
-      .lsw-target-lang:hover {
-        background: #e5e7eb;
+      .lsw-current-flag { font-size: 20px; line-height: 1; }
+      .lsw-chevron {
+        transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        opacity: 0.8;
       }
-
-      .lsw-target-lang {
-        background: #3b82f6;
+      .lsw-widget.lsw-open .lsw-chevron {
+        transform: rotate(180deg);
       }
-
-      .lsw-target-lang:hover {
-        background: #2563eb;
-      }
-
-      .lsw-flag {
-        font-size: 20px;
-        line-height: 1;
-      }
-
-      .lsw-arrow {
-        color: #9ca3af;
-        font-size: 16px;
+      .lsw-pill .lsw-current-flag + .lsw-chevron {
+        margin-left: 2px;
       }
 
       .lsw-dropdown {
         position: absolute;
-        bottom: 100%;
+        bottom: calc(100% + 10px);
         left: 50%;
-        transform: translateX(-50%);
-        margin-bottom: 8px;
-        background: white;
-        border-radius: 12px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-        min-width: 200px;
-        max-height: 300px;
-        overflow: hidden;
+        transform: translateX(-50%) translateY(4px);
+        opacity: 0;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        pointer-events: none;
+        min-width: 220px;
+      }
+      .lsw-widget.lsw-open .lsw-dropdown {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+        pointer-events: auto;
       }
 
-      .lsw-dropdown-header {
-        padding: 12px 16px;
-        font-weight: 600;
-        color: #374151;
-        border-bottom: 1px solid #e5e7eb;
+      .lsw-dropdown-inner {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 12px 40px rgba(0,0,0,0.15), 0 2px 8px rgba(0,0,0,0.06);
+        overflow: hidden;
+        max-height: 320px;
+        display: flex;
+        flex-direction: column;
       }
 
       .lsw-lang-list {
-        max-height: 250px;
         overflow-y: auto;
-        padding: 8px;
+        padding: 6px;
+        max-height: 280px;
+        scrollbar-width: thin;
+        scrollbar-color: #e5e7eb transparent;
       }
+      .lsw-lang-list::-webkit-scrollbar { width: 4px; }
+      .lsw-lang-list::-webkit-scrollbar-track { background: transparent; }
+      .lsw-lang-list::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 99px; }
 
       .lsw-lang-option {
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 10px;
         width: 100%;
-        padding: 10px 12px;
+        padding: 9px 12px;
         border: none;
         background: transparent;
         cursor: pointer;
-        border-radius: 8px;
+        border-radius: 10px;
         transition: all 0.15s ease;
         text-align: left;
       }
-
       .lsw-lang-option:hover {
-        background: #f3f4f6;
+        background: #f5f5f5;
+      }
+      .lsw-lang-option:active {
+        background: #eee;
+        transform: scale(0.98);
       }
 
-      .lsw-lang-option .lsw-flag {
-        font-size: 24px;
-      }
-
+      .lsw-lang-option .lsw-flag { font-size: 22px; line-height: 1; }
       .lsw-lang-option .lsw-lang-name {
         font-size: 14px;
-        color: #374151;
+        color: #1f2937;
+        font-weight: 500;
+      }
+
+      .lsw-lang-selected {
+        background: ${brandLight} !important;
+        position: relative;
+      }
+      .lsw-lang-selected .lsw-lang-name {
+        color: ${brandColor};
+        font-weight: 600;
       }
 
       /* Size variants */
-      .lsw-small .lsw-container {
-        padding: 6px 10px;
-        gap: 6px;
-      }
-      .lsw-small .lsw-source-lang,
-      .lsw-small .lsw-target-lang {
-        width: 28px;
-        height: 28px;
-      }
-      .lsw-small .lsw-flag {
-        font-size: 16px;
-      }
-      .lsw-small .lsw-arrow {
-        font-size: 12px;
-      }
+      .lsw-size-small .lsw-pill { padding: 7px 12px 7px 10px; }
+      .lsw-size-small .lsw-current-flag { font-size: 16px; }
+      .lsw-size-small .lsw-chevron { width: 12px; height: 12px; }
+      .lsw-size-small .lsw-dropdown { min-width: 180px; }
 
-      .lsw-large .lsw-container {
-        padding: 12px 16px;
-        gap: 12px;
-      }
-      .lsw-large .lsw-source-lang,
-      .lsw-large .lsw-target-lang {
-        width: 44px;
-        height: 44px;
-      }
-      .lsw-large .lsw-flag {
-        font-size: 28px;
-      }
-      .lsw-large .lsw-arrow {
-        font-size: 20px;
-      }
+      .lsw-size-large .lsw-pill { padding: 13px 20px 13px 18px; }
+      .lsw-size-large .lsw-current-flag { font-size: 24px; }
+      .lsw-size-large .lsw-chevron { width: 16px; height: 16px; }
 
       /* Dark theme */
-      .lsw-theme-dark .lsw-container {
+      .lsw-theme-dark .lsw-pill {
         background: #1f2937;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.3);
       }
-      .lsw-theme-dark .lsw-source-lang {
-        background: #374151;
-      }
-      .lsw-theme-dark .lsw-source-lang:hover {
-        background: #4b5563;
-      }
-      .lsw-theme-dark .lsw-arrow {
-        color: #9ca3af;
-      }
-      .lsw-theme-dark .lsw-dropdown {
+      .lsw-theme-dark .lsw-dropdown-inner {
         background: #1f2937;
+        box-shadow: 0 12px 40px rgba(0,0,0,0.4);
       }
-      .lsw-theme-dark .lsw-dropdown-header {
-        color: #f9fafb;
-        border-color: #374151;
-      }
-      .lsw-theme-dark .lsw-lang-option:hover {
-        background: #374151;
-      }
-      .lsw-theme-dark .lsw-lang-option .lsw-lang-name {
-        color: #f9fafb;
-      }
+      .lsw-theme-dark .lsw-lang-option:hover { background: #374151; }
+      .lsw-theme-dark .lsw-lang-option:active { background: #4b5563; }
+      .lsw-theme-dark .lsw-lang-option .lsw-lang-name { color: #f9fafb; }
+      .lsw-theme-dark .lsw-lang-selected { background: #374151 !important; }
 
       /* Translating state */
-      #lsw-widget.lsw-translating .lsw-container {
-        opacity: 0.7;
+      #lsw-widget.lsw-translating .lsw-pill {
         pointer-events: none;
+        opacity: 0.8;
+      }
+      #lsw-widget.lsw-translating .lsw-current-flag {
+        animation: lsw-pulse 1s ease-in-out infinite;
       }
 
-      #lsw-widget.lsw-translating .lsw-target-lang::after {
-        content: "";
-        position: absolute;
-        width: 16px;
-        height: 16px;
-        border: 2px solid #fff;
-        border-top-color: transparent;
-        border-radius: 50%;
-        animation: lsw-spin 0.8s linear infinite;
+      @keyframes lsw-pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.4; }
       }
 
-      @keyframes lsw-spin {
+      /* Entrance animation */
+      #lsw-widget {
+        animation: lsw-slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      @keyframes lsw-slide-up {
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+        }
         to {
-          transform: rotate(360deg);
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .lsw-widget.lsw-open .lsw-dropdown {
+        animation: lsw-dropdown-in 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      @keyframes lsw-dropdown-in {
+        from {
+          opacity: 0;
+          transform: translateX(-50%) translateY(6px);
         }
       }
     `;
     return style;
   }
 
-  // Log translation
   async function logTranslation(siteId, sourceLang, targetLang, pageUrl) {
     try {
       await fetch(CONFIG.apiEndpoint + "/log-translation", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           site_id: siteId,
           visitor_id: getVisitorId(),
@@ -361,68 +325,37 @@
           page_url: pageUrl,
         }),
       });
-    } catch {
-      // Silently fail - don't break the widget
-    }
+    } catch {}
   }
 
-  // Translation engine - direct text node translation via Google Translate API
   const processedNodes = new WeakSet();
   const translationCache = new Map();
   let currentTargetLanguage = null;
 
   const EXCLUDED_TAGS = new Set([
-    'SCRIPT', 'STYLE', 'CODE', 'TEXTAREA', 'INPUT', 'NOSCRIPT',
-    'SVG', 'PATH', 'IFRAME', 'PRE', 'HEAD', 'TITLE', 'OPTION'
+    "SCRIPT", "STYLE", "CODE", "TEXTAREA", "INPUT", "NOSCRIPT",
+    "SVG", "PATH", "IFRAME", "PRE", "HEAD", "TITLE", "OPTION",
   ]);
 
   const COMMON_WORDS = {
-    en: new Set(['the', 'be', 'to', 'of', 'and', 'a', 'in', 'that', 'have', 'i',
-      'it', 'for', 'not', 'on', 'with', 'he', 'as', 'you', 'do', 'at',
-      'this', 'but', 'his', 'by', 'from', 'they', 'we', 'say', 'her', 'she',
-      'or', 'an', 'will', 'my', 'one', 'all', 'would', 'there', 'their', 'what',
-      'so', 'up', 'out', 'if', 'about', 'who', 'get', 'which', 'go', 'me']),
-    ja: new Set(['の', 'に', 'は', 'を', 'た', 'が', 'で', 'て', 'と', 'し',
-      'れ', 'さ', 'ある', 'いる', 'する', 'から', 'こと', 'これ', 'それ', 'もの',
-      'です', 'ます', 'ない', 'よう', 'ため', 'その', 'まで', 'なる', 'として', 'いえる']),
-    es: new Set(['el', 'la', 'de', 'que', 'y', 'en', 'un', 'ser', 'se', 'no',
-      'haber', 'por', 'con', 'para', 'como', 'estar', 'tener', 'leer', 'todo', 'mas',
-      'este', 'hacer', 'o', 'poder', 'decir', 'otro', 'ir', 'ver', 'dar', 'saber']),
-    fr: new Set(['le', 'la', 'de', 'et', 'les', 'des', 'un', 'une', 'est', 'en',
-      'que', 'qui', 'dans', 'du', 'ce', 'il', 'pas', 'pour', 'sur', 'sont',
-      'avec', 'tout', 'mais', 'comme', 'ou', 'son', 'elle', 'nous', 'avoir', 'fait']),
-    de: new Set(['der', 'die', 'und', 'in', 'den', 'von', 'zu', 'das', 'mit', 'sich',
-      'des', 'auf', 'ist', 'ein', 'eine', 'es', 'an', 'auch', 'als', 'werden',
-      'dass', 'sie', 'nach', 'noch', 'wie', 'einem', 'uber', 'nur', 'oder', 'aber']),
-    pt: new Set(['de', 'que', 'do', 'da', 'em', 'um', 'para', 'e', 'com', 'nao',
-      'uma', 'os', 'no', 'se', 'na', 'por', 'mais', 'dos', 'como', 'mas',
-      'foi', 'ao', 'ele', 'das', 'tem', 'seu', 'sua', 'ou', 'ser', 'quando']),
-    ko: new Set(['이', '가', '은', '는', '을', '를', '에', '의', '도', '로',
-      '으로', '와', '과', '한', '할', '하다', '것', '그', '저', '수',
-      '있', '없', '되', '같', '때문', '위해', '대한', '보다', '또는', '그리고']),
-    zh: new Set(['的', '了', '在', '是', '我', '有', '和', '就', '不', '人',
-      '都', '一', '上', '也', '很', '到', '说', '要', '去',
-      '你', '会', '着', '没有', '看', '好', '自己', '这']),
-    ar: new Set(['في', 'من', 'على', 'إلى', 'أن', 'هذا', 'التي', 'الذي', 'هو', 'هي',
-      'لا', 'ما', 'كان', 'بل', 'أو', 'بعد', 'قبل', 'حتى', 'منذ', 'عند']),
-    hi: new Set(['के', 'में', 'है', 'की', 'को', 'पर', 'से', 'एक', 'था', 'कि',
-      'यह', 'और', 'ने', 'हैं', 'भी', 'तो', 'या', 'अपने', 'इस', 'कर']),
-    ru: new Set(['и', 'в', 'на', 'не', 'что', 'с', 'он', 'по', 'это', 'из',
-      'за', 'но', 'все', 'как', 'его', 'она', 'был', 'от', 'для', 'ты']),
-    it: new Set(['di', 'che', 'il', 'la', 'in', 'un', 'del', 'per', 'con', 'non',
-      'una', 'sono', 'al', 'da', 'ha', 'anche', 'piu', 'come', 'si', 'nel']),
-    nl: new Set(['de', 'het', 'een', 'van', 'en', 'in', 'is', 'dat', 'op', 'te',
-      'zijn', 'voor', 'met', 'niet', 'aan', 'er', 'maar', 'om', 'ook', 'als']),
-    th: new Set(['ของ', 'ที่', 'และ', 'ใน', 'เป็น', 'การ', 'ได้', 'ไม่', 'มี', 'จะ',
-      'ให้', 'ไป', 'มา', 'ทำ', 'ถ้า', 'แต่', 'กับ', 'ว่า', 'แล้ว', 'อยู่']),
-    vi: new Set(['cua', 'la', 'va', 'nhung', 'khong', 'co', 'nguoi', 'nay', 'cac', 'toi',
-      'mot', 'ban', 'noi', 'lam', 'nhu', 'day', 'viec', 'nam', 'ngay']),
-    pl: new Set(['i', 'w', 'nie', 'na', 'do', 'to', 'jak', 'co', 'za', 'od',
-      'tak', 'ale', 'o', 'czy', 'tego', 'ten', 'jest', 'byl', 'po', 'przy']),
-    tr: new Set(['bir', 've', 'bu', 'da', 'de', 'ne', 'ben', 'sen', 'o', 'biz',
-      'siz', 'onlar', 'icin', 'ile', 'ama', 'daha', 'var', 'yok', 'gibi', 'sonra']),
-    sv: new Set(['och', 'att', 'det', 'i', 'en', 'som', 'ar', 'av', 'for', 'med',
-      'den', 'till', 'pa', 'har', 'de', 'inte', 'om', 'ett', 'var', 'men']),
+    en: new Set(["the","be","to","of","and","a","in","that","have","i","it","for","not","on","with","he","as","you","do","at","this","but","his","by","from","they","we","say","her","she","or","an","will","my","one","all","would","there","their","what","so","up","out","if","about","who","get","which","go","me"]),
+    ja: new Set(["の","に","は","を","た","が","で","て","と","し","れ","さ","ある","いる","する","から","こと","これ","それ","もの","です","ます","ない","よう","ため","その","まで","なる","として","いえる"]),
+    es: new Set(["el","la","de","que","y","en","un","ser","se","no","haber","por","con","para","como","estar","tener","leer","todo","mas","este","hacer","o","poder","decir","otro","ir","ver","dar","saber"]),
+    fr: new Set(["le","la","de","et","les","des","un","une","est","en","que","qui","dans","du","ce","il","pas","pour","sur","sont","avec","tout","mais","comme","ou","son","elle","nous","avoir","fait"]),
+    de: new Set(["der","die","und","in","den","von","zu","das","mit","sich","des","auf","ist","ein","eine","es","an","auch","als","werden","dass","sie","nach","noch","wie","einem","uber","nur","oder","aber"]),
+    pt: new Set(["de","que","do","da","em","um","para","e","com","nao","uma","os","no","se","na","por","mais","dos","como","mas","foi","ao","ele","das","tem","seu","sua","ou","ser","quando"]),
+    ko: new Set(["이","가","은","는","을","를","에","의","도","로","으로","와","과","한","할","하다","것","그","저","수","있","없","되","같","때문","위해","대한","보다","또는","그리고"]),
+    zh: new Set(["的","了","在","是","我","有","和","就","不","人","都","一","上","也","很","到","说","要","去","你","会","着","没有","看","好","自己","这"]),
+    ar: new Set(["في","من","على","إلى","أن","هذا","التي","الذي","هو","هي","لا","ما","كان","بل","أو","بعد","قبل","حتى","منذ","عند"]),
+    hi: new Set(["के","में","है","की","को","पर","से","एक","था","कि","यह","और","ने","हैं","भी","तो","या","अपने","इस","कर"]),
+    ru: new Set(["и","в","на","не","что","с","он","по","это","из","за","но","все","как","его","она","был","от","для","ты"]),
+    it: new Set(["di","che","il","la","in","un","del","per","con","non","una","sono","al","da","ha","anche","piu","come","si","nel"]),
+    nl: new Set(["de","het","een","van","en","in","is","dat","op","te","zijn","voor","met","niet","aan","er","maar","om","ook","als"]),
+    th: new Set(["ของ","ที่","และ","ใน","เป็น","การ","ได้","ไม่","มี","จะ","ให้","ไป","มา","ทำ","ถ้า","แต่","กับ","ว่า","แล้ว","อยู่"]),
+    vi: new Set(["cua","la","va","nhung","khong","co","nguoi","nay","cac","toi","mot","ban","noi","lam","nhu","day","viec","nam","ngay"]),
+    pl: new Set(["i","w","nie","na","do","to","jak","co","za","od","tak","ale","o","czy","tego","ten","jest","byl","po","przy"]),
+    tr: new Set(["bir","ve","bu","da","de","ne","ben","sen","o","biz","siz","onlar","icin","ile","ama","daha","var","yok","gibi","sonra"]),
+    sv: new Set(["och","att","det","i","en","som","ar","av","for","med","den","till","pa","har","de","inte","om","ett","var","men"]),
   };
 
   function lswIsInTargetLanguage(text) {
@@ -431,26 +364,16 @@
     if (/^\d+$/.test(trimmed)) return true;
     if (/^[0-9\s.,!?'"()\[\]:;\-\/\+\=\*\&\%\$\#\@\<\>\?]+$/.test(trimmed)) return true;
 
-    if (currentTargetLanguage === 'ja') {
-      return /[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF\u3400-\u4DBF]/.test(trimmed);
-    }
-    if (currentTargetLanguage === 'zh') {
+    if (currentTargetLanguage === "ja") return /[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF\u3400-\u4DBF]/.test(trimmed);
+    if (currentTargetLanguage === "zh") {
       const hasChinese = /[\u4E00-\u9FFF\u3400-\u4DBF]/.test(trimmed);
       const hasJapaneseOnly = /[\u3040-\u309F\u30A0-\u30FF]/.test(trimmed);
       return hasChinese && !hasJapaneseOnly;
     }
-    if (currentTargetLanguage === 'ko') {
-      return /[\uAC00-\uD7AF\u1100-\u11FF]/.test(trimmed);
-    }
-    if (currentTargetLanguage === 'ar') {
-      return /[\u0600-\u06FF\u0750-\u077F]/.test(trimmed);
-    }
-    if (currentTargetLanguage === 'hi') {
-      return /[\u0900-\u097F]/.test(trimmed);
-    }
-    if (currentTargetLanguage === 'th') {
-      return /[\u0E00-\u0E7F]/.test(trimmed);
-    }
+    if (currentTargetLanguage === "ko") return /[\uAC00-\uD7AF\u1100-\u11FF]/.test(trimmed);
+    if (currentTargetLanguage === "ar") return /[\u0600-\u06FF\u0750-\u077F]/.test(trimmed);
+    if (currentTargetLanguage === "hi") return /[\u0900-\u097F]/.test(trimmed);
+    if (currentTargetLanguage === "th") return /[\u0E00-\u0E7F]/.test(trimmed);
 
     const words = COMMON_WORDS[currentTargetLanguage];
     if (words) {
@@ -460,7 +383,6 @@
         if (matchCount >= Math.ceil(lowerWords.length * 0.3)) return true;
       }
     }
-
     return false;
   }
 
@@ -482,10 +404,10 @@
           if (!parent) return NodeFilter.FILTER_REJECT;
           if (EXCLUDED_TAGS.has(parent.tagName)) return NodeFilter.FILTER_REJECT;
           if (parent.isContentEditable) return NodeFilter.FILTER_REJECT;
-          if (parent.closest && parent.closest('#lsw-widget')) return NodeFilter.FILTER_REJECT;
+          if (parent.closest && parent.closest("#lsw-widget")) return NodeFilter.FILTER_REJECT;
           if (processedNodes.has(node)) return NodeFilter.FILTER_REJECT;
           return NodeFilter.FILTER_ACCEPT;
-        }
+        },
       }
     );
 
@@ -509,17 +431,23 @@
       return texts.map(function (t) { return translationCache.get(t); });
     }
 
-    const delimiter = '\n---\n';
+    const delimiter = "\n---\n";
     const joinedText = texts.join(delimiter);
-    const url = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=' + currentTargetLanguage + '&dt=t&q=' + encodeURIComponent(joinedText);
+    const url =
+      "https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=" +
+      currentTargetLanguage +
+      "&dt=t&q=" +
+      encodeURIComponent(joinedText);
 
     const response = await fetch(url);
-    if (!response.ok) throw new Error('HTTP ' + response.status);
+    if (!response.ok) throw new Error("HTTP " + response.status);
     const data = await response.json();
 
     if (data && data[0]) {
-      const fullTranslation = data[0].map(function (s) { return s[0] || ''; }).join('');
-      const isSameLanguage = data[2] === currentTargetLanguage || fullTranslation.trim().toLowerCase() === joinedText.trim().toLowerCase();
+      const fullTranslation = data[0].map(function (s) { return s[0] || ""; }).join("");
+      const isSameLanguage =
+        data[2] === currentTargetLanguage ||
+        fullTranslation.trim().toLowerCase() === joinedText.trim().toLowerCase();
 
       if (isSameLanguage) {
         texts.forEach(function (t) { lswCacheTranslation(t, t); });
@@ -559,8 +487,8 @@
       );
 
       for (const result of results) {
-        if (result.status === 'rejected') {
-          console.error('[LanguageSwitcher] Batch translation failed:', result.reason);
+        if (result.status === "rejected") {
+          console.error("[LanguageSwitcher] Batch translation failed:", result.reason);
           continue;
         }
 
@@ -583,9 +511,9 @@
     if (!widget) return;
 
     widget.classList.add("lsw-translating");
+    widget.classList.remove("lsw-open");
     currentTargetLanguage = targetLang;
 
-    // Reset state for new language
     processedNodes.clear();
     translationCache.clear();
 
@@ -602,8 +530,6 @@
     }
 
     widget.classList.remove("lsw-translating");
-
-    // Watch for dynamically added content
     lswSetupMutationObserver();
   }
 
@@ -616,7 +542,11 @@
       for (const mutation of mutations) {
         if (mutation.addedNodes.length > 0) {
           for (const node of mutation.addedNodes) {
-            if (node.nodeType === Node.ELEMENT_NODE && !EXCLUDED_TAGS.has(node.tagName) && !node.closest('#lsw-widget')) {
+            if (
+              node.nodeType === Node.ELEMENT_NODE &&
+              !EXCLUDED_TAGS.has(node.tagName) &&
+              !node.closest("#lsw-widget")
+            ) {
               hasAddedNodes = true;
               break;
             }
@@ -644,75 +574,56 @@
 
     observer.observe(document.body, {
       childList: true,
-      subtree: true
+      subtree: true,
     });
   }
 
-  // Initialize widget
   async function init() {
     const apiKey = getApiKey();
-    if (!apiKey) {
-      return;
-    }
+    if (!apiKey) return;
 
     try {
-      // Fetch site configuration
       const response = await fetch(CONFIG.apiEndpoint + "/config/" + apiKey);
-      if (!response.ok) {
-        return;
-      }
+      if (!response.ok) return;
 
       const config = await response.json();
       const sourceLanguage = detectPageLanguage();
 
-      // Add styles
       document.head.appendChild(createWidgetStyles());
 
-      // Add widget HTML
       const widgetWrapper = document.createElement("div");
       widgetWrapper.innerHTML = createWidgetHTML(config, sourceLanguage);
       document.body.appendChild(widgetWrapper);
 
-      // Add event listeners
       const widget = document.getElementById("lsw-widget");
-      const container = widget.querySelector(".lsw-container");
+      const pill = widget.querySelector(".lsw-pill");
       const dropdown = widget.querySelector(".lsw-dropdown");
-      const targetLangBtn = widget.querySelector(".lsw-target-lang");
-      const langOptions = widget.querySelectorAll(".lsw-lang-option");
 
-      // Toggle dropdown
-      container.addEventListener("click", (e) => {
+      pill.addEventListener("click", (e) => {
         e.stopPropagation();
-        const isVisible = dropdown.style.display !== "none";
-        dropdown.style.display = isVisible ? "none" : "block";
+        widget.classList.toggle("lsw-open");
       });
 
-      // Close dropdown when clicking outside
       document.addEventListener("click", () => {
-        dropdown.style.display = "none";
+        widget.classList.remove("lsw-open");
       });
 
       dropdown.addEventListener("click", (e) => {
         e.stopPropagation();
       });
 
-      // Language selection
-      langOptions.forEach((option) => {
+      widget.querySelectorAll(".lsw-lang-option").forEach((option) => {
         option.addEventListener("click", () => {
           const targetLang = option.dataset.lang;
           const langInfo = LANGUAGES[targetLang];
 
-          // Update button
-          targetLangBtn.querySelector(".lsw-flag").textContent = langInfo.flag;
-          targetLangBtn.title = `Translate to: ${langInfo.name}`;
+          pill.querySelector(".lsw-current-flag").textContent = langInfo.flag;
+          pill.title = langInfo.name;
 
-          // Close dropdown
-          dropdown.style.display = "none";
+          widget.classList.remove("lsw-open");
 
-          // Translate page
           translatePage(targetLang);
 
-          // Log translation
           logTranslation(
             config.site_id,
             sourceLanguage,
@@ -721,12 +632,9 @@
           );
         });
       });
-    } catch {
-      // Widget failed to initialize
-    }
+    } catch {}
   }
 
-  // Initialize when DOM is ready
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init);
   } else {

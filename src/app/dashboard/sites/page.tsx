@@ -17,6 +17,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Copy, Plus, Trash2, ExternalLink } from "lucide-react";
 import { LANGUAGES } from "@/lib/languages";
+import { useDict } from "@/lib/i18n/use-dict";
 import type { User } from "@supabase/supabase-js";
 
 interface Site {
@@ -31,6 +32,7 @@ interface Site {
 }
 
 export default function SitesPage() {
+  const dict = useDict();
   const [user, setUser] = useState<User | null>(null);
   const [sites, setSites] = useState<Site[]>([]);
   const [loading, setLoading] = useState(true);
@@ -102,7 +104,8 @@ export default function SitesPage() {
   };
 
   const handleDeleteSite = async (siteId: string) => {
-    if (!confirm("Delete this site?")) return;
+    const d = dict?.dashboard?.sites;
+    if (!confirm(d?.confirmDelete || "Delete this site?")) return;
 
     const { error } = await supabase.from("sites").delete().eq("id", siteId);
 
@@ -159,9 +162,15 @@ export default function SitesPage() {
     setTimeout(() => setCopiedKeyId(null), 2000);
   };
 
+  if (!dict) return null;
+
+  const d = dict.dashboard.sites;
+
   if (loading) {
     return (
-      <div className="text-center py-12 text-sm text-gray-400">Loading...</div>
+      <div className="text-center py-12 text-sm text-gray-400">
+        {dict.common.loading}
+      </div>
     );
   }
 
@@ -169,46 +178,42 @@ export default function SitesPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Sites</h1>
-          <p className="text-sm text-gray-500 mt-1">
-            Manage your registered websites and widget configurations.
-          </p>
+          <h1 className="text-2xl font-bold text-gray-900">{d.title}</h1>
+          <p className="text-sm text-gray-500 mt-1">{d.subtitle}</p>
         </div>
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger render={<Button />}>
             <Plus className="h-4 w-4 mr-1.5" />
-            Add Site
+            {d.addSite}
           </DialogTrigger>
           <DialogContent>
             <form onSubmit={handleCreateSite}>
               <DialogHeader>
-                <DialogTitle>Add a new site</DialogTitle>
-                <DialogDescription>
-                  Enter your website domain and choose your language settings.
-                </DialogDescription>
+                <DialogTitle>{d.dialogTitle}</DialogTitle>
+                <DialogDescription>{d.dialogDescription}</DialogDescription>
               </DialogHeader>
               <div className="space-y-4 py-4">
                 <div className="space-y-1.5">
-                  <Label htmlFor="domain">Domain</Label>
+                  <Label htmlFor="domain">{d.domain}</Label>
                   <Input
                     id="domain"
-                    placeholder="example.com"
+                    placeholder={d.domainPlaceholder}
                     value={newDomain}
                     onChange={(e) => setNewDomain(e.target.value)}
                     required
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <Label htmlFor="siteName">Site Name (optional)</Label>
+                  <Label htmlFor="siteName">{d.siteName}</Label>
                   <Input
                     id="siteName"
-                    placeholder="My Website"
+                    placeholder={d.siteNamePlaceholder}
                     value={newSiteName}
                     onChange={(e) => setNewSiteName(e.target.value)}
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <Label htmlFor="defaultLang">Default Target Language</Label>
+                  <Label htmlFor="defaultLang">{d.defaultLang}</Label>
                   <select
                     id="defaultLang"
                     value={newDefaultLang}
@@ -223,7 +228,7 @@ export default function SitesPage() {
                   </select>
                 </div>
                 <div className="space-y-1.5">
-                  <Label>Supported Languages</Label>
+                  <Label>{d.supportedLangs}</Label>
                   <div className="flex flex-wrap gap-2 max-h-40 overflow-y-auto">
                     {LANGUAGES.map((lang) => (
                       <label
@@ -246,9 +251,7 @@ export default function SitesPage() {
                     ))}
                   </div>
                   {newAllowedLangs.length === 0 && (
-                    <p className="text-xs text-red-500">
-                      Select at least one language
-                    </p>
+                    <p className="text-xs text-red-500">{d.selectAtLeastOne}</p>
                   )}
                 </div>
               </div>
@@ -257,7 +260,7 @@ export default function SitesPage() {
                   type="submit"
                   disabled={creating || newAllowedLangs.length === 0}
                 >
-                  {creating ? "Creating..." : "Create"}
+                  {creating ? d.creating : d.create}
                 </Button>
               </DialogFooter>
             </form>
@@ -267,12 +270,10 @@ export default function SitesPage() {
 
       {sites.length === 0 ? (
         <div className="bg-white rounded-2xl border border-gray-100 py-16 text-center">
-          <p className="text-gray-400 mb-4">
-            No sites registered yet.
-          </p>
+          <p className="text-gray-400 mb-4">{d.noSites}</p>
           <Button onClick={() => setDialogOpen(true)}>
             <Plus className="h-4 w-4 mr-1.5" />
-            Add Your First Site
+            {d.addFirstSite}
           </Button>
         </div>
       ) : (
@@ -295,7 +296,7 @@ export default function SitesPage() {
                           : "bg-gray-100 text-gray-400"
                       }`}
                     >
-                      {site.is_active ? "Active" : "Inactive"}
+                      {site.is_active ? d.active : d.inactive}
                     </span>
                   </div>
                   <div className="flex items-center gap-1.5 mt-1 text-sm text-gray-400">
@@ -309,7 +310,7 @@ export default function SitesPage() {
                     className="inline-flex items-center gap-1.5 text-sm font-medium text-[#00a67e] hover:text-[#008f6d] bg-[#e6f7f1] hover:bg-[#d1f0e5] transition-all px-3 py-1.5 rounded-full"
                   >
                     <Copy className="h-3.5 w-3.5" />
-                    {copiedKeyId === site.api_key ? "Copied!" : "Copy Code"}
+                    {copiedKeyId === site.api_key ? d.copied : d.copyCode}
                   </button>
                   <button
                     onClick={() => handleDeleteSite(site.id)}
@@ -327,7 +328,7 @@ export default function SitesPage() {
               <div className="mt-4">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-xs font-medium text-gray-400 uppercase tracking-wide">
-                    Supported Languages
+                    {d.supportedLanguages}
                   </span>
                   <button
                     onClick={() => {
@@ -336,7 +337,7 @@ export default function SitesPage() {
                     }}
                     className="text-xs font-medium text-gray-400 hover:text-gray-600 transition-colors"
                   >
-                    Edit
+                    {d.edit}
                   </button>
                 </div>
                 {editingSiteId === site.id ? (
@@ -365,9 +366,7 @@ export default function SitesPage() {
                       ))}
                     </div>
                     {editingAllowedLangs.length === 0 && (
-                      <p className="text-xs text-red-500">
-                        Select at least one language
-                      </p>
+                      <p className="text-xs text-red-500">{d.selectAtLeastOne}</p>
                     )}
                     <div className="flex gap-2">
                       <button
@@ -375,13 +374,13 @@ export default function SitesPage() {
                         disabled={saving || editingAllowedLangs.length === 0}
                         className="text-sm font-semibold text-white bg-[#00a67e] hover:bg-[#008f6d] transition-all px-4 py-1.5 rounded-full disabled:opacity-50"
                       >
-                        {saving ? "Saving..." : "Save"}
+                        {saving ? d.saving : d.save}
                       </button>
                       <button
                         onClick={() => setEditingSiteId(null)}
                         className="text-sm font-medium text-gray-500 hover:text-gray-700 px-4 py-1.5 rounded-full hover:bg-gray-100 transition-all"
                       >
-                        Cancel
+                        {d.cancel}
                       </button>
                     </div>
                   </div>

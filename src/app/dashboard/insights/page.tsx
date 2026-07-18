@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/table";
 import { BarChart3, Globe, Users } from "lucide-react";
 import { LANGUAGES_MAP } from "@/lib/languages";
+import { useDict } from "@/lib/i18n/use-dict";
 import {
   BarChart,
   Bar,
@@ -38,6 +39,7 @@ interface TranslationLog {
 }
 
 export default function InsightsPage() {
+  const dict = useDict();
   const [sites, setSites] = useState<Site[]>([]);
   const [selectedSiteId, setSelectedSiteId] = useState<string>("");
   const [logs, setLogs] = useState<TranslationLog[]>([]);
@@ -105,7 +107,7 @@ export default function InsightsPage() {
 
   const dailyStats = logs.reduce(
     (acc, log) => {
-      const date = new Date(log.translated_at).toLocaleDateString("en-US");
+      const date = new Date(log.translated_at).toLocaleDateString();
       acc[date] = (acc[date] || 0) + 1;
       return acc;
     },
@@ -116,20 +118,24 @@ export default function InsightsPage() {
     .map(([date, count]) => ({ date, count }))
     .reverse();
 
+  if (!dict) return null;
+
+  const d = dict.dashboard.insights;
+
   if (loading) {
     return (
-      <div className="text-center py-12 text-sm text-gray-400">Loading...</div>
+      <div className="text-center py-12 text-sm text-gray-400">
+        {dict.common.loading}
+      </div>
     );
   }
 
   if (sites.length === 0) {
     return (
       <div className="space-y-4">
-        <h1 className="text-2xl font-bold text-gray-900">Insights</h1>
+        <h1 className="text-2xl font-bold text-gray-900">{d.title}</h1>
         <div className="bg-white rounded-2xl border border-gray-100 py-16 text-center">
-          <p className="text-gray-400">
-            No sites registered yet. Add a site first to see insights.
-          </p>
+          <p className="text-gray-400">{d.noSites}</p>
         </div>
       </div>
     );
@@ -138,15 +144,12 @@ export default function InsightsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Insights</h1>
-        <p className="text-sm text-gray-500 mt-1">
-          Translation usage analytics for your sites.
-        </p>
+        <h1 className="text-2xl font-bold text-gray-900">{d.title}</h1>
+        <p className="text-sm text-gray-500 mt-1">{d.subtitle}</p>
       </div>
 
-      {/* Site selector */}
       <div className="flex items-center gap-3">
-        <label className="text-sm font-medium text-gray-700">Site:</label>
+        <label className="text-sm font-medium text-gray-700">{d.site}:</label>
         <select
           value={selectedSiteId}
           onChange={(e) => setSelectedSiteId(e.target.value)}
@@ -160,30 +163,28 @@ export default function InsightsPage() {
         </select>
       </div>
 
-      {/* Stats */}
       <div className="grid gap-4 md:grid-cols-3">
         <StatCard
           icon={<BarChart3 className="h-4 w-4 text-[#00a67e]" />}
-          label="Total Translations"
+          label={d.totalTranslations}
           value={totalTranslations.toLocaleString()}
         />
         <StatCard
           icon={<Users className="h-4 w-4 text-[#00a67e]" />}
-          label="Unique Visitors"
+          label={d.uniqueVisitors}
           value={uniqueVisitors.toLocaleString()}
         />
         <StatCard
           icon={<Globe className="h-4 w-4 text-[#00a67e]" />}
-          label="Languages Used"
+          label={d.languagesUsed}
           value={String(Object.keys(languageStats).length)}
         />
       </div>
 
-      {/* Charts */}
       <div className="grid gap-4 md:grid-cols-2">
         <div className="bg-white rounded-2xl border border-gray-100 p-5">
           <h3 className="text-sm font-bold text-gray-900 mb-4">
-            Top Languages
+            {d.topLanguages}
           </h3>
           {languageChartData.length > 0 ? (
             <ResponsiveContainer width="100%" height={300}>
@@ -197,14 +198,14 @@ export default function InsightsPage() {
             </ResponsiveContainer>
           ) : (
             <div className="h-[300px] flex items-center justify-center text-sm text-gray-400">
-              No data yet
+              {d.noData}
             </div>
           )}
         </div>
 
         <div className="bg-white rounded-2xl border border-gray-100 p-5">
           <h3 className="text-sm font-bold text-gray-900 mb-4">
-            Daily Translations
+            {d.dailyTranslations}
           </h3>
           {dailyChartData.length > 0 ? (
             <ResponsiveContainer width="100%" height={300}>
@@ -218,32 +219,31 @@ export default function InsightsPage() {
             </ResponsiveContainer>
           ) : (
             <div className="h-[300px] flex items-center justify-center text-sm text-gray-400">
-              No data yet
+              {d.noData}
             </div>
           )}
         </div>
       </div>
 
-      {/* Recent logs */}
       <div className="bg-white rounded-2xl border border-gray-100 p-5">
         <h3 className="text-sm font-bold text-gray-900 mb-4">
-          Recent Translations
+          {d.recentTranslations}
         </h3>
         {logs.length > 0 ? (
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Date</TableHead>
-                <TableHead>Source</TableHead>
-                <TableHead>Target</TableHead>
-                <TableHead>Page</TableHead>
+                <TableHead>{d.date}</TableHead>
+                <TableHead>{d.source}</TableHead>
+                <TableHead>{d.target}</TableHead>
+                <TableHead>{d.page}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {logs.slice(0, 10).map((log) => (
                 <TableRow key={log.id}>
                   <TableCell className="text-sm">
-                    {new Date(log.translated_at).toLocaleString("en-US")}
+                    {new Date(log.translated_at).toLocaleString()}
                   </TableCell>
                   <TableCell>
                     <span className="inline-flex items-center text-xs font-medium text-gray-600 bg-gray-50 border border-gray-100 rounded-full px-2.5 py-1">
@@ -268,7 +268,7 @@ export default function InsightsPage() {
           </Table>
         ) : (
           <div className="py-8 text-center text-sm text-gray-400">
-            No translation logs yet
+            {d.noLogs}
           </div>
         )}
       </div>

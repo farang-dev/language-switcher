@@ -1,0 +1,250 @@
+{
+  "nav": {
+    "logo": "LSwitch",
+    "features": "機能",
+    "pricing": "料金",
+    "blog": "ブログ",
+    "docs": "ドキュメント",
+    "login": "ログイン",
+    "getStarted": "無料で始める",
+    "dashboard": "ダッシュボード"
+  },
+  "hero": {
+    "badge": "無料でお試し — クレジットカード不要",
+    "title": "たった1行で",
+    "titleAccent": "多言語対応",
+    "description": "あなたのウェブサイトに言語切り替えを追加するだけ。訪問者がブラウザ上でコンテンツを母国語に翻訳します。",
+    "ctaStart": "無料ではじめる",
+    "ctaHow": "使い方を見る"
+  },
+  "browserMockup": {
+    "url": "あなたのサイト.com"
+  },
+  "features": {
+    "title": "必要なものはすべて",
+    "description": "シンプル、強力、そして完全無料。サーバー設定も複雑な統合も不要。",
+    "items": {
+      "setup": {
+        "title": "ワンライン設定",
+        "description": "1行のスクリプトタグをHTMLに貼り付けるだけ。たったそれだけでサイトが多言語に。"
+      },
+      "languages": {
+        "title": "100以上の言語",
+        "description": "Google翻訳を採用。100以上の主要言語をすぐにご利用いただけます。"
+      },
+      "cost": {
+        "title": "サーバーコストゼロ",
+        "description": "翻訳は訪問者のブラウザ上で実行。APIキーもバックエンドも不要。"
+      },
+      "analytics": {
+        "title": "リアルタイム分析",
+        "description": "訪問者がどの言語を使っているかを確認。ページや地域ごとの翻訳を追跡。"
+      },
+      "customizable": {
+        "title": "完全カスタマイズ",
+        "description": "ブランドに合わせて色、位置、サイズ、テーマを自由に設定。"
+      },
+      "speed": {
+        "title": "瞬時読み込み",
+        "description": "非同期読み込みでページ速度やCore Web Vitalsに影響ゼロ。"
+      }
+    }
+  },
+  "howItWorks": {
+    "title": "数分でセットアップ完了",
+    "description": "たった3ステップで多言語サイトの完成。",
+    "steps": {
+      "1": {
+        "title": "アカウント作成",
+        "description": "無料で登録。クレジットカードは不要。"
+      },
+      "2": {
+        "title": "サイト登録",
+        "description": "ドメインを追加し、対応言語を選択。"
+      },
+      "3": {
+        "title": "コードを貼り付け",
+        "description": "生成されたスクリプトタグをサイトの &lt;head&gt; に追加。"
+      }
+    },
+    "codeLabel": "この1行をあなたのサイトに追加するだけ"
+  },
+  "pricing": {
+    "title": "シンプルな料金体系",
+    "description": "まずは無料でお試し。必要に応じてアップグレード。",
+    "free": {
+      "name": "無料",
+      "price": "0",
+      "currency": "JPY",
+      "period": "/月",
+      "description": "小規模サイトやお試しに最適",
+      "features": [
+        "月50回までの翻訳",
+        "100+ 対応言語",
+        "基本的な分析",
+        "ウィジェットのカスタマイズ"
+      ],
+      "cta": "無料で始める"
+    },
+    "pro": {
+      "name": "プロ",
+      "price": "980",
+      "currency": "JPY",
+      "period": "/月",
+      "description": "本番サイトに最適",
+      "features": [
+        "無制限の翻訳",
+        "100+ 対応言語",
+        "高度な分析とインサイト",
+        "優先サポート",
+        "完全カスタマイズ"
+      ],
+      "cta": "プロを始める"
+    }
+  },
+  "cta": {
+    "title": "今すぐサイトをグローバルに",
+    "description": "Language Switcherを使って、世界中のユーザーにリーチしましょう。",
+    "button": "無料で始める"
+  },
+  "footer": {
+    "copyright": "Language Switcher. All rights reserved.",
+    "login": "ログイン",
+    "signup": "登録"
+  },
+  "dashboard": {
+    "nav": {
+      "overview": "概要",
+      "sites": "サイト",
+      "insights": "インサイト",
+      "settings": "設定"
+    },
+    "userNav": {
+      "settings": "設定",
+      "logout": "ログアウト"
+    },
+    "overview": {
+      "title": "おかえりなさい",
+      "subtitle": "Language Switcher のセットアップ状況の概要です。",
+      "registeredSites": "登録サイト数",
+      "widgetStatus": "ウィジェット状態",
+      "active": "有効",
+      "notSetUp": "未設定",
+      "translations": "翻訳数",
+      "manageSites": "サイト管理",
+      "getCode": "コードを取得",
+      "viewInsights": "分析を見る",
+      "quickStart": "クイックスタート",
+      "step1": "サイト登録",
+      "step1Desc": "ウェブサイトのドメインを追加し、対応言語を選択。",
+      "step2": "コードをコピー",
+      "step2Desc": "あなたのサイト用のスクリプトタグを取得。",
+      "step3": "貼り付ける",
+      "step3Desc": "スクリプトタグをサイトの &lt;head&gt; に追加。完了！",
+      "registerFirstSite": "最初のサイトを登録"
+    },
+    "sites": {
+      "title": "サイト",
+      "subtitle": "登録サイトとウィジェット設定を管理。",
+      "addSite": "サイト追加",
+      "noSites": "まだサイトが登録されていません。",
+      "addFirstSite": "最初のサイトを追加",
+      "active": "有効",
+      "inactive": "無効",
+      "copyCode": "コードをコピー",
+      "copied": "コピーしました！",
+      "delete": "削除",
+      "supportedLanguages": "対応言語",
+      "edit": "編集",
+      "save": "保存",
+      "saving": "保存中...",
+      "cancel": "キャンセル",
+      "selectAtLeastOne": "少なくとも1つの言語を選択してください",
+      "dialogTitle": "新しいサイトを追加",
+      "dialogDescription": "ウェブサイトのドメインと言語設定を入力。",
+      "domain": "ドメイン",
+      "domainPlaceholder": "example.com",
+      "siteName": "サイト名（任意）",
+      "siteNamePlaceholder": "マイサイト",
+      "defaultLang": "デフォルト翻訳言語",
+      "supportedLangs": "対応言語",
+      "create": "作成",
+      "creating": "作成中...",
+      "confirmDelete": "このサイトを削除しますか？"
+    },
+    "insights": {
+      "title": "インサイト",
+      "subtitle": "サイトの翻訳利用分析。",
+      "noSites": "サイトが登録されていません。インサイトを見るにはサイトを追加してください。",
+      "totalTranslations": "総翻訳数",
+      "uniqueVisitors": "ユニーク訪問者",
+      "languagesUsed": "使用言語数",
+      "topLanguages": "言語別翻訳数",
+      "dailyTranslations": "日別翻訳数",
+      "recentTranslations": "最近の翻訳",
+      "noData": "データがまだありません",
+      "noLogs": "翻訳ログがまだありません",
+      "site": "サイト",
+      "date": "日付",
+      "source": "翻訳元",
+      "target": "翻訳先",
+      "page": "ページ"
+    },
+    "settings": {
+      "title": "設定",
+      "subtitle": "アカウントとウィジェット設定を管理。",
+      "profile": "プロフィール",
+      "profileDesc": "アカウント情報",
+      "email": "メールアドレス",
+      "displayName": "表示名",
+      "nativeLanguage": "母国語",
+      "widgetSettings": "ウィジェット設定",
+      "widgetSettingsDesc": "ウィジェットの外観をカスタマイズ。",
+      "position": "位置",
+      "theme": "テーマ",
+      "size": "サイズ",
+      "save": "変更を保存",
+      "saving": "保存中...",
+      "saved": "変更を保存しました！",
+      "profileNotFound": "プロフィールが見つかりません"
+    },
+    "sitesPage": {
+      "loading": "読み込み中..."
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "おかえりなさい",
+      "subtitle": "アカウントにログイン",
+      "email": "メールアドレス",
+      "emailPlaceholder": "you@example.com",
+      "password": "パスワード",
+      "passwordPlaceholder": "••••••••",
+      "button": "ログイン",
+      "loggingIn": "ログイン中...",
+      "noAccount": "アカウントをお持ちでないですか？",
+      "signUp": "登録",
+      "illustrationTitle": "1行で世界へ",
+      "illustrationDesc": "ウェブサイトに言語切り替えを追加し、訪問者が母国語で閲覧できるように。"
+    },
+    "signup": {
+      "title": "アカウント作成",
+      "subtitle": "無料で始められます",
+      "name": "名前",
+      "namePlaceholder": "あなたの名前",
+      "email": "メールアドレス",
+      "emailPlaceholder": "you@example.com",
+      "password": "パスワード",
+      "passwordPlaceholder": "••••••••",
+      "button": "アカウント作成",
+      "creating": "作成中...",
+      "hasAccount": "すでにアカウントをお持ちですか？",
+      "login": "ログイン",
+      "illustrationTitle": "グローバルな読者へ",
+      "illustrationDesc": "Language Switcher を使って、世界中の人があなたのコンテンツにアクセスできるように。"
+    }
+  },
+  "common": {
+    "loading": "読み込み中..."
+  }
+}

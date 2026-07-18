@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { Save, User } from "lucide-react";
 import { LANGUAGES } from "@/lib/languages";
+import { useDict } from "@/lib/i18n/use-dict";
 import type { User as SupabaseUser } from "@supabase/supabase-js";
 
 interface UserProfile {
@@ -36,6 +37,7 @@ const WIDGET_SIZES = [
 ];
 
 export default function SettingsPage() {
+  const dict = useDict();
   const [user, setUser] = useState<SupabaseUser | null>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
@@ -89,16 +91,22 @@ export default function SettingsPage() {
     setSaving(false);
   };
 
+  if (!dict) return null;
+
+  const d = dict.dashboard.settings;
+
   if (loading) {
     return (
-      <div className="text-center py-12 text-sm text-gray-400">Loading...</div>
+      <div className="text-center py-12 text-sm text-gray-400">
+        {dict.common.loading}
+      </div>
     );
   }
 
   if (!profile) {
     return (
       <div className="text-center py-12 text-sm text-gray-400">
-        Profile not found
+        {d.profileNotFound}
       </div>
     );
   }
@@ -106,27 +114,24 @@ export default function SettingsPage() {
   return (
     <div className="space-y-8 max-w-2xl">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Settings</h1>
-        <p className="text-sm text-gray-500 mt-1">
-          Manage your account and widget preferences.
-        </p>
+        <h1 className="text-2xl font-bold text-gray-900">{d.title}</h1>
+        <p className="text-sm text-gray-500 mt-1">{d.subtitle}</p>
       </div>
 
-      {/* Profile */}
       <div className="bg-white rounded-2xl border border-gray-100 p-6">
         <div className="flex items-center gap-3 mb-6">
           <div className="w-9 h-9 rounded-xl bg-[#e6f7f1] flex items-center justify-center">
             <User className="h-4 w-4 text-[#00a67e]" />
           </div>
           <div>
-            <h2 className="text-base font-bold text-gray-900">Profile</h2>
-            <p className="text-xs text-gray-400">Your account information</p>
+            <h2 className="text-base font-bold text-gray-900">{d.profile}</h2>
+            <p className="text-xs text-gray-400">{d.profileDesc}</p>
           </div>
         </div>
         <div className="space-y-4">
           <div className="space-y-1.5">
             <label className="block text-sm font-medium text-gray-700">
-              Email
+              {d.email}
             </label>
             <input
               value={user?.email || ""}
@@ -136,7 +141,7 @@ export default function SettingsPage() {
           </div>
           <div className="space-y-1.5">
             <label className="block text-sm font-medium text-gray-700">
-              Display Name
+              {d.displayName}
             </label>
             <input
               value={profile.display_name || ""}
@@ -148,7 +153,7 @@ export default function SettingsPage() {
           </div>
           <div className="space-y-1.5">
             <label className="block text-sm font-medium text-gray-700">
-              Native Language
+              {d.nativeLanguage}
             </label>
             <select
               value={profile.native_language}
@@ -167,18 +172,17 @@ export default function SettingsPage() {
         </div>
       </div>
 
-      {/* Widget Settings */}
       <div className="bg-white rounded-2xl border border-gray-100 p-6">
         <div className="mb-6">
-          <h2 className="text-base font-bold text-gray-900">Widget Settings</h2>
+          <h2 className="text-base font-bold text-gray-900">{d.widgetSettings}</h2>
           <p className="text-xs text-gray-400 mt-0.5">
-            Customize the appearance of your widget.
+            {d.widgetSettingsDesc}
           </p>
         </div>
         <div className="space-y-4">
           <div className="space-y-1.5">
             <label className="block text-sm font-medium text-gray-700">
-              Position
+              {d.position}
             </label>
             <select
               value={profile.widget_position}
@@ -196,7 +200,7 @@ export default function SettingsPage() {
           </div>
           <div className="space-y-1.5">
             <label className="block text-sm font-medium text-gray-700">
-              Theme
+              {d.theme}
             </label>
             <select
               value={profile.widget_theme}
@@ -214,7 +218,7 @@ export default function SettingsPage() {
           </div>
           <div className="space-y-1.5">
             <label className="block text-sm font-medium text-gray-700">
-              Size
+              {d.size}
             </label>
             <select
               value={profile.widget_size}
@@ -233,7 +237,6 @@ export default function SettingsPage() {
         </div>
       </div>
 
-      {/* Save Button */}
       <div className="flex items-center gap-4">
         <button
           onClick={handleSave}
@@ -241,11 +244,11 @@ export default function SettingsPage() {
           className="inline-flex items-center gap-2 text-sm font-semibold text-white bg-[#00a67e] hover:bg-[#008f6d] transition-all px-6 py-2.5 rounded-full disabled:opacity-50"
         >
           <Save className="h-4 w-4" />
-          {saving ? "Saving..." : "Save Changes"}
+          {saving ? d.saving : d.save}
         </button>
         {saved && (
           <span className="text-sm font-medium text-[#00a67e]">
-            Changes saved!
+            {d.saved}
           </span>
         )}
       </div>

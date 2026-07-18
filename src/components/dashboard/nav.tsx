@@ -4,15 +4,16 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
-const navItems = [
-  { href: "/dashboard", label: "Overview" },
-  { href: "/dashboard/sites", label: "Sites" },
-  { href: "/dashboard/insights", label: "Insights" },
-  { href: "/dashboard/settings", label: "Settings" },
-];
-
-export function DashboardNav() {
+export function DashboardNav({ dict }: { dict: any }) {
   const pathname = usePathname();
+  const d = dict.dashboard.nav;
+
+  const navItems = [
+    { href: "/dashboard", label: d.overview },
+    { href: "/dashboard/sites", label: d.sites },
+    { href: "/dashboard/insights", label: d.insights },
+    { href: "/dashboard/settings", label: d.settings },
+  ];
 
   return (
     <nav className="hidden md:flex items-center gap-1">

@@ -20,7 +20,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${figtree.variable} h-full antialiased`}>
+    <html className={`${figtree.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col" style={{ fontFamily: "var(--font-figtree), system-ui, sans-serif" }}>
         {children}
       </body>
