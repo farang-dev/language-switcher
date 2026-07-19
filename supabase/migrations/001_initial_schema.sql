@@ -20,7 +20,7 @@ CREATE TABLE sites (
   domain TEXT NOT NULL,
   site_name TEXT,
   api_key TEXT UNIQUE DEFAULT encode(gen_random_bytes(16), 'hex'),
-  allowed_languages TEXT[] DEFAULT ARRAY['en','ja','es','fr','de','zh','ko','pt','it','ru','ar','hi','th','vi','id','ms','tr','pl','nl','sv'],
+  allowed_languages TEXT[] DEFAULT ARRAY['en','ja','es','fr','de','zh','ko','pt','it','ru','ar','hi','th','vi','id','ms','tr','pl','nl','sv','af','am','az','be','bg','bn','bs','ca','ceb','co','cs','cy','da','el','eo','et','eu','fa','fi','fj','fy','ga','gd','gl','gu','ha','haw','he','hmn','hr','ht','hu','hy','ig','is','jw','ka','kk','km','kn','ku','ky','la','lb','lo','lt','lv','mg','mi','mk','ml','mn','mr','mt','my','ne','no','ny','or','pa','ps','ro','rw','sd','si','sk','sl','sm','sn','so','sq','sr','st','su','sw','ta','te','tg','tk','tl','to','ug','uk','ur','uz','xh','yi','yo','zu'],
   default_target_language TEXT DEFAULT 'en',
   is_active BOOLEAN DEFAULT true,
   created_at TIMESTAMPTZ DEFAULT NOW(),
