@@ -15,6 +15,8 @@ interface UserProfile {
   widget_position: string;
   widget_theme: string;
   widget_size: string;
+  widget_bg_color: string;
+  widget_opacity: number;
 }
 
 const WIDGET_POSITIONS = [
@@ -80,6 +82,8 @@ export default function SettingsPage() {
         widget_position: profile.widget_position,
         widget_theme: profile.widget_theme,
         widget_size: profile.widget_size,
+        widget_bg_color: profile.widget_bg_color,
+        widget_opacity: profile.widget_opacity,
         updated_at: new Date().toISOString(),
       })
       .eq("id", user.id);
@@ -233,6 +237,51 @@ export default function SettingsPage() {
                 </option>
               ))}
             </select>
+          </div>
+          <div className="space-y-1.5">
+            <label className="block text-sm font-medium text-gray-700">
+              {d.bgColor}
+            </label>
+            <div className="flex items-center gap-3">
+              <input
+                type="color"
+                value={profile.widget_bg_color}
+                onChange={(e) =>
+                  setProfile({ ...profile, widget_bg_color: e.target.value })
+                }
+                className="w-10 h-10 rounded-xl border border-gray-200 cursor-pointer bg-white p-0.5"
+              />
+              <input
+                value={profile.widget_bg_color}
+                onChange={(e) =>
+                  setProfile({ ...profile, widget_bg_color: e.target.value })
+                }
+                className="flex-1 h-10 px-3 rounded-xl border border-gray-200 bg-white text-sm text-gray-900 font-mono focus:outline-none focus:ring-2 focus:ring-[#00a67e]/20 focus:border-[#00a67e]"
+                placeholder="#00a67e"
+              />
+            </div>
+          </div>
+          <div className="space-y-1.5">
+            <label className="block text-sm font-medium text-gray-700">
+              {d.opacity}
+            </label>
+            <div className="flex items-center gap-3">
+              <input
+                type="range"
+                min="0"
+                max="1"
+                step="0.05"
+                value={profile.widget_opacity}
+                onChange={(e) =>
+                  setProfile({ ...profile, widget_opacity: parseFloat(e.target.value) })
+                }
+                className="flex-1 h-2 rounded-full appearance-none bg-gray-200 accent-[#00a67e] cursor-pointer"
+              />
+              <span className="text-sm text-gray-500 font-mono w-10 text-right">
+                {Math.round(profile.widget_opacity * 100)}%
+              </span>
+            </div>
+            <p className="text-xs text-gray-400 mt-1">{d.opacityHint}</p>
           </div>
         </div>
       </div>

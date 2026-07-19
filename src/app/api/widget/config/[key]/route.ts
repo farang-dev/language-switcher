@@ -22,7 +22,9 @@ export async function GET(
       user_profiles!inner (
         widget_position,
         widget_theme,
-        widget_size
+        widget_size,
+        widget_bg_color,
+        widget_opacity
       )
     `)
     .eq("api_key", apiKey)
@@ -37,6 +39,8 @@ export async function GET(
     widget_position: string;
     widget_theme: string;
     widget_size: string;
+    widget_bg_color: string;
+    widget_opacity: number;
   };
 
   return NextResponse.json({
@@ -46,5 +50,7 @@ export async function GET(
     widget_position: profile?.widget_position || "bottom-right",
     widget_theme: profile?.widget_theme || "light",
     widget_size: profile?.widget_size || "medium",
+    widget_bg_color: profile?.widget_bg_color || "#00a67e",
+    widget_opacity: profile?.widget_opacity ?? 1.0,
   });
 }

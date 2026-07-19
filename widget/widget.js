@@ -597,6 +597,15 @@
     });
   }
 
+  function hexToRgba(h, a) {
+    h = h.replace("#", "");
+    if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
+    const r = parseInt(h.substring(0, 2), 16);
+    const g = parseInt(h.substring(2, 4), 16);
+    const b = parseInt(h.substring(4, 6), 16);
+    return `rgba(${r},${g},${b},${a})`;
+  }
+
   async function init() {
     const apiKey = getApiKey();
     if (!apiKey) return;
@@ -618,6 +627,21 @@
       const container = widget.querySelector(".lsw-container");
       const dropdown = widget.querySelector(".lsw-dropdown");
       const targetBtn = widget.querySelector(".lsw-target-lang");
+
+      if (config.widget_bg_color) {
+        const bc = config.widget_bg_color;
+        container.style.background = bc;
+        container.style.boxShadow = `0 4px 16px ${hexToRgba(bc, 0.3)}`;
+        container.addEventListener("mouseenter", () => {
+          container.style.boxShadow = `0 8px 28px ${hexToRgba(bc, 0.45)}`;
+        });
+        container.addEventListener("mouseleave", () => {
+          container.style.boxShadow = `0 4px 16px ${hexToRgba(bc, 0.3)}`;
+        });
+      }
+      if (config.widget_opacity !== undefined && config.widget_opacity < 1) {
+        container.style.opacity = config.widget_opacity;
+      }
 
       container.addEventListener("click", (e) => {
         e.stopPropagation();
