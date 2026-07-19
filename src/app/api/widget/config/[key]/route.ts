@@ -49,7 +49,7 @@ export async function GET(
     default_target_language: site.default_target_language,
     widget_position: profile?.widget_position || "bottom-right",
     widget_theme: profile?.widget_theme || "light",
-    widget_size: profile?.widget_size || "medium",
+    widget_size: profile?.widget_size || "large",
     widget_bg_color: profile?.widget_bg_color || "#00a67e",
     widget_opacity: profile?.widget_opacity ?? 1.0,
   });

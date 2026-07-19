@@ -166,7 +166,7 @@
     const defaultTarget = config.default_target_language || "en";
     const position = config.widget_position || "bottom-right";
     const theme = config.widget_theme || "light";
-    const size = config.widget_size || "medium";
+    const size = config.widget_size || "large";
 
     const positionStyles = {
       "bottom-right": "bottom: 24px; right: 24px;",
@@ -358,12 +358,27 @@
       .lsw-size-small .lsw-flag { font-size: 14px; }
       .lsw-size-small .lsw-arrow { font-size: 11px; }
       .lsw-size-small .lsw-dropdown { min-width: 190px; max-height: 300px; }
+      .lsw-size-small .lsw-lang-option { padding: 9px 12px; }
+      .lsw-size-small .lsw-lang-option .lsw-flag { font-size: 18px; }
+      .lsw-size-small .lsw-lang-option .lsw-lang-name { font-size: 13px; }
 
-      .lsw-size-large .lsw-container { padding: 10px 18px 10px 14px; gap: 8px; }
-      .lsw-size-large .lsw-source-lang, .lsw-size-large .lsw-target-lang { width: 36px; height: 36px; }
-      .lsw-size-large .lsw-flag { font-size: 22px; }
-      .lsw-size-large .lsw-arrow { font-size: 17px; }
-      .lsw-size-large .lsw-dropdown { min-width: 260px; max-height: 420px; }
+      .lsw-size-medium .lsw-container { padding: 7px 14px 7px 10px; gap: 6px; }
+      .lsw-size-medium .lsw-source-lang, .lsw-size-medium .lsw-target-lang { width: 30px; height: 30px; }
+      .lsw-size-medium .lsw-flag { font-size: 17px; }
+      .lsw-size-medium .lsw-arrow { font-size: 14px; }
+      .lsw-size-medium .lsw-dropdown { min-width: 220px; max-height: 360px; }
+      .lsw-size-medium .lsw-lang-option { padding: 10px 14px; }
+      .lsw-size-medium .lsw-lang-option .lsw-flag { font-size: 22px; }
+      .lsw-size-medium .lsw-lang-option .lsw-lang-name { font-size: 14px; }
+
+      .lsw-size-large .lsw-container { padding: 12px 22px 12px 16px; gap: 10px; }
+      .lsw-size-large .lsw-source-lang, .lsw-size-large .lsw-target-lang { width: 42px; height: 42px; }
+      .lsw-size-large .lsw-flag { font-size: 24px; }
+      .lsw-size-large .lsw-arrow { font-size: 18px; }
+      .lsw-size-large .lsw-dropdown { min-width: 280px; max-height: 440px; }
+      .lsw-size-large .lsw-lang-option { padding: 12px 16px; }
+      .lsw-size-large .lsw-lang-option .lsw-flag { font-size: 26px; }
+      .lsw-size-large .lsw-lang-option .lsw-lang-name { font-size: 15px; }
 
       /* Dark theme */
       .lsw-theme-dark .lsw-container {

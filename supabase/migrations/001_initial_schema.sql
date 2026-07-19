@@ -8,7 +8,7 @@ CREATE TABLE user_profiles (
   native_language TEXT DEFAULT 'ja',
   widget_position TEXT DEFAULT 'bottom-right' CHECK (widget_position IN ('bottom-right', 'bottom-left', 'top-right', 'top-left')),
   widget_theme TEXT DEFAULT 'light' CHECK (widget_theme IN ('light', 'dark', 'auto')),
-  widget_size TEXT DEFAULT 'medium' CHECK (widget_size IN ('small', 'medium', 'large')),
+  widget_size TEXT DEFAULT 'large' CHECK (widget_size IN ('small', 'medium', 'large')),
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
