@@ -12,6 +12,7 @@ export const metadata: Metadata = {
   title: "Language Switcher — One Line to Go Multilingual",
   description:
     "Add multi-language support to your website with a single script tag. Let visitors browse in their native language.",
+  icons: { icon: "/globe.svg", apple: "/globe.svg" },
 };
 
 export default function RootLayout({
