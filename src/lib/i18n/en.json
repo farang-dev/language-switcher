@@ -10,13 +10,13 @@
     "dashboard": "Dashboard"
   },
   "hero": {
-    "badge": "Free to use — no credit card required",
+    "badge": "Free to use, no credit card required",
     "title": "Go multilingual",
     "titleAccent": "with one line",
-    "description": "Add a language switcher to your website instantly. Your visitors translate your content into their native language — right in the browser.",
-    "painPoint": "Building a multilingual website is tedious and expensive. Translation services, separate domains, engineering overhead — we fix that.",
-    "painPointSolution": "Just add one script tag to your site. A language switcher widget appears. Visitors click and the entire page translates on the spot. Images and logos stay untouched — your design remains intact.",
-    "imagesNote": "* Images and logos are excluded from translation. Your design stays exactly as intended.",
+    "description": "Add a language switcher to your website instantly. Your visitors translate your content into their native language, right in the browser.",
+    "painPoint": "Building a multilingual website is tedious and expensive. Translation services, separate domains, engineering overhead. We fix that.",
+    "painPointSolution": "Just add one script tag to your site. A language switcher widget appears. Powered by Google Translate. Visitors click and the entire page translates on the spot. Images and logos stay untouched, your design remains intact.",
+    "imagesNote": "Images and logos are excluded from translation. Your design stays exactly as intended.",
     "ctaStart": "Start for Free",
     "ctaHow": "See How It Works"
   },
@@ -55,7 +55,7 @@
   },
   "howItWorks": {
     "title": "Up and running in minutes",
-    "description": "Three steps to a multilingual website.",
+    "description": "Add one script tag. Google Translate handles the rest automatically.",
     "steps": {
       "1": {
         "title": "Create your account",

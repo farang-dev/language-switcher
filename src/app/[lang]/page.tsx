@@ -26,8 +26,8 @@ export default async function LandingPage({
         <Header dict={dict} lang={lang} />
         <Hero dict={dict} lang={lang} />
         <FactbaseSection dict={dict} />
-        <FeaturesSection dict={dict} />
         <HowItWorksSection dict={dict} appUrl={appUrl} />
+        <FeaturesSection dict={dict} />
         <PricingSection dict={dict} lang={lang} />
         <CtaSection dict={dict} lang={lang} />
         <Footer dict={dict} lang={lang} />
