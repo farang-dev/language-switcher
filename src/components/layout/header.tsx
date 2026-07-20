@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { Globe } from "lucide-react";
 import { locales, type Dict } from "@/lib/i18n/dictionaries";
