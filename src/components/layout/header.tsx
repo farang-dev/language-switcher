@@ -1,13 +1,13 @@
 import Link from "next/link";
 import { Globe } from "lucide-react";
-import { locales } from "@/lib/i18n/dictionaries";
+import { locales, type Dict } from "@/lib/i18n/dictionaries";
 
 export function Header({
   dict,
   lang,
   activePage,
 }: {
-  dict: Record<string, unknown>;
+  dict: Dict;
   lang: string;
   activePage?: "home" | "docs";
 }) {
