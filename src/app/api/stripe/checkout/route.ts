@@ -32,7 +32,7 @@ export async function POST() {
       .eq("id", user.id);
   }
 
-  const session = await stripe.checkout.sessions.create({
+  const session = await stripe().checkout.sessions.create({
     customer: customerId,
     mode: "subscription",
     line_items: [
