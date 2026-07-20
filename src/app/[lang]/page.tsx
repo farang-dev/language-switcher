@@ -1,8 +1,9 @@
 import Link from "next/link";
 import Script from "next/script";
-import { Globe, Check, ChevronDown } from "lucide-react";
-import { getDictionary, hasLocale, locales } from "@/lib/i18n/dictionaries";
+import { Globe, Check } from "lucide-react";
+import { getDictionary, hasLocale } from "@/lib/i18n/dictionaries";
 import { notFound } from "next/navigation";
+import { Header } from "@/components/layout/header";
 
 export default async function LandingPage({
   params,
@@ -23,7 +24,7 @@ export default async function LandingPage({
         strategy="lazyOnload"
       />
       <div className="flex flex-col min-h-screen">
-        <Header dict={dict} lang={lang} />
+        <Header dict={dict} lang={lang} activePage="home" />
         <Hero dict={dict} lang={lang} />
         <FactbaseSection dict={dict} />
         <HowItWorksSection dict={dict} appUrl={appUrl} />
@@ -33,71 +34,6 @@ export default async function LandingPage({
         <Footer dict={dict} lang={lang} />
       </div>
     </>
-  );
-}
-
-function Header({ dict, lang }: { dict: any; lang: string }) {
-  const otherLocale = locales.find((l) => l !== lang)!;
-
-  return (
-    <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
-      <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-        <Link href={`/${lang}`} className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-xl bg-[#00a67e] flex items-center justify-center">
-            <Globe className="h-4.5 w-4.5 text-white" />
-          </div>
-          <span className="font-bold text-lg tracking-tight text-gray-900">
-            {dict.nav.logo}
-          </span>
-        </Link>
-        <nav className="hidden md:flex items-center gap-1">
-          <Link
-            href={`/${lang}#features`}
-            className="px-3 py-1.5 text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors rounded-lg hover:bg-gray-100"
-          >
-            {dict.nav.features}
-          </Link>
-          <Link
-            href={`/${lang}#pricing`}
-            className="px-3 py-1.5 text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors rounded-lg hover:bg-gray-100"
-          >
-            {dict.nav.pricing}
-          </Link>
-          <Link
-            href={`/${lang}#`}
-            className="px-3 py-1.5 text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors rounded-lg hover:bg-gray-100"
-          >
-            {dict.nav.blog}
-          </Link>
-          <Link
-            href={`/${lang}#`}
-            className="px-3 py-1.5 text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors rounded-lg hover:bg-gray-100"
-          >
-            {dict.nav.docs}
-          </Link>
-        </nav>
-        <div className="flex items-center gap-3">
-          <Link
-            href={`/${lang}/login`}
-            className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors px-4 py-2"
-          >
-            {dict.nav.login}
-          </Link>
-          <a
-            href={`/${otherLocale}`}
-            className="text-sm font-medium text-gray-400 hover:text-gray-600 transition-colors px-2 py-1"
-          >
-            {otherLocale === "ja" ? "日本語" : "English"}
-          </a>
-          <Link
-            href={`/${lang}/signup`}
-            className="text-sm font-semibold text-white bg-[#00a67e] hover:bg-[#008f6d] transition-colors px-5 py-2.5 rounded-full"
-          >
-            {dict.nav.getStarted}
-          </Link>
-        </div>
-      </div>
-    </header>
   );
 }
 

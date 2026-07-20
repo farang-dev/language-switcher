@@ -3,7 +3,6 @@
     "logo": "LSwitch",
     "features": "Features",
     "pricing": "Pricing",
-    "blog": "Blog",
     "docs": "Docs",
     "login": "Log In",
     "getStarted": "Get Started Free",
@@ -289,5 +288,145 @@
   },
   "common": {
     "loading": "Loading..."
+  },
+  "docs": {
+    "badge": "Documentation",
+    "title": "Lswitch — One Line to Go Global",
+    "description": "Add a multilingual language switcher to your website with a single script tag. Your visitors translate your content into their native language, instantly.",
+    "whatIs": {
+      "title": "What is LSwitch?",
+      "intro": "LSwitch is a lightweight widget that adds a language switcher to any website. When a visitor clicks the button, the entire page is translated in real-time using Google Translate. No server setup, no API keys, no backend required.",
+      "points": [
+        {
+          "title": "Client-Side Translation",
+          "description": "All translation happens in the visitor's browser using Google Translate. Your server is never involved, so there's zero infrastructure cost."
+        },
+        {
+          "title": "One Script Tag",
+          "description": "Copy and paste a single <script> tag into your HTML. The widget loads asynchronously and doesn't affect your page speed."
+        },
+        {
+          "title": "Design Stays Intact",
+          "description": "Images, logos, and styled elements are excluded from translation. Your layout and design remain exactly as intended."
+        },
+        {
+          "title": "100+ Languages",
+          "description": "Powered by Google Translate, supporting over 100 languages out of the box — from English and Japanese to Arabic and Hindi."
+        }
+      ]
+    },
+    "quickStart": {
+      "title": "Quick Start Guide",
+      "description": "Get up and running in under 3 minutes.",
+      "steps": [
+        {
+          "title": "Create a free account",
+          "description": "Sign up at langswitch.online. No credit card required."
+        },
+        {
+          "title": "Register your website",
+          "description": "Add your domain in the dashboard and choose which languages to support."
+        },
+        {
+          "title": "Copy your script tag",
+          "description": "After registering your site, you'll get a personalized script tag. It looks like this:",
+          "detail": "<script src=\"https://langswitch.online/api/widget/YOUR_API_KEY.js\" async></script>"
+        },
+        {
+          "title": "Paste it into your HTML",
+          "description": "Add the script tag inside the <head> section of your website. That's it — the language switcher will appear on your site automatically."
+        }
+      ]
+    },
+    "features": {
+      "title": "Features",
+      "description": "Everything you need to make your website multilingual.",
+      "items": [
+        {
+          "title": "One-Line Setup",
+          "description": "Paste a single script tag into your HTML. Your site becomes multilingual instantly."
+        },
+        {
+          "title": "100+ Languages",
+          "description": "Powered by Google Translate with support for every major language."
+        },
+        {
+          "title": "Zero Server Cost",
+          "description": "Translation runs entirely in the visitor's browser. No API keys, no backend."
+        },
+        {
+          "title": "Real-Time Analytics",
+          "description": "Track which languages your visitors use and monitor translation activity."
+        },
+        {
+          "title": "Fully Customizable",
+          "description": "Customize widget position, color, size, theme, and opacity to match your brand."
+        },
+        {
+          "title": "Async Loading",
+          "description": "Loads asynchronously with zero impact on page speed or Core Web Vitals."
+        }
+      ]
+    },
+    "customization": {
+      "title": "Widget Customization",
+      "description": "Customize every aspect of the widget to match your brand.",
+      "items": [
+        {
+          "label": "Position",
+          "description": "Place the widget in any corner of the screen."
+        },
+        {
+          "label": "Color",
+          "description": "Set a custom background color to match your brand."
+        },
+        {
+          "label": "Size",
+          "description": "Choose small, medium, or large to fit your design."
+        },
+        {
+          "label": "Theme",
+          "description": "Light, dark, or auto mode to match the visitor's preference."
+        },
+        {
+          "label": "Opacity",
+          "description": "Adjust transparency for a subtle or bold appearance."
+        },
+        {
+          "label": "Language Selection",
+          "description": "Choose exactly which languages are available to your visitors."
+        }
+      ]
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "items": [
+        {
+          "question": "Does this affect my page loading speed?",
+          "answer": "No. The widget loads asynchronously via a single script tag, so it doesn't block rendering or affect Core Web Vitals."
+        },
+        {
+          "question": "Do I need a Google Translate API key?",
+          "answer": "No. Translation uses Google Translate's free web endpoint. No API key or billing setup is required."
+        },
+        {
+          "question": "Will my images or layout be affected?",
+          "answer": "No. The widget translates only text content. Images, logos, and styled elements remain untouched."
+        },
+        {
+          "question": "Is there a free plan?",
+          "answer": "Yes. The free plan includes 50 translations per month with access to all core features. Pro plan (¥980/mo) removes the limit."
+        },
+        {
+          "question": "What frameworks does this work with?",
+          "answer": "LSwitch works with any website that supports HTML — WordPress, Next.js, React, static sites, and more. It's framework-agnostic."
+        }
+      ]
+    },
+    "cta": {
+      "title": "Ready to go global?",
+      "description": "Start translating your website in under 3 minutes. Free, no credit card required.",
+      "button": "Get Started Free"
+    }
   }
 }
