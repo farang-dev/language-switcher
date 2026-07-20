@@ -12,6 +12,7 @@ export function DashboardNav({ dict }: { dict: any }) {
     { href: "/dashboard", label: d.overview },
     { href: "/dashboard/sites", label: d.sites },
     { href: "/dashboard/insights", label: d.insights },
+    { href: "/dashboard/billing", label: d.billing },
     { href: "/dashboard/settings", label: d.settings },
   ];
 

@@ -1,8 +1,10 @@
 import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
-import { Globe, Code, BarChart3 } from "lucide-react";
+import { Globe, Code, BarChart3, Zap } from "lucide-react";
 import { getDictionary, hasLocale, defaultLocale } from "@/lib/i18n/dictionaries";
 import { cookies } from "next/headers";
+
+const FREE_LIMIT = 50;
 
 export default async function DashboardPage() {
   const supabase = await createClient();
@@ -16,7 +18,25 @@ export default async function DashboardPage() {
     .select("*")
     .eq("user_id", user!.id);
 
+  const { data: profile } = await supabase
+    .from("user_profiles")
+    .select("subscription_tier")
+    .eq("id", user!.id)
+    .single();
+
+  const now = new Date();
+  const { data: usage } = await supabase
+    .from("monthly_usage")
+    .select("translation_count")
+    .eq("user_id", user!.id)
+    .eq("year", now.getFullYear())
+    .eq("month", now.getMonth() + 1)
+    .single();
+
   const siteCount = sites?.length ?? 0;
+  const isPro = profile?.subscription_tier === "pro";
+  const translationCount = usage?.translation_count ?? 0;
+  const usagePercent = Math.min((translationCount / FREE_LIMIT) * 100, 100);
 
   const cookieStore = await cookies();
   const localeCookie = cookieStore.get("locale")?.value;
@@ -57,6 +77,53 @@ export default async function DashboardPage() {
           href="/dashboard/insights"
           linkText={d.viewInsights}
         />
+      </div>
+
+      <div className="bg-white rounded-2xl border border-gray-100 p-5">
+        <div className="flex items-center justify-between mb-3">
+          <span className="text-xs font-medium text-gray-400 uppercase tracking-wide">
+            {d.usageThisMonth}
+          </span>
+          {isPro ? (
+            <span className="inline-flex items-center gap-1 text-xs font-semibold text-[#00a67e] bg-[#e6f7f1] px-2 py-0.5 rounded-full">
+              <Zap className="h-3 w-3" />
+              Pro
+            </span>
+          ) : (
+            <span className="text-xs font-medium text-gray-400">Free</span>
+          )}
+        </div>
+        {isPro ? (
+          <div className="text-2xl font-bold text-gray-900">{d.unlimited}</div>
+        ) : (
+          <>
+            <div className="text-2xl font-bold text-gray-900">
+              {translationCount} <span className="text-sm font-normal text-gray-400">/ {FREE_LIMIT}</span>
+            </div>
+            <div className="mt-2 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+              <div
+                className="h-full rounded-full transition-all duration-500"
+                style={{
+                  width: `${usagePercent}%`,
+                  backgroundColor:
+                    usagePercent >= 90
+                      ? "#ef4444"
+                      : usagePercent >= 70
+                        ? "#f59e0b"
+                        : "#00a67e",
+                }}
+              />
+            </div>
+            {usagePercent >= 70 && (
+              <Link
+                href="/dashboard/billing"
+                className="inline-block mt-2 text-xs font-medium text-[#00a67e] hover:text-[#008f6d] transition-colors"
+              >
+                {d.upgradeForUnlimited} →
+              </Link>
+            )}
+          </>
+        )}
       </div>
 
       <div className="bg-white rounded-2xl border border-gray-100 p-6 md:p-8">

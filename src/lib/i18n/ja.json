@@ -120,6 +120,7 @@
       "overview": "概要",
       "sites": "サイト",
       "insights": "インサイト",
+      "billing": "請求",
       "settings": "設定"
     },
     "userNav": {
@@ -143,8 +144,11 @@
       "step2": "コードをコピー",
       "step2Desc": "あなたのサイト用のスクリプトタグを取得。",
       "step3": "貼り付ける",
-      "step3Desc": "スクリプトタグをサイトの &lt;head&gt; に追加。完了！",
-      "registerFirstSite": "最初のサイトを登録"
+      "step3Desc": "スクリプトタグをサイトの &lt;head; に追加。完了！",
+      "registerFirstSite": "最初のサイトを登録",
+      "usageThisMonth": "今月の利用状況",
+      "unlimited": "無制限",
+      "upgradeForUnlimited": "アップグレードして無制限に翻訳"
     },
     "sites": {
       "title": "サイト",
@@ -213,6 +217,39 @@
       "saving": "保存中...",
       "saved": "変更を保存しました！",
       "profileNotFound": "プロフィールが見つかりません"
+    },
+    "billing": {
+      "title": "請求",
+      "subtitle": "サブスクリプションと利用状況を管理。",
+      "currentPlan": "現在のプラン",
+      "currentPlanDesc": "サブスクリプションの詳細",
+      "freePlan": "無料",
+      "proPlan": "プロ",
+      "current": "現在",
+      "perMonth": "/月",
+      "freeFeatures": [
+        "月50回までの翻訳",
+        "100+ 対応言語",
+        "基本的な分析",
+        "ウィジェットのカスタマイズ"
+      ],
+      "proFeatures": [
+        "無制限の翻訳",
+        "100+ 対応言語",
+        "高度な分析とインサイト",
+        "優先サポート",
+        "完全カスタマイズ"
+      ],
+      "upgradeToPro": "プロにアップグレード",
+      "manageSubscription": "サブスクリプション管理",
+      "redirecting": "リダイレクト中...",
+      "usageTitle": "利用状況",
+      "usageDesc": "今月の翻訳利用状況",
+      "unlimitedTranslations": "無制限の翻訳",
+      "proUsageHint": "プロプランでは利用制限はありません。",
+      "thisMonth": "今月",
+      "usageWarning": "月間上限に近づいています。プロにアップグレードして無制限に翻訳しましょう。",
+      "usageHint": "プロにアップグレードして無制限に翻訳しましょう。"
     },
     "sitesPage": {
       "loading": "読み込み中..."

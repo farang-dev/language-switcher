@@ -120,6 +120,7 @@
       "overview": "Overview",
       "sites": "Sites",
       "insights": "Insights",
+      "billing": "Billing",
       "settings": "Settings"
     },
     "userNav": {
@@ -144,7 +145,10 @@
       "step2Desc": "Get a personalized script tag for your website.",
       "step3": "Paste it in",
       "step3Desc": "Add the script tag to your site's &lt;head&gt;. Done!",
-      "registerFirstSite": "Register Your First Site"
+      "registerFirstSite": "Register Your First Site",
+      "usageThisMonth": "Usage This Month",
+      "unlimited": "Unlimited",
+      "upgradeForUnlimited": "Upgrade for unlimited translations"
     },
     "sites": {
       "title": "Sites",
@@ -213,6 +217,39 @@
       "saving": "Saving...",
       "saved": "Changes saved!",
       "profileNotFound": "Profile not found"
+    },
+    "billing": {
+      "title": "Billing",
+      "subtitle": "Manage your subscription and usage.",
+      "currentPlan": "Current Plan",
+      "currentPlanDesc": "Your subscription details",
+      "freePlan": "Free",
+      "proPlan": "Pro",
+      "current": "Current",
+      "perMonth": "/mo",
+      "freeFeatures": [
+        "50 translations per month",
+        "100+ supported languages",
+        "Basic analytics",
+        "Widget customization"
+      ],
+      "proFeatures": [
+        "Unlimited translations",
+        "100+ supported languages",
+        "Advanced analytics & insights",
+        "Priority support",
+        "Full customization"
+      ],
+      "upgradeToPro": "Upgrade to Pro",
+      "manageSubscription": "Manage Subscription",
+      "redirecting": "Redirecting...",
+      "usageTitle": "Usage",
+      "usageDesc": "Your translation usage this month",
+      "unlimitedTranslations": "Unlimited translations",
+      "proUsageHint": "You have no usage limits on the Pro plan.",
+      "thisMonth": "This month",
+      "usageWarning": "You're approaching your monthly limit. Upgrade to Pro for unlimited translations.",
+      "usageHint": "Upgrade to Pro for unlimited translations."
     },
     "sitesPage": {
       "loading": "Loading..."
