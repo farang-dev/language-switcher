@@ -27,7 +27,9 @@ export async function proxy(request: NextRequest) {
   const isStaticFile =
     pathname.startsWith("/_next/") ||
     pathname === "/favicon.ico" ||
-    pathname === "/widget.js";
+    pathname === "/widget.js" ||
+    pathname === "/robots.txt" ||
+    pathname === "/sitemap.xml";
 
   if (pathnameHasLocale || isApiRoute || isDashboardRoute || isStaticFile) {
     if (isDashboardRoute) {
