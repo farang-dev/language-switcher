@@ -45,7 +45,7 @@ function Hero({ dict, lang }: { dict: any; lang: string }) {
       <div className="max-w-4xl mx-auto px-6 pt-14 pb-20 md:pt-20 md:pb-28">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="text-center md:text-left">
-            <div className="block">
+            <div className="mb-4 md:mb-5">
               <TypingGreeting />
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-black leading-[1.15]">
@@ -53,22 +53,19 @@ function Hero({ dict, lang }: { dict: any; lang: string }) {
               <br />
               {dict.hero.title}
             </h1>
-            <p className="mt-5 text-base md:text-lg text-black/70 leading-relaxed max-w-lg">
+            <p className="mt-5 text-base md:text-lg text-black/70 leading-relaxed max-w-lg mx-auto md:mx-0">
               {dict.hero.description}
             </p>
-            <p className="mt-3 text-sm text-black/40 leading-relaxed max-w-lg">
-              {dict.hero.painPoint}
-            </p>
-            <div className="mt-6 flex flex-col sm:flex-row items-center md:items-start gap-3">
+            <div className="mt-8 flex flex-col sm:flex-row items-center gap-3">
               <Link
                 href={`/${lang}/signup`}
-                className="inline-flex items-center justify-center text-sm font-bold uppercase text-[#01eca1] bg-black transition-all px-7 py-3 rounded-lg hover:opacity-90"
+                className="w-full sm:w-auto inline-flex items-center justify-center text-sm font-bold uppercase text-[#01eca1] bg-black transition-all px-7 py-3 rounded-lg hover:opacity-90"
               >
                 {dict.hero.ctaStart}
               </Link>
               <a
                 href="#how-it-works"
-                className="inline-flex items-center justify-center text-sm font-bold text-black hover:text-black/70 bg-white/50 backdrop-blur-sm border border-black/10 transition-all px-7 py-3 rounded-lg"
+                className="w-full sm:w-auto inline-flex items-center justify-center text-sm font-bold text-black hover:text-black/70 bg-white/50 backdrop-blur-sm border border-black/10 transition-all px-7 py-3 rounded-lg"
               >
                 {dict.hero.ctaHow}
               </a>
