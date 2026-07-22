@@ -4,12 +4,36 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@font-face {
+  font-family: 'Circe';
+  src: url('/fonts/circe-regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Circe';
+  src: url('/fonts/circe-bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Circe Black';
+  src: url('/fonts/circe-extrabold.woff') format('woff');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
+  --font-sans: 'Circe', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
+  --font-heading: 'Circe Black', -apple-system, BlinkMacSystemFont, sans-serif;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -50,39 +74,39 @@
 }
 
 :root {
-  --background: #ffffff;
-  --foreground: #1a1a2e;
-  --card: #ffffff;
-  --card-foreground: #1a1a2e;
+  --background: #01ef92;
+  --foreground: #000000;
+  --card: rgba(255, 255, 255, 0.5);
+  --card-foreground: #000000;
   --popover: #ffffff;
-  --popover-foreground: #1a1a2e;
-  --primary: #00a67e;
-  --primary-foreground: #ffffff;
-  --secondary: #f0faf6;
-  --secondary-foreground: #1a1a2e;
-  --muted: #f5f7fa;
-  --muted-foreground: #6b7280;
-  --accent: #e6f7f1;
-  --accent-foreground: #1a1a2e;
+  --popover-foreground: #000000;
+  --primary: #000000;
+  --primary-foreground: #01eca1;
+  --secondary: rgba(255, 255, 255, 0.15);
+  --secondary-foreground: #000000;
+  --muted: rgba(255, 255, 255, 0.5);
+  --muted-foreground: #000000b3;
+  --accent: #01e1d4;
+  --accent-foreground: #000000;
   --destructive: #ef4444;
-  --border: #e5e7eb;
-  --input: #e5e7eb;
-  --ring: #00a67e;
+  --border: rgba(0, 0, 0, 0.1);
+  --input: rgba(0, 0, 0, 0.1);
+  --ring: #01e1d4;
   --success: #10b981;
-  --chart-1: #00a67e;
+  --chart-1: #01e1d4;
   --chart-2: #06b6d4;
   --chart-3: #8b5cf6;
   --chart-4: #f59e0b;
   --chart-5: #ef4444;
-  --radius: 0.75rem;
-  --sidebar: #f9fafb;
-  --sidebar-foreground: #1a1a2e;
-  --sidebar-primary: #00a67e;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #f0faf6;
-  --sidebar-accent-foreground: #1a1a2e;
-  --sidebar-border: #e5e7eb;
-  --sidebar-ring: #00a67e;
+  --radius: 7px;
+  --sidebar: rgba(255, 255, 255, 0.5);
+  --sidebar-foreground: #000000;
+  --sidebar-primary: #01e1d4;
+  --sidebar-primary-foreground: #000000;
+  --sidebar-accent: rgba(255, 255, 255, 0.15);
+  --sidebar-accent-foreground: #000000;
+  --sidebar-border: rgba(0, 0, 0, 0.1);
+  --sidebar-ring: #01e1d4;
 }
 
 .dark {
@@ -92,7 +116,7 @@
   --card-foreground: #f8fafc;
   --popover: #1e293b;
   --popover-foreground: #f8fafc;
-  --primary: #00c9a7;
+  --primary: #01e1d4;
   --primary-foreground: #0f172a;
   --secondary: #1e293b;
   --secondary-foreground: #f8fafc;
@@ -103,21 +127,21 @@
   --destructive: #f87171;
   --border: rgba(255, 255, 255, 0.08);
   --input: rgba(255, 255, 255, 0.08);
-  --ring: #00c9a7;
+  --ring: #01e1d4;
   --success: #34d399;
-  --chart-1: #00c9a7;
+  --chart-1: #01e1d4;
   --chart-2: #22d3ee;
   --chart-3: #a78bfa;
   --chart-4: #fbbf24;
   --chart-5: #f87171;
   --sidebar: #1e293b;
   --sidebar-foreground: #f8fafc;
-  --sidebar-primary: #00c9a7;
+  --sidebar-primary: #01e1d4;
   --sidebar-primary-foreground: #0f172a;
   --sidebar-accent: #164e63;
   --sidebar-accent-foreground: #f8fafc;
   --sidebar-border: rgba(255, 255, 255, 0.08);
-  --sidebar-ring: #00c9a7;
+  --sidebar-ring: #01e1d4;
 }
 
 @layer base {
@@ -129,5 +153,6 @@
   }
   html {
     @apply font-sans;
+    background-color: #01ef92;
   }
 }

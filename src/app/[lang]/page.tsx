@@ -42,59 +42,58 @@ export default async function LandingPage({
 function Hero({ dict, lang }: { dict: any; lang: string }) {
   return (
     <section className="relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-[#e6f7f1] via-white to-[#f0faf6]" />
-      <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-[#00a67e]/5 rounded-full blur-3xl" />
-      <div className="relative max-w-6xl mx-auto px-6 py-20 md:py-28">
+      <div className="absolute inset-0 bg-gradient-to-b from-[#01ef92] to-[#00d8fb]" />
+      <div className="relative max-w-4xl mx-auto px-6 py-20 md:py-28">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="text-center md:text-left">
             <div className="block">
               <TypingGreeting />
             </div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 leading-[1.15]">
-              <span className="text-[#00a67e]">{dict.hero.titleAccent}</span>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-black leading-[1.15]">
+              {dict.hero.titleAccent}
               <br />
               {dict.hero.title}
             </h1>
-            <p className="mt-5 text-base md:text-lg text-gray-500 leading-relaxed max-w-lg">
+            <p className="mt-5 text-base md:text-lg text-black/70 leading-relaxed max-w-lg">
               {dict.hero.description}
             </p>
-            <p className="mt-3 text-sm text-gray-400 leading-relaxed max-w-lg">
+            <p className="mt-3 text-sm text-black/40 leading-relaxed max-w-lg">
               {dict.hero.painPoint}
             </p>
             <div className="mt-6 flex flex-col sm:flex-row items-center md:items-start gap-3">
               <Link
                 href={`/${lang}/signup`}
-                className="inline-flex items-center justify-center text-sm font-semibold text-white bg-[#00a67e] hover:bg-[#008f6d] transition-all px-7 py-3 rounded-full shadow-lg shadow-[#00a67e]/25 hover:shadow-xl hover:shadow-[#00a67e]/30 hover:-translate-y-0.5"
+                className="inline-flex items-center justify-center text-sm font-bold uppercase text-[#01eca1] bg-black transition-all px-7 py-3 rounded-lg hover:opacity-90"
               >
                 {dict.hero.ctaStart}
               </Link>
               <a
                 href="#how-it-works"
-                className="inline-flex items-center justify-center text-sm font-medium text-gray-600 hover:text-gray-900 bg-white border border-gray-200 hover:border-gray-300 transition-all px-7 py-3 rounded-full"
+                className="inline-flex items-center justify-center text-sm font-bold text-black hover:text-black/70 bg-white/50 backdrop-blur-sm border border-black/10 transition-all px-7 py-3 rounded-lg"
               >
                 {dict.hero.ctaHow}
               </a>
             </div>
           </div>
           <div className="hidden md:flex justify-center">
-            <div className="bg-white rounded-2xl shadow-2xl shadow-gray-200/60 border border-gray-200 overflow-hidden w-full max-w-sm">
-              <div className="flex items-center gap-1.5 px-4 py-3 bg-gray-50 border-b border-gray-100">
+            <div className="bg-white/50 backdrop-blur-xl rounded-lg shadow-lg border border-black/10 overflow-hidden w-full max-w-sm">
+              <div className="flex items-center gap-1.5 px-4 py-3 bg-white/30 border-b border-black/10">
                 <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
                 <div className="w-2.5 h-2.5 rounded-full bg-amber-400" />
                 <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
               </div>
               <div className="p-6">
                 <div className="space-y-3">
-                  <div className="h-5 bg-gray-100 rounded-md w-3/4" />
-                  <div className="h-3 bg-gray-50 rounded w-full" />
-                  <div className="h-3 bg-gray-50 rounded w-5/6" />
-                  <div className="h-3 bg-gray-50 rounded w-2/3" />
+                  <div className="h-5 bg-black/5 rounded-md w-3/4" />
+                  <div className="h-3 bg-black/5 rounded w-full" />
+                  <div className="h-3 bg-black/5 rounded w-5/6" />
+                  <div className="h-3 bg-black/5 rounded w-2/3" />
                 </div>
-                <div className="mt-5 flex items-center justify-center gap-3 bg-gray-50 rounded-full py-2.5 px-4 border border-gray-100">
+                <div className="mt-5 flex items-center justify-center gap-3 bg-white/30 backdrop-blur-sm rounded-lg py-2.5 px-4 border border-black/10">
                   <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-sm">🇺🇸</div>
-                  <span className="text-xs font-bold text-[#00a67e]">→</span>
-                  <div className="w-8 h-8 rounded-full bg-[#00a67e] flex items-center justify-center shadow-sm">🇯🇵</div>
-                  <span className="text-[10px] text-gray-400 ml-1">{dict.hero.imagesNote}</span>
+                  <span className="text-xs font-bold text-[#01e1d4]">→</span>
+                  <div className="w-8 h-8 rounded-full bg-[#01e1d4] flex items-center justify-center shadow-sm">🇯🇵</div>
+                  <span className="text-[10px] text-black/40 ml-1">{dict.hero.imagesNote}</span>
                 </div>
               </div>
             </div>
@@ -117,9 +116,9 @@ function FactbaseSection({ dict }: { dict: any }) {
   };
 
   return (
-    <section className="py-20 border-y border-gray-100 bg-gray-50/50">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+    <section className="py-20">
+      <div className="max-w-4xl mx-auto px-6">
+        <div className="grid md:grid-cols-3 gap-6">
           <FactCard number={factbaseLabels.languages.number} label={factbaseLabels.languages.label} description={factbaseLabels.languages.description} />
           <FactCard number={factbaseLabels.setup.number} label={factbaseLabels.setup.label} description={factbaseLabels.setup.description} />
           <FactCard number={factbaseLabels.free.number} label={factbaseLabels.free.label} description={factbaseLabels.free.description} />
@@ -139,10 +138,10 @@ function FactCard({
   description: string;
 }) {
   return (
-    <div className="bg-white rounded-2xl p-6 border border-gray-100 text-center">
-      <div className="text-3xl font-bold text-[#00a67e] mb-1">{number}</div>
-      <div className="text-sm font-semibold text-gray-900 mb-2">{label}</div>
-      <p className="text-sm text-gray-500 leading-relaxed">{description}</p>
+    <div className="bg-white/50 backdrop-blur-xl rounded-lg p-6 border border-black/10 text-center">
+      <div className="text-3xl font-black text-black mb-1">{number}</div>
+      <div className="text-sm font-bold text-black mb-2">{label}</div>
+      <p className="text-sm text-black/60 leading-relaxed">{description}</p>
     </div>
   );
 }
@@ -152,16 +151,16 @@ function FeaturesSection({ dict }: { dict: any }) {
 
   return (
     <section id="features" className="py-24 px-6">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-4xl mx-auto">
         <div className="text-center max-w-2xl mx-auto mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">
+          <h2 className="text-3xl md:text-4xl font-black text-black tracking-tight">
             {dict.features.title}
           </h2>
-          <p className="mt-4 text-lg text-gray-500">
+          <p className="mt-4 text-lg text-black/60">
             {dict.features.description}
           </p>
         </div>
-        <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        <div className="grid md:grid-cols-3 gap-6">
           <FeatureCard number="01" title={items.setup.title} description={items.setup.description} />
           <FeatureCard number="02" title={items.languages.title} description={items.languages.description} />
           <FeatureCard number="03" title={items.cost.title} description={items.cost.description} />
@@ -184,12 +183,12 @@ function FeatureCard({
   description: string;
 }) {
   return (
-    <div className="group bg-white rounded-2xl p-6 border border-gray-100 hover:border-[#00a67e]/30 hover:shadow-lg hover:shadow-[#00a67e]/5 transition-all duration-300">
-      <span className="inline-block text-xs font-bold text-[#00a67e] bg-[#e6f7f1] rounded-full px-2.5 py-1 mb-4">
+    <div className="group bg-white/50 backdrop-blur-xl rounded-lg p-6 border border-black/10 hover:border-[#01e1d4]/50 hover:bg-white/70 transition-all duration-300">
+      <span className="inline-block text-xs font-bold text-black bg-[#01e1d4]/20 rounded px-2.5 py-1 mb-4">
         {number}
       </span>
-      <h3 className="text-lg font-bold text-gray-900 mb-2">{title}</h3>
-      <p className="text-sm text-gray-500 leading-relaxed">{description}</p>
+      <h3 className="text-lg font-bold text-black mb-2">{title}</h3>
+      <p className="text-sm text-black/60 leading-relaxed">{description}</p>
     </div>
   );
 }
@@ -198,13 +197,13 @@ function HowItWorksSection({ dict, appUrl }: { dict: any; appUrl: string }) {
   const steps = dict.howItWorks.steps;
 
   return (
-    <section id="how-it-works" className="py-24 px-6 bg-gray-50">
-      <div className="max-w-7xl mx-auto">
+    <section id="how-it-works" className="py-24 px-6">
+      <div className="max-w-4xl mx-auto">
         <div className="text-center max-w-2xl mx-auto mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">
+          <h2 className="text-3xl md:text-4xl font-black text-black tracking-tight">
             {dict.howItWorks.title}
           </h2>
-          <p className="mt-4 text-lg text-gray-500">
+          <p className="mt-4 text-lg text-black/60">
             {dict.howItWorks.description}
           </p>
         </div>
@@ -212,11 +211,11 @@ function HowItWorksSection({ dict, appUrl }: { dict: any; appUrl: string }) {
           <StepCard step="1" title={steps["1"].title} description={steps["1"].description} />
           <StepCard step="2" title={steps["2"].title} description={steps["2"].description} />
           <StepCard step="3" title={steps["3"].title} description={steps["3"].description} />
-          <div className="bg-white rounded-2xl border border-gray-200 p-6 md:p-8 shadow-sm">
-            <p className="text-sm text-gray-400 mb-3 font-medium">
+          <div className="bg-black rounded-lg p-6 md:p-8">
+            <p className="text-sm text-white/50 mb-3 font-medium">
               {dict.howItWorks.codeLabel}
             </p>
-            <code className="block bg-gray-900 text-gray-100 rounded-xl px-6 py-4 text-sm font-mono break-all leading-relaxed">
+            <code className="block text-[#01eca1] rounded px-6 py-4 text-sm font-mono break-all leading-relaxed">
               &lt;script src=&quot;{appUrl}/api/widget/YOUR_API_KEY.js&quot; async&gt;&lt;/script&gt;
             </code>
           </div>
@@ -236,13 +235,13 @@ function StepCard({
   description: string;
 }) {
   return (
-    <div className="flex items-start gap-5 bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
-      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[#00a67e] text-white flex items-center justify-center font-bold text-sm">
+    <div className="flex items-start gap-5 bg-white/50 backdrop-blur-xl rounded-lg p-6 border border-black/10">
+      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-black text-[#01eca1] flex items-center justify-center font-bold text-sm">
         {step}
       </div>
       <div>
-        <h3 className="text-lg font-bold text-gray-900">{title}</h3>
-        <p className="mt-1 text-sm text-gray-500">{description}</p>
+        <h3 className="text-lg font-bold text-black">{title}</h3>
+        <p className="mt-1 text-sm text-black/60">{description}</p>
       </div>
     </div>
   );
@@ -252,13 +251,13 @@ function PricingSection({ dict, lang }: { dict: any; lang: string }) {
   const p = dict.pricing;
 
   return (
-    <section id="pricing" className="py-24 px-6 bg-white">
-      <div className="max-w-7xl mx-auto">
+    <section id="pricing" className="py-24 px-6">
+      <div className="max-w-4xl mx-auto">
         <div className="text-center max-w-2xl mx-auto mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">
+          <h2 className="text-3xl md:text-4xl font-black text-black tracking-tight">
             {p.title}
           </h2>
-          <p className="mt-4 text-lg text-gray-500">
+          <p className="mt-4 text-lg text-black/60">
             {p.description}
           </p>
         </div>
@@ -314,40 +313,40 @@ function PricingCard({
 }) {
   return (
     <div
-      className={`rounded-2xl p-8 border-2 ${
+      className={`rounded-lg p-8 border ${
         highlighted
-          ? "border-[#00a67e] bg-white shadow-xl shadow-[#00a67e]/10 relative"
-          : "border-gray-100 bg-white"
+          ? "border-black bg-black text-white relative"
+          : "border-black/10 bg-white/50 backdrop-blur-xl"
       }`}
     >
       {highlighted && (
-        <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#00a67e] text-white text-xs font-bold px-4 py-1 rounded-full">
+        <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#01e1d4] text-black text-xs font-bold px-4 py-1 rounded">
           {name === "Pro" || name === "プロ" ? "おすすめ" : "Recommended"}
         </div>
       )}
       <div className="text-center mb-8">
-        <h3 className="text-lg font-bold text-gray-900 mb-1">{name}</h3>
-        <p className="text-sm text-gray-500 mb-4">{description}</p>
+        <h3 className={`text-lg font-bold mb-1 ${highlighted ? "text-white" : "text-black"}`}>{name}</h3>
+        <p className={`text-sm mb-4 ${highlighted ? "text-white/70" : "text-black/60"}`}>{description}</p>
         <div className="flex items-baseline justify-center gap-0.5">
-          <span className="text-sm text-gray-400">{currency === "JPY" ? "¥" : "$"}</span>
-          <span className="text-5xl font-bold text-gray-900">{price}</span>
-          <span className="text-sm text-gray-400">{period}</span>
+          <span className={`text-sm ${highlighted ? "text-white/50" : "text-black/40"}`}>{currency === "JPY" ? "¥" : "$"}</span>
+          <span className={`text-5xl font-black ${highlighted ? "text-white" : "text-black"}`}>{price}</span>
+          <span className={`text-sm ${highlighted ? "text-white/50" : "text-black/40"}`}>{period}</span>
         </div>
       </div>
       <ul className="space-y-3 mb-8">
         {features.map((feature: string, i: number) => (
-          <li key={i} className="flex items-start gap-3 text-sm text-gray-600">
-            <Check className="h-4 w-4 text-[#00a67e] mt-0.5 flex-shrink-0" />
+          <li key={i} className={`flex items-start gap-3 text-sm ${highlighted ? "text-white/80" : "text-black/70"}`}>
+            <Check className={`h-4 w-4 mt-0.5 flex-shrink-0 ${highlighted ? "text-[#01e1d4]" : "text-[#01e1d4]"}`} />
             <span>{feature}</span>
           </li>
         ))}
       </ul>
       <a
         href={`/${lang}/signup`}
-        className={`block text-center text-sm font-semibold py-3 rounded-full transition-all ${
+        className={`block text-center text-sm font-bold uppercase py-3 rounded-lg transition-all ${
           highlighted
-            ? "bg-[#00a67e] text-white hover:bg-[#008f6d] shadow-lg shadow-[#00a67e]/25"
-            : "bg-gray-50 text-gray-900 hover:bg-gray-100 border border-gray-200"
+            ? "bg-[#01e1d4] text-black hover:opacity-90"
+            : "bg-black text-[#01eca1] hover:opacity-90"
         }`}
       >
         {cta}
@@ -360,16 +359,16 @@ function CtaSection({ dict, lang }: { dict: any; lang: string }) {
   return (
     <section className="py-24 px-6">
       <div className="max-w-4xl mx-auto text-center">
-        <div className="bg-gradient-to-br from-[#00a67e] to-[#008f6d] rounded-3xl px-8 py-16 md:px-16 md:py-20 shadow-2xl shadow-[#00a67e]/20">
-          <h2 className="text-3xl md:text-4xl font-bold text-white tracking-tight">
+        <div className="bg-black rounded-lg px-8 py-16 md:px-16 md:py-20">
+          <h2 className="text-3xl md:text-4xl font-black text-white tracking-tight">
             {dict.cta.title}
           </h2>
-          <p className="mt-4 text-lg text-white/80 max-w-xl mx-auto">
+          <p className="mt-4 text-lg text-white/70 max-w-xl mx-auto">
             {dict.cta.description}
           </p>
           <a
             href={`/${lang}/signup`}
-            className="mt-8 inline-flex items-center justify-center text-base font-semibold text-[#00a67e] bg-white hover:bg-gray-50 transition-all px-8 py-3.5 rounded-full shadow-lg hover:shadow-xl hover:-translate-y-0.5"
+            className="mt-8 inline-flex items-center justify-center text-base font-bold uppercase text-[#01eca1] bg-[#01e1d4] hover:opacity-90 transition-all px-8 py-3.5 rounded-lg"
           >
             {dict.cta.button}
           </a>
@@ -381,27 +380,27 @@ function CtaSection({ dict, lang }: { dict: any; lang: string }) {
 
 function Footer({ dict, lang }: { dict: any; lang: string }) {
   return (
-    <footer className="border-t border-gray-100 py-8 px-6">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+    <footer className="mt-20 mx-6 bg-white/50 backdrop-blur-xl rounded-lg py-8 px-6">
+      <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-2.5">
-          <div className="w-6 h-6 rounded-lg bg-[#00a67e] flex items-center justify-center">
-            <Globe className="h-3 w-3 text-white" />
+          <div className="w-6 h-6 rounded bg-black flex items-center justify-center">
+            <Globe className="h-3 w-3 text-[#01eca1]" />
           </div>
-          <span className="text-sm font-semibold text-gray-900">{dict.nav.logo}</span>
+          <span className="text-sm font-bold text-black">{dict.nav.logo}</span>
         </div>
-        <p className="text-sm text-gray-400">
+        <p className="text-sm text-black/40">
           &copy; {new Date().getFullYear()} {dict.footer.copyright}
         </p>
         <div className="flex items-center gap-6">
           <Link
             href={`/${lang}/login`}
-            className="text-sm text-gray-400 hover:text-gray-600 transition-colors"
+            className="text-sm text-black/40 hover:text-black transition-colors"
           >
             {dict.footer.login}
           </Link>
           <Link
             href={`/${lang}/signup`}
-            className="text-sm text-gray-400 hover:text-gray-600 transition-colors"
+            className="text-sm text-black/40 hover:text-black transition-colors"
           >
             {dict.footer.signup}
           </Link>

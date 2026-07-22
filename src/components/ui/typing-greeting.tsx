@@ -54,15 +54,15 @@ export function TypingGreeting() {
   }, [subIndex, reverse, index]);
 
   return (
-    <div className="inline-flex items-center gap-1.5 text-lg md:text-xl font-bold text-[#00a67e] mb-4 min-h-[30px]">
-      <span className="bg-[#00a67e]/10 px-2.5 py-0.5 rounded-md text-xs font-semibold uppercase tracking-wider">
+    <div className="inline-flex items-center gap-1.5 text-lg md:text-xl font-bold text-black mb-4 min-h-[30px]">
+      <span className="bg-[#01e1d4]/20 px-2.5 py-0.5 rounded text-xs font-bold uppercase tracking-wider">
         {GREETINGS[index].lang}
       </span>
       <span className="tracking-tight">
         {GREETINGS[index].text.substring(0, subIndex)}
       </span>
       <span
-        className={`inline-block w-[2px] h-[1.25em] bg-[#00a67e] transition-opacity duration-100 ${
+        className={`inline-block w-[2px] h-[1.25em] bg-black transition-opacity duration-100 ${
           blink ? "opacity-100" : "opacity-0"
         }`}
         style={{ verticalAlign: "middle" }}
