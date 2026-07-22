@@ -16,7 +16,7 @@ export function Header({
   const otherLocale = locales.find((l) => l !== lang)!;
 
   return (
-    <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
+    <header className="sticky top-0 z-50 bg-white/20 backdrop-blur-xl">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
         <Link href={`/${lang}`} className="flex items-center gap-2.5">
           <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-[#00a67e] flex items-center justify-center">
@@ -85,7 +85,7 @@ export function Header({
         </div>
       </div>
       {/* Mobile nav */}
-      <div id="mobile-nav" className="hidden md:hidden border-t border-gray-100 bg-white">
+      <div id="mobile-nav" className="hidden md:hidden border-t border-black/10 bg-white/30 backdrop-blur-xl">
         <div className="px-4 py-3 space-y-1">
           <Link
             href={`/${lang}#features`}

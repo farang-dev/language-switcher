@@ -3,10 +3,12 @@ import { createClient } from "@supabase/supabase-js";
 import { stripe } from "@/lib/stripe";
 import type Stripe from "stripe";
 
-const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+function getSupabaseAdmin() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co",
+    process.env.SUPABASE_SERVICE_ROLE_KEY || "placeholder"
+  );
+}
 
 export async function POST(request: NextRequest) {
   const body = await request.text();
@@ -37,7 +39,7 @@ export async function POST(request: NextRequest) {
       const customerId = session.customer as string;
 
       if (userId) {
-        await supabaseAdmin
+        await getSupabaseAdmin()
           .from("user_profiles")
           .update({
             stripe_customer_id: customerId,
@@ -54,7 +56,7 @@ export async function POST(request: NextRequest) {
       const subscription = event.data.object as Stripe.Subscription;
       const customerId = subscription.customer as string;
 
-      const { data: profile } = await supabaseAdmin
+      const { data: profile } = await getSupabaseAdmin()
         .from("user_profiles")
         .select("id")
         .eq("stripe_customer_id", customerId)
@@ -62,7 +64,7 @@ export async function POST(request: NextRequest) {
 
       if (profile) {
         const isActive = subscription.status === "active";
-        await supabaseAdmin
+        await getSupabaseAdmin()
           .from("user_profiles")
           .update({
             subscription_tier: isActive ? "pro" : "free",
@@ -77,14 +79,14 @@ export async function POST(request: NextRequest) {
       const subscription = event.data.object as Stripe.Subscription;
       const customerId = subscription.customer as string;
 
-      const { data: profile } = await supabaseAdmin
+      const { data: profile } = await getSupabaseAdmin()
         .from("user_profiles")
         .select("id")
         .eq("stripe_customer_id", customerId)
         .single();
 
       if (profile) {
-        await supabaseAdmin
+        await getSupabaseAdmin()
           .from("user_profiles")
           .update({
             subscription_tier: "free",

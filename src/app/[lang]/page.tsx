@@ -42,8 +42,12 @@ export default async function LandingPage({
 function Hero({ dict, lang }: { dict: any; lang: string }) {
   return (
     <section className="relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-[#01ef92] to-[#00d8fb]" />
-      <div className="relative max-w-4xl mx-auto px-6 py-20 md:py-28">
+      <div className="max-w-4xl mx-auto px-6 py-20 md:py-28">
+        <div className="text-center mb-6">
+          <span className="inline-block text-xs font-bold uppercase tracking-wider text-black/60 bg-white/30 backdrop-blur-sm px-4 py-1.5 rounded-full border border-black/10">
+            {dict.hero.badge}
+          </span>
+        </div>
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="text-center md:text-left">
             <div className="block">
@@ -359,20 +363,18 @@ function CtaSection({ dict, lang }: { dict: any; lang: string }) {
   return (
     <section className="py-24 px-6">
       <div className="max-w-4xl mx-auto text-center">
-        <div className="bg-black rounded-lg px-8 py-16 md:px-16 md:py-20">
-          <h2 className="text-3xl md:text-4xl font-black text-white tracking-tight">
-            {dict.cta.title}
-          </h2>
-          <p className="mt-4 text-lg text-white/70 max-w-xl mx-auto">
-            {dict.cta.description}
-          </p>
-          <a
-            href={`/${lang}/signup`}
-            className="mt-8 inline-flex items-center justify-center text-base font-bold uppercase text-[#01eca1] bg-[#01e1d4] hover:opacity-90 transition-all px-8 py-3.5 rounded-lg"
-          >
-            {dict.cta.button}
-          </a>
-        </div>
+        <h2 className="text-3xl md:text-4xl font-black text-black tracking-tight">
+          {dict.cta.title}
+        </h2>
+        <p className="mt-4 text-lg text-black/60 max-w-xl mx-auto">
+          {dict.cta.description}
+        </p>
+        <a
+          href={`/${lang}/signup`}
+          className="mt-8 inline-flex items-center justify-center text-sm font-bold uppercase text-white bg-black hover:opacity-90 transition-all px-8 py-3.5 rounded-lg"
+        >
+          {dict.cta.button}
+        </a>
       </div>
     </section>
   );

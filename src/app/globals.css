@@ -153,6 +153,8 @@
   }
   html {
     @apply font-sans;
-    background-color: #01ef92;
+    background: linear-gradient(to bottom, #01ef92, #00d8fb);
+    background-attachment: fixed;
+    min-height: 100%;
   }
 }
