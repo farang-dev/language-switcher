@@ -42,7 +42,7 @@ export default async function LandingPage({
 function Hero({ dict, lang }: { dict: any; lang: string }) {
   return (
     <section className="relative overflow-hidden">
-      <div className="max-w-4xl mx-auto px-6 pt-10 pb-20 md:pt-14 md:pb-28">
+      <div className="max-w-4xl mx-auto px-6 pt-14 pb-20 md:pt-20 md:pb-28">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="text-center md:text-left">
             <div className="block">
