@@ -170,7 +170,7 @@ export default async function DocsPage({
               </p>
               <Link
                 href={`/${lang}/signup`}
-                className="mt-6 inline-flex items-center justify-center text-sm sm:text-base font-bold uppercase text-[#01eca1] bg-[#01e1d4] hover:opacity-90 transition-all px-6 sm:px-8 py-3 sm:py-3.5 rounded-lg"
+                className="mt-6 inline-flex items-center justify-center text-sm sm:text-base font-bold uppercase text-white bg-[#01e1d4] hover:opacity-90 transition-all px-6 sm:px-8 py-3 sm:py-3.5 rounded-lg"
               >
                 {d.cta.button}
               </Link>
