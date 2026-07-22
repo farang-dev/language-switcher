@@ -295,23 +295,23 @@
     "description": "Add a multilingual language switcher to your website with a single script tag. Your visitors translate your content into their native language, instantly.",
     "whatIs": {
       "title": "What is LSwitch?",
-      "intro": "LSwitch is a lightweight widget that adds a language switcher to any website. When a visitor clicks the button, the entire page is translated in real-time using Google Translate. No server setup, no API keys, no backend required.",
+      "intro": "LSwitch makes your website multilingual instantly. Add it once, and your visitors can translate your entire site into their language with a single click. No developer needed, no server changes required.",
       "points": [
         {
-          "title": "Client-Side Translation",
-          "description": "All translation happens in the visitor's browser using Google Translate. Your server is never involved, so there's zero infrastructure cost."
+          "title": "Visitors stay longer",
+          "description": "When people browse in their own language, they stay on your site longer. Lower bounce rates, higher engagement."
         },
         {
-          "title": "One Script Tag",
-          "description": "Copy and paste a single <script> tag into your HTML. The widget loads asynchronously and doesn't affect your page speed."
+          "title": "Live in 2 minutes",
+          "description": "Paste one line of code into your HTML. That's it — your site is multilingual. No developer or technical setup needed."
         },
         {
-          "title": "Design Stays Intact",
-          "description": "Images, logos, and styled elements are excluded from translation. Your layout and design remain exactly as intended."
+          "title": "Your design stays intact",
+          "description": "Images, logos, and styled elements are excluded from translation. Your layout remains exactly as you designed it."
         },
         {
-          "title": "100+ Languages",
-          "description": "Powered by Google Translate, supporting over 100 languages out of the box — from English and Japanese to Arabic and Hindi."
+          "title": "100+ languages supported",
+          "description": "Reach audiences worldwide — English, Japanese, Chinese, Spanish, Arabic, Hindi, and 95+ more languages."
         }
       ]
     },
@@ -340,61 +340,61 @@
     },
     "features": {
       "title": "Features",
-      "description": "Everything you need to make your website multilingual.",
+      "description": "Everything you need to make your website multilingual — nothing you don't.",
       "items": [
         {
-          "title": "One-Line Setup",
-          "description": "Paste a single script tag into your HTML. Your site becomes multilingual instantly."
+          "title": "Instant setup",
+          "description": "Paste one line of code. Your site becomes multilingual immediately, no developer needed."
         },
         {
-          "title": "100+ Languages",
-          "description": "Powered by Google Translate with support for every major language."
+          "title": "Every major language",
+          "description": "100+ languages including English, Japanese, Chinese, Spanish, Arabic, and more."
         },
         {
-          "title": "Zero Server Cost",
-          "description": "Translation runs entirely in the visitor's browser. No API keys, no backend."
+          "title": "No extra costs",
+          "description": "Translation runs in your visitor's browser. No server changes, no additional hosting bills."
         },
         {
-          "title": "Real-Time Analytics",
-          "description": "Track which languages your visitors use and monitor translation activity."
+          "title": "See which languages your visitors speak",
+          "description": "Track translation usage by language, page, and region. Know your global audience."
         },
         {
-          "title": "Fully Customizable",
-          "description": "Customize widget position, color, size, theme, and opacity to match your brand."
+          "title": "Matches your brand",
+          "description": "Customize colors, position, size, and theme to fit your site perfectly."
         },
         {
-          "title": "Async Loading",
-          "description": "Loads asynchronously with zero impact on page speed or Core Web Vitals."
+          "title": "Zero impact on site speed",
+          "description": "Loads asynchronously in the background without slowing down your page."
         }
       ]
     },
     "customization": {
-      "title": "Widget Customization",
-      "description": "Customize every aspect of the widget to match your brand.",
+      "title": "Make it yours",
+      "description": "Customize the widget to match your site's look and feel perfectly.",
       "items": [
         {
           "label": "Position",
-          "description": "Place the widget in any corner of the screen."
+          "description": "Place it in any corner of the screen — wherever it fits your layout best."
         },
         {
           "label": "Color",
-          "description": "Set a custom background color to match your brand."
+          "description": "Match your brand colors with a custom background. Blend it into your site seamlessly."
         },
         {
           "label": "Size",
-          "description": "Choose small, medium, or large to fit your design."
+          "description": "Choose small, medium, or large to find the perfect fit for your design."
         },
         {
           "label": "Theme",
-          "description": "Light, dark, or auto mode to match the visitor's preference."
+          "description": "Light, dark, or auto mode — automatically adapts to your visitor's preference."
         },
         {
           "label": "Opacity",
-          "description": "Adjust transparency for a subtle or bold appearance."
+          "description": "From subtle and transparent to bold and visible. You decide how much attention it gets."
         },
         {
-          "label": "Language Selection",
-          "description": "Choose exactly which languages are available to your visitors."
+          "label": "Language selection",
+          "description": "Show only the languages your audience actually speaks. Hide the rest."
         }
       ]
     },
@@ -402,24 +402,24 @@
       "title": "Frequently Asked Questions",
       "items": [
         {
-          "question": "Does this affect my page loading speed?",
-          "answer": "No. The widget loads asynchronously via a single script tag, so it doesn't block rendering or affect Core Web Vitals."
+          "question": "Will this slow down my website?",
+          "answer": "No. The widget loads in the background without blocking your page rendering. Visitors won't notice any difference in load time."
         },
         {
-          "question": "Do I need a Google Translate API key?",
-          "answer": "No. Translation uses Google Translate's free web endpoint. No API key or billing setup is required."
+          "question": "Do I need to change anything on my server?",
+          "answer": "No. Everything runs in the visitor's browser. No server changes, no API keys, no additional setup on your end."
         },
         {
           "question": "Will my images or layout be affected?",
-          "answer": "No. The widget translates only text content. Images, logos, and styled elements remain untouched."
+          "answer": "No. Only text content is translated. Images, logos, and styled elements remain exactly as they are."
         },
         {
           "question": "Is there a free plan?",
-          "answer": "Yes. The free plan includes 50 translations per month with access to all core features. Pro plan (¥980/mo) removes the limit."
+          "answer": "Yes. The free plan includes 50 translations per month with all core features. Pro plan (¥980/mo) removes the limit."
         },
         {
-          "question": "What frameworks does this work with?",
-          "answer": "LSwitch works with any website that supports HTML — WordPress, Next.js, React, static sites, and more. It's framework-agnostic."
+          "question": "Does this work with my website platform?",
+          "answer": "Yes. LSwitch works with any website that supports HTML — WordPress, Next.js, React, Shopify, static sites, and more."
         }
       ]
     },
