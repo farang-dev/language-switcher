@@ -4,6 +4,8 @@ import { Globe, Check } from "lucide-react";
 import { getDictionary, hasLocale } from "@/lib/i18n/dictionaries";
 import { notFound } from "next/navigation";
 import { Header } from "@/components/layout/header";
+import { TypingGreeting } from "@/components/ui/typing-greeting";
+
 
 export default async function LandingPage({
   params,
@@ -45,11 +47,8 @@ function Hero({ dict, lang }: { dict: any; lang: string }) {
       <div className="relative max-w-6xl mx-auto px-6 py-20 md:py-28">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="text-center md:text-left">
-            <div className="inline-flex items-center gap-2 bg-white border border-gray-200 rounded-full px-4 py-1.5 mb-6 shadow-sm">
-              <span className="w-2 h-2 rounded-full bg-[#00a67e]" />
-              <span className="text-sm font-medium text-gray-600">
-                {dict.hero.badge}
-              </span>
+            <div className="block">
+              <TypingGreeting />
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 leading-[1.15]">
               <span className="text-[#00a67e]">{dict.hero.titleAccent}</span>
