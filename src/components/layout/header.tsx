@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { Globe } from "lucide-react";
 import { locales, type Dict } from "@/lib/i18n/dictionaries";
 
 export function Header({
@@ -17,16 +16,13 @@ export function Header({
 
   return (
     <header className="sticky top-0 z-50 bg-white/20 backdrop-blur-xl">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
-        <Link href={`/${lang}`} className="flex items-center gap-2.5">
-          <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-[#00a67e] flex items-center justify-center">
-            <Globe className="h-3.5 w-3.5 sm:h-4.5 sm:w-4.5 text-white" />
-          </div>
-          <span className="font-bold text-base sm:text-lg tracking-tight text-gray-900">
+      <div className="max-w-4xl mx-auto px-6 h-14 sm:h-16 flex items-center justify-between">
+        <Link href={`/${lang}`} className="flex items-center">
+          <span className="font-bold text-lg sm:text-xl tracking-tight text-black">
             {dict.nav.logo}
           </span>
         </Link>
-        <nav className="hidden md:flex items-center gap-1">
+        <nav className="hidden md:flex items-center gap-0.5">
           <Link
             href={`/${lang}#features`}
             className="px-3 py-1.5 text-sm font-medium text-black transition-colors rounded-lg hover:bg-white/30"
@@ -50,7 +46,7 @@ export function Header({
             {dict.nav.docs}
           </Link>
         </nav>
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex items-center gap-1.5 sm:gap-2">
           <Link
             href={`/${lang}/login`}
             className="hidden sm:inline-flex text-sm font-medium text-black transition-colors px-3 py-2"
