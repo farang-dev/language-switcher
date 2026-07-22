@@ -18,26 +18,26 @@ export function Header({
     <header className="sticky top-0 z-50 bg-white/20 backdrop-blur-xl">
       <div className="max-w-4xl mx-auto px-6 h-14 sm:h-16 flex items-center justify-between">
         <Link href={`/${lang}`} className="flex items-center">
-          <span className="font-bold text-lg sm:text-xl tracking-tight text-black">
+          <span className="font-extrabold text-xl sm:text-2xl tracking-tight text-black">
             {dict.nav.logo}
           </span>
         </Link>
         <nav className="hidden md:flex items-center gap-0.5">
           <Link
             href={`/${lang}#features`}
-            className="px-3 py-1.5 text-sm font-medium text-black transition-colors rounded-lg hover:bg-white/30"
+            className="px-3 py-1.5 text-[15px] font-semibold text-black transition-colors rounded-lg hover:bg-white/30"
           >
             {dict.nav.features}
           </Link>
           <Link
             href={`/${lang}#pricing`}
-            className="px-3 py-1.5 text-sm font-medium text-black transition-colors rounded-lg hover:bg-white/30"
+            className="px-3 py-1.5 text-[15px] font-semibold text-black transition-colors rounded-lg hover:bg-white/30"
           >
             {dict.nav.pricing}
           </Link>
           <Link
             href={`/${lang}/docs`}
-            className={`px-3 py-1.5 text-sm font-medium transition-colors rounded-lg ${
+            className={`px-3 py-1.5 text-[15px] font-semibold transition-colors rounded-lg ${
               activePage === "docs"
                 ? "bg-[#e6f7f1] text-[#00a67e]"
                 : "text-black hover:bg-white/30"
@@ -49,13 +49,13 @@ export function Header({
         <div className="flex items-center gap-1.5 sm:gap-2">
           <Link
             href={`/${lang}/login`}
-            className="hidden sm:inline-flex text-sm font-medium text-black transition-colors px-3 py-2"
+            className="hidden sm:inline-flex text-[15px] font-semibold text-black transition-colors px-3 py-2"
           >
             {dict.nav.login}
           </Link>
           <a
             href={`/${otherLocale}${activePage === "docs" ? "/docs" : ""}`}
-            className="text-sm font-medium text-black transition-colors px-1.5 sm:px-2 py-1"
+            className="text-[15px] font-semibold text-black transition-colors px-1.5 sm:px-2 py-1"
           >
             {otherLocale === "ja" ? "日本語" : "English"}
           </a>
@@ -85,25 +85,25 @@ export function Header({
         <div className="px-4 py-3 space-y-1">
           <Link
             href={`/${lang}#features`}
-            className="block px-3 py-2 text-sm font-medium text-black hover:bg-white/30 rounded-lg"
+            className="block px-3 py-2 text-[15px] font-semibold text-black hover:bg-white/30 rounded-lg"
           >
             {dict.nav.features}
           </Link>
           <Link
             href={`/${lang}#pricing`}
-            className="block px-3 py-2 text-sm font-medium text-black hover:bg-white/30 rounded-lg"
+            className="block px-3 py-2 text-[15px] font-semibold text-black hover:bg-white/30 rounded-lg"
           >
             {dict.nav.pricing}
           </Link>
           <Link
             href={`/${lang}/docs`}
-            className="block px-3 py-2 text-sm font-medium text-black hover:bg-white/30 rounded-lg"
+            className="block px-3 py-2 text-[15px] font-semibold text-black hover:bg-white/30 rounded-lg"
           >
             {dict.nav.docs}
           </Link>
           <Link
             href={`/${lang}/login`}
-            className="block px-3 py-2 text-sm font-medium text-black hover:bg-white/30 rounded-lg sm:hidden"
+            className="block px-3 py-2 text-[15px] font-semibold text-black hover:bg-white/30 rounded-lg sm:hidden"
           >
             {dict.nav.login}
           </Link>
